@@ -1,0 +1,2582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: Go-to-Market Strategy — The Founder's Sprint</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cormorant:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CSS CUSTOM PROPERTIES — "CALM" PALETTE ==================== */
+        :root {
+            /* Backgrounds — charcoal & bush greens */
+            --ink: #1A201E;
+            --green-deep: #152B1F;
+            --green-dark: #213A2D;
+            --green: #2D6A4F;
+            --green-mid: #40916C;
+
+            /* Primary accent — Sienna (replaces gold) */
+            --gold: #B85A2E;
+            --gold-light: #D4845A;
+            --gold-pale: #F0E4CC;
+
+            /* Warm neutrals — Cashmere & Ivory */
+            --cream: #EADFC6;
+            --ivory: #F5EBD6;
+            --white: #FFFFFF;
+
+            /* New Calm-palette aliases (preferred for new code) */
+            --bush-deep: #152B1F;
+            --bush: #213A2D;
+            --bush-mid: #2D6A4F;
+            --sienna: #B85A2E;
+            --sienna-deep: #8F4420;
+            --sienna-light: #D4845A;
+            --oak: #B89674;
+            --oak-light: #D4BC9E;
+            --cashmere: #D5C3A1;
+            --cashmere-pale: #EADFC6;
+
+            /* Greys */
+            --gray-300: #C8C5BB;
+            --gray-500: #8C8880;
+            --gray-700: #3D3B35;
+        }
+
+        /* ==================== RESET & BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gray-700);
+            background: var(--ivory);
+            line-height: 1.7;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* ==================== TYPOGRAPHY ==================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        .eyebrow {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .display-title {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(48px, 8vw, 76px);
+            font-weight: 300;
+            line-height: 1.1;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .display-title em {
+            font-style: italic;
+            color: var(--gold-light);
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.55);
+            max-width: 700px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--green-dark);
+            margin-bottom: 24px;
+            position: relative;
+            padding-top: 32px;
+        }
+
+        .section-title.light {
+            color: var(--white);
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .section-title::after {
+            content: '◆';
+            display: block;
+            position: absolute;
+            top: -12px;
+            left: 35px;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+        }
+
+        .gold-diamond {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .btn-gold {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== CROSSHATCH PATTERN ==================== */
+        .crosshatch {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crosshatch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(184, 90, 46, 0.03) 10px,
+                rgba(184, 90, 46, 0.03) 20px
+            );
+            pointer-events: none;
+        }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        section.hero {
+            background: var(--ink);
+            color: var(--white);
+            padding: 140px 0 80px;
+            display: flex;
+            align-items: flex-end;
+            min-height: 70vh;
+        }
+
+        /* ── DUOTONE HERO BACKGROUND ── */
+        .hero-bg-photo {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            filter: grayscale(1) contrast(1.05) brightness(0.9);
+        }
+        .hero-duotone-shadow {
+            position: absolute; inset: 0;
+            background: var(--ink);
+            mix-blend-mode: multiply;
+            opacity: 0.72;
+            pointer-events: none;
+        }
+        .hero-duotone-highlight {
+            position: absolute; inset: 0;
+            background: #7a5a18;
+            mix-blend-mode: screen;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .hero-duotone-gradient {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(to right, rgba(11,24,16,0.92) 0%, rgba(11,24,16,0.55) 55%, rgba(11,24,16,0.15) 100%),
+                linear-gradient(to top,   rgba(11,24,16,0.80) 0%, transparent 45%);
+            pointer-events: none;
+        }
+        .hero .container { position: relative; z-index: 2; }
+
+        section.light {
+            background: var(--ivory);
+        }
+
+        section.dark {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        section.dark h2,
+        section.dark h3 {
+            color: var(--white);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .session-info {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            display: inline-block;
+        }
+
+        /* ==================== FRAMEWORK CARDS ==================== */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 860px) {
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .framework-card {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                var(--cream);
+            border: none;
+            border-left: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+            transition: background 0.35s ease, transform 0.35s ease;
+        }
+
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 32px,
+                rgba(201,160,54,0.04) 32px,
+                rgba(201,160,54,0.04) 33px
+            );
+            pointer-events: none;
+        }
+
+        .framework-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .framework-card:hover {
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 50%),
+                var(--gold-pale);
+            transform: translateY(-3px);
+        }
+
+        .framework-card-icon {
+            font-size: 80px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+        }
+
+        .framework-card-body h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--green-dark);
+        }
+
+        .framework-card-body p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .framework-card-body p + p {
+            margin-top: 8px;
+        }
+
+        /* ==================== CASE STUDY GRID ==================== */
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 48px 0;
+        }
+
+        .case-study {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                var(--cream);
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            transition: transform 0.35s ease;
+        }
+
+        .case-study::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .case-study:hover {
+            transform: translateY(-2px);
+        }
+
+        .case-study h4 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--green-dark);
+        }
+
+        .case-study-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            font-size: 15px;
+        }
+
+        .case-study-flow strong {
+            color: var(--green-dark);
+            font-weight: 600;
+        }
+
+        .case-study-flow::before {
+            content: '◆';
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        /* ==================== PILLAR CARDS ==================== */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        .pillar-card {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 28px;
+            align-items: start;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.04) 0%, transparent 40%),
+                rgba(26,32,30,0.5);
+            border: 1px solid rgba(201,160,54,0.15);
+            cursor: pointer;
+            transition: background 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 48px) 100%, 0 100%);
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 38px,
+                rgba(201,160,54,0.03) 38px,
+                rgba(201,160,54,0.03) 39px
+            );
+            pointer-events: none;
+        }
+
+        .pillar-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .pillar-card:hover {
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.06) 0%, transparent 40%),
+                rgba(26,32,30,0.6);
+            transform: translateY(-3px);
+            border-color: rgba(201,160,54,0.3);
+        }
+
+        .pillar-card-icon {
+            font-size: 112px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 112px;
+            height: 112px;
+        }
+
+        .pillar-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .pillar-card h3 {
+            font-size: 20px;
+            margin: 0;
+            color: var(--white);
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .pillar-card-expand-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            opacity: 0.6;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .pillar-card:hover .pillar-card-expand-hint {
+            opacity: 1;
+        }
+
+        .pillar-card-summary {
+            font-size: 16px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 0;
+        }
+
+        .pillar-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .pillar-card-content.expanded {
+            max-height: 600px;
+        }
+
+        .pillar-card-section {
+            margin-bottom: 16px;
+        }
+
+        .pillar-card-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .pillar-card-text {
+            font-size: 15px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ==================== TABBED ACCORDION ==================== */
+        .tab-set {
+            margin: 48px 0;
+        }
+
+        .tab-set-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tab-set-hint::before,
+        .tab-set-hint::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(184, 90, 46, 0.25);
+        }
+
+        .tab-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            border-bottom: 1px solid rgba(184, 90, 46, 0.3);
+            background: rgba(184, 90, 46, 0.04);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 24px 20px 20px;
+            font-family: 'Josefin Sans', sans-serif;
+            cursor: pointer;
+            color: inherit;
+            position: relative;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            border-right: 1px solid rgba(184, 90, 46, 0.18);
+            text-align: center;
+            min-height: 130px;
+        }
+
+        .tab-btn:last-child { border-right: none; }
+
+        .tab-btn:hover {
+            background: rgba(184, 90, 46, 0.08);
+        }
+
+        .tab-btn:focus {
+            outline: 2px solid var(--gold);
+            outline-offset: -4px;
+        }
+
+        .tab-btn.is-active {
+            background: rgba(184, 90, 46, 0.12);
+        }
+
+        .tab-btn.is-active::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            bottom: -1px;
+            height: 4px;
+            background: var(--gold);
+        }
+
+        .tab-btn-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 13px;
+            letter-spacing: 0.15em;
+            opacity: 0.45;
+            display: block;
+        }
+
+        .tab-btn-icon {
+            font-size: 40px;
+            line-height: 1;
+            margin: 2px 0;
+            display: block;
+            filter: saturate(1) opacity(0.85);
+            transition: filter 0.2s;
+        }
+
+        .tab-btn.is-active .tab-btn-icon {
+            filter: saturate(1) opacity(1);
+        }
+
+        .tab-btn-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            line-height: 1.4;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .tab-btn.is-active .tab-btn-label {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .tab-panels {
+            position: relative;
+            padding: 40px 0 0;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: tab-fade 0.35s ease;
+        }
+
+        .tab-panel.is-active {
+            display: block;
+        }
+
+        @keyframes tab-fade {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel content — grid split for sections */
+        .tab-panel-body {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                rgba(184, 90, 46, 0.06);
+            border: none;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 32px;
+            align-items: start;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+        }
+
+        .tab-panel-body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 32px,
+                rgba(201,160,54,0.035) 32px,
+                rgba(201,160,54,0.035) 33px
+            );
+            pointer-events: none;
+        }
+
+        .tab-panel-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .tab-panel-icon {
+            font-size: 96px;
+            line-height: 1;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-panel-content h4 {
+            font-size: 22px;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .tab-panel-summary {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            opacity: 0.85;
+        }
+
+        .tab-panel-section {
+            margin-bottom: 20px;
+        }
+
+        .tab-panel-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .tab-panel-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .tab-panel-text {
+            font-size: 15px;
+            line-height: 1.75;
+            margin: 0;
+        }
+
+        /* Dark variant (for dark sections) */
+        .tab-set--dark .tab-nav {
+            background: rgba(184, 90, 46, 0.06);
+            border-top-color: rgba(184, 90, 46, 0.35);
+            border-bottom-color: rgba(184, 90, 46, 0.35);
+        }
+
+        .tab-set--dark .tab-btn {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .tab-set--dark .tab-panel-body {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-set--dark .tab-panel-content h4 {
+            color: var(--white);
+        }
+
+        .tab-set--dark .tab-panel-summary,
+        .tab-set--dark .tab-panel-text {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Mobile — stack tabs vertically */
+        @media (max-width: 768px) {
+            .tab-nav {
+                grid-template-columns: 1fr;
+                border-top: none;
+                border-bottom: none;
+            }
+
+            .tab-btn {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+                min-height: auto;
+                padding: 18px 20px;
+                border-right: none;
+                border-top: 1px solid rgba(184, 90, 46, 0.2);
+                gap: 16px;
+            }
+
+            .tab-btn:first-child {
+                border-top: 1px solid rgba(184, 90, 46, 0.35);
+            }
+
+            .tab-btn:last-child {
+                border-bottom: 1px solid rgba(184, 90, 46, 0.35);
+            }
+
+            .tab-btn.is-active::after {
+                top: 0; bottom: 0; left: 0; right: auto;
+                width: 4px; height: auto;
+            }
+
+            .tab-btn-icon {
+                font-size: 32px;
+                flex-shrink: 0;
+            }
+
+            .tab-btn-num {
+                display: none;
+            }
+
+            .tab-panels {
+                padding-top: 24px;
+            }
+
+            .tab-panel-body {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+            }
+
+            .tab-panel-icon {
+                font-size: 72px;
+                width: 88px;
+                height: 88px;
+            }
+        }
+
+        /* ==================== LEARNING LOOP DIAGRAM ==================== */
+        .learning-loop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 48px 0 24px;
+        }
+
+        .learning-loop svg {
+            max-width: 680px;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .learning-loop svg {
+                max-width: 100%;
+            }
+        }
+
+        /* --- Learning Loop Hover --- */
+        .loop-node {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .loop-node:hover {
+            transform: scale(1.08);
+            filter: brightness(1.15);
+        }
+        .loop-arrow {
+            stroke-dashoffset: 0;
+            opacity: 0.6;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .loop-node { transition: none !important; }
+            .loop-node:hover { transform: none; filter: none; }
+        }
+
+        /* --- GTM Funnel Hover Pulse --- */
+        .funnel-layer {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .funnel-layer:hover {
+            transform: scale(1.06);
+            filter: brightness(1.15);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .funnel-layer { transition: none !important; }
+            .funnel-layer:hover { transform: none; filter: none; }
+        }
+
+        /* ==================== COMPARISON CARDS ==================== */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            position: relative;
+            padding: 40px 36px;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 36px,
+                rgba(201,160,54,0.03) 36px,
+                rgba(201,160,54,0.03) 37px
+            );
+            pointer-events: none;
+        }
+
+        .comparison-false {
+            background:
+                linear-gradient(135deg, rgba(204,85,85,0.06) 0%, transparent 50%),
+                rgba(220, 100, 100, 0.06);
+            border: 1px solid rgba(204,85,85,0.2);
+        }
+
+        .comparison-false::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #cc5555, transparent);
+        }
+
+        .comparison-true {
+            background:
+                linear-gradient(135deg, rgba(70,150,100,0.06) 0%, transparent 50%),
+                rgba(70, 150, 100, 0.06);
+            border: 1px solid rgba(70,150,100,0.2);
+        }
+
+        .comparison-true::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #469664, transparent);
+        }
+
+        .comparison-card h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .comparison-item-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        /* ==================== EXERCISE FORM — FUTURIST ==================== */
+
+        .problem-statement-box {
+            position: relative;
+            padding: 56px 52px 52px;
+            margin: 48px 0;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.05) 0%, transparent 40%),
+                rgba(26,32,30,0.6);
+            border: 1px solid rgba(201,160,54,0.25);
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 28px), calc(100% - 64px) 100%, 0 100%);
+        }
+
+        .problem-statement-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    -55deg,
+                    transparent,
+                    transparent 38px,
+                    rgba(201,160,54,0.04) 38px,
+                    rgba(201,160,54,0.04) 39px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .problem-statement-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background: linear-gradient(90deg, #C9A036 0%, rgba(201,160,54,0) 100%);
+            z-index: 2;
+        }
+
+        .problem-statement-box .problem-template,
+        .problem-statement-box .problem-statement-field {
+            position: relative;
+            z-index: 1;
+        }
+
+        .problem-statement-field {
+            margin-bottom: 28px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(201,160,54,0.12);
+            transition: border-left-color 0.4s ease, padding-left 0.4s ease;
+        }
+
+        .problem-statement-field:hover {
+            border-left-color: rgba(201,160,54,0.45);
+            padding-left: 24px;
+        }
+
+        .problem-statement-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .problem-statement-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #C9A036;
+            margin-right: 10px;
+            transform: rotate(45deg);
+            vertical-align: middle;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .problem-statement-field:hover .problem-statement-label::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.3);
+        }
+
+        .problem-template {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .editable-field {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(201,160,54,0.25);
+            color: #C9A036;
+            padding: 6px 12px 6px 8px;
+            min-width: 200px;
+            outline: none;
+            transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editable-field:hover {
+            border-bottom-color: rgba(201,160,54,0.5);
+        }
+
+        .editable-field:focus {
+            border-bottom-color: #C9A036;
+            background: rgba(201,160,54,0.06);
+            box-shadow: 0 4px 20px rgba(201,160,54,0.08);
+        }
+
+        .editable-field::placeholder {
+            color: rgba(201,160,54,0.35);
+            font-style: italic;
+        }
+
+        .form-actions {
+            position: relative;
+            z-index: 1;
+            margin-top: 44px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(201,160,54,0.12);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-futurist {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #C9A036 0%, #B85A2E 100%);
+            color: #1A201E;
+            border: none;
+            cursor: pointer;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 20px) 100%, 0 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+
+        .btn-futurist:hover {
+            transform: translateY(-3px) translateX(2px);
+            box-shadow: 0 8px 24px rgba(201,160,54,0.2);
+            filter: brightness(1.1);
+        }
+
+        .btn-futurist:active {
+            transform: translateY(0) translateX(0);
+        }
+
+        .btn-futurist-ghost {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 28px;
+            background: transparent;
+            color: rgba(201,160,54,0.6);
+            border: 1px solid rgba(201,160,54,0.2);
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-futurist-ghost:hover {
+            color: #C9A036;
+            border-color: rgba(201,160,54,0.5);
+        }
+
+        .form-footnote {
+            margin-top: 28px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+            max-width: 700px;
+            position: relative;
+            padding-left: 18px;
+        }
+        .form-footnote::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 6px;
+            height: 6px;
+            background: #C9A036;
+            transform: rotate(45deg);
+            opacity: 0.5;
+        }
+
+        /* ==================== TASK TABLE ==================== */
+        .task-table {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin: 32px 0;
+            border-top: 2px solid var(--gold);
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(184, 90, 46, 0.25);
+            align-items: baseline;
+        }
+
+        .task-row:last-child {
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .task-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 28px;
+            color: var(--gold);
+            line-height: 1;
+            padding-top: 2px;
+        }
+
+        .task-body h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--green-dark);
+            margin: 0 0 6px 0;
+        }
+
+        .task-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .secondary-table .task-num {
+            color: var(--green-mid);
+        }
+
+        .secondary-table .task-row {
+            border-bottom-color: rgba(45, 106, 79, 0.15);
+        }
+
+        .secondary-table .task-row:last-child {
+            border-bottom: 2px solid var(--green-mid);
+        }
+
+        .secondary-table {
+            border-top-color: var(--green-mid);
+        }
+
+        /* ==================== NEXT WEEK PREVIEW ==================== */
+        .preview-card {
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.08) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.06) 0%, transparent 40%),
+                var(--green-dark);
+            border: 1px solid rgba(201,160,54,0.3);
+            padding: 64px 56px 56px;
+            margin: 48px 0;
+            text-align: center;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 56px) 100%, 0 100%);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        border-color 0.35s ease;
+        }
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.04) 38px, rgba(201,160,54,0.04) 39px);
+            pointer-events: none;
+        }
+        .preview-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+        .preview-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(201,160,54,0.5);
+        }
+
+        .preview-card h3 {
+            position: relative;
+            font-size: 28px;
+            color: var(--gold-light);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .preview-card h3::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+            margin: 16px auto 0;
+        }
+
+        .preview-card p {
+            position: relative;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, 0.55);
+            padding: 48px 0;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        footer .brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ==================== SCROLL ANIMATIONS ==================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            .progress-bar {
+                display: none;
+            }
+
+            section {
+                padding: 40px 0;
+                page-break-inside: avoid;
+            }
+
+            .btn-gold {
+                background: var(--gold);
+                color: var(--ink);
+            }
+
+            body {
+                font-size: 16px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            section.hero {
+                padding: 132px 0 80px;
+                min-height: auto;
+            }
+
+            .display-title {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .framework-grid,
+            .case-studies,
+            .pillar-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .problem-statement-box {
+                padding: 36px 28px 32px;
+                clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            }
+
+            .problem-statement-field {
+                padding-left: 14px;
+            }
+
+            .editable-field {
+                min-width: 100px;
+            }
+
+            .btn-futurist {
+                padding: 16px 28px;
+            }
+        }
+
+        /* ==================== MENTOR SECTION ==================== */
+        .mentor-section {
+            background: var(--bush-deep);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .mentor-grid {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            min-height: 600px;
+        }
+
+        /* ---- Photo column ---- */
+        .mentor-photo-col {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mentor-photo-frame {
+            position: relative;
+            height: 100%;
+            min-height: 560px;
+        }
+
+        .mentor-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            filter: contrast(1.05);
+        }
+
+        /* Art Deco frame overlay */
+        .mentor-photo-frame::before {
+            content: '';
+            position: absolute;
+            inset: 20px;
+            border: 1px solid rgba(184, 90, 46, 0.35);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Corner accents — top-left */
+        .mentor-corner {
+            position: absolute;
+            z-index: 3;
+            width: 40px;
+            height: 40px;
+        }
+        .mentor-corner.tl { top: 10px; left: 10px;
+            border-top: 2px solid var(--sienna); border-left: 2px solid var(--sienna); }
+        .mentor-corner.tr { top: 10px; right: 10px;
+            border-top: 2px solid var(--sienna); border-right: 2px solid var(--sienna); }
+        .mentor-corner.bl { bottom: 10px; left: 10px;
+            border-bottom: 2px solid var(--sienna); border-left: 2px solid var(--sienna); }
+        .mentor-corner.br { bottom: 10px; right: 10px;
+            border-bottom: 2px solid var(--sienna); border-right: 2px solid var(--sienna); }
+
+        /* Sienna left-edge accent bar */
+        .mentor-photo-col::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 4px; height: 100%;
+            background: var(--sienna);
+        }
+
+        /* Step numeral watermark */
+        .mentor-numeral {
+            position: absolute;
+            bottom: 28px;
+            left: 28px;
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 120px;
+            line-height: 1;
+            color: var(--sienna);
+            opacity: 0.15;
+            z-index: 1;
+            user-select: none;
+        }
+
+        /* ---- Content column ---- */
+        .mentor-content-col {
+            padding: clamp(40px, 6vw, 72px) clamp(32px, 5vw, 64px) clamp(40px, 6vw, 72px) clamp(40px, 5vw, 56px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mentor-name {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: clamp(52px, 6vw, 80px);
+            line-height: 0.95;
+            color: var(--ivory);
+            margin: 12px 0 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .mentor-name em {
+            font-style: italic;
+            color: var(--sienna-light);
+        }
+
+        .mentor-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: rgba(245, 235, 214, 0.55);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .mentor-rule {
+            width: 64px;
+            height: 2px;
+            background: var(--sienna);
+            margin-bottom: 28px;
+        }
+
+        .mentor-bio {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(245, 235, 214, 0.7);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .mentor-bio strong {
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        /* Credentials — 4 stats in a row */
+        .mentor-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid rgba(184, 90, 46, 0.25);
+            padding-top: 28px;
+            margin-bottom: 36px;
+        }
+
+        .mentor-stat {
+            padding-right: 20px;
+        }
+
+        .mentor-stat + .mentor-stat {
+            padding-left: 20px;
+            border-left: 1px solid rgba(184, 90, 46, 0.2);
+        }
+
+        .mentor-stat-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 40px;
+            line-height: 1;
+            color: var(--sienna-light);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mentor-stat-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(245, 235, 214, 0.45);
+            line-height: 1.4;
+        }
+
+        /* Press strip */
+        .mentor-press {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .mentor-press-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--sienna);
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+
+        .mentor-press-outlets {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .mentor-press-name {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 15px;
+            font-style: italic;
+            color: rgba(245, 235, 214, 0.35);
+            letter-spacing: 0.05em;
+        }
+
+        .mentor-press-sep {
+            color: var(--sienna);
+            opacity: 0.4;
+            font-size: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .mentor-grid { grid-template-columns: 1fr; }
+            .mentor-photo-frame { min-height: 340px; }
+            .mentor-photo-col::after { display: none; }
+            .mentor-stats { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .mentor-stat + .mentor-stat { border-left: none; padding-left: 0; }
+            .mentor-stat:nth-child(odd) { border-right: 1px solid rgba(184,90,46,0.2); padding-right: 20px; }
+        }
+
+        /* ==================== MODULE NAVIGATION ==================== */
+        .module-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 32, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(201, 160, 54, 0.2);
+            padding: 0 24px;
+        }
+        .module-nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+        .module-nav-brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .module-nav-brand:hover { opacity: 0.8; }
+        .module-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .module-nav-link {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 8px 14px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .module-nav-link:hover {
+            color: #C9A036;
+            background: rgba(201, 160, 54, 0.08);
+        }
+        .module-nav-link.is-current {
+            color: #C9A036;
+            border-bottom: 2px solid #C9A036;
+        }
+        .module-nav-link.is-locked {
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            cursor: default;
+        }
+        .module-nav-sep {
+            width: 1px;
+            height: 16px;
+            background: rgba(201, 160, 54, 0.15);
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .module-nav-link { padding: 8px 8px; font-size: 8px; letter-spacing: 0.1em; }
+            .module-nav-brand { font-size: 9px; letter-spacing: 0.15em; }
+        }
+
+        /* ==================== TIER-SPECIFIC CONTENT ==================== */
+        .tier-section { display: none; margin: 0; }
+        .tier-section.tier-visible { display: block; }
+        .tier-block {
+            background: var(--green-deep);
+            padding: 56px clamp(24px, 5vw, 80px);
+            color: var(--cream);
+        }
+        .tier-block .eyebrow { color: var(--gold); margin-bottom: 12px; }
+        .tier-block h2 { color: var(--white); font-size: clamp(28px, 4vw, 36px); margin-bottom: 24px; font-weight: 300; }
+        .tier-block p { color: rgba(234, 223, 198, 0.8); margin-bottom: 16px; line-height: 1.75; }
+        .tier-block .tier-card {
+            background: rgba(255,255,255,0.06);
+            border-left: 3px solid var(--gold);
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .tier-block .tier-card h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .tier-block .tier-card p { color: rgba(234,223,198,0.7); font-size: 16px; margin-bottom: 0; }
+        .tier-divider {
+            height: 3px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin: 0;
+        }
+</style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Module Navigation -->
+    <nav class="module-nav">
+      <div class="module-nav-inner">
+        <a href="../index.html" class="module-nav-brand">The Founder's Sprint</a>
+        <ul class="module-nav-links">
+          <li><a href="/learn/week-1" target="_parent" class="module-nav-link">Week 1</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-2" target="_parent" class="module-nav-link">Week 2</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-3" target="_parent" class="module-nav-link is-current">Week 3</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-4" target="_parent" class="module-nav-link">Week 4</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-5" target="_parent" class="module-nav-link">Week 5</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/resources" target="_parent" class="module-nav-link">Resources</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero crosshatch">
+        <img src="images/week-3-hero.jpg" alt="" class="hero-bg-photo">
+        <div class="hero-duotone-shadow"></div>
+        <div class="hero-duotone-highlight"></div>
+        <div class="hero-duotone-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="eyebrow">The Founder's Sprint · Week 3</span>
+                <h1 class="display-title">Go-to-Market <em>Strategy</em><br>&amp; Unit Economics</h1>
+                <p class="subtitle">Design the channels, pricing, and 90-day plan to reach your first paying customers.</p>
+                <div class="session-info">2 Hours · Max 10 Founders · Deliverable: 90-Day GTM Plan</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Section 1: The Channel Problem -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Foundation</span>
+            <h2 class="section-title">The Channel Problem</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Most founders build a product then wonder where to find customers. The best founders figure out the channel FIRST, then build the product to fit it.</p>
+
+            <div class="framework-grid">
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">📣</span>
+                    <div class="framework-card-body">
+                        <h4>Channel First</h4>
+                        <p>Your distribution channel determines your product shape. A WhatsApp-based service looks different from a marketplace.</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">💰</span>
+                    <div class="framework-card-body">
+                        <h4>Unit Economics</h4>
+                        <p>If it costs more to acquire a customer than they'll ever pay you, you don't have a business. You have an expensive hobby.</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">🔄</span>
+                    <div class="framework-card-body">
+                        <h4>The Flywheel</h4>
+                        <p>Great GTM strategies create loops: each customer brings the next. Word of mouth isn't luck — it's designed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--green-dark); margin-top: 48px;">Uganda Case Studies</h3>
+
+            <div class="tab-set fade-up" data-tab-group="channels">
+                <div class="tab-set-hint">Three Case Studies · Select a Tab</div>
+                <div class="tab-nav" role="tablist" aria-label="Uganda Channel Case Studies">
+                    <button class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="channels-panel-1" id="channels-tab-1" data-tab-target="channels-panel-1" onclick="switchTab(this)">
+                        <span class="tab-btn-num">01</span>
+                        <span class="tab-btn-icon">📱</span>
+                        <span class="tab-btn-label">WhatsApp Commerce</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="channels-panel-2" id="channels-tab-2" data-tab-target="channels-panel-2" onclick="switchTab(this)">
+                        <span class="tab-btn-num">02</span>
+                        <span class="tab-btn-icon">🤝</span>
+                        <span class="tab-btn-label">Agent Networks</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="channels-panel-3" id="channels-tab-3" data-tab-target="channels-panel-3" onclick="switchTab(this)">
+                        <span class="tab-btn-num">03</span>
+                        <span class="tab-btn-icon">⛪</span>
+                        <span class="tab-btn-label">Church &amp; Community Groups</span>
+                    </button>
+                </div>
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" id="channels-panel-1" aria-labelledby="channels-tab-1">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">📱</div>
+                            <div class="tab-panel-content">
+                                <h4>WhatsApp Commerce</h4>
+                                <p class="tab-panel-summary">How a Kampala food delivery service grew to 500 orders/week using WhatsApp groups instead of building an app. Cost per acquisition: UGX 0.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Channel</span>
+                                    <p class="tab-panel-text">WhatsApp groups organised by neighbourhood. No app download required. No marketing spend. Customers shared the group link themselves.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Why It Worked</span>
+                                    <p class="tab-panel-text">WhatsApp was already on every phone. The ordering process was a simple message. Group dynamics created social proof — when one person ordered, others followed.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>The best channel is the one your customers already use every day. Don't make them download something new.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="channels-panel-2" aria-labelledby="channels-tab-2">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">🤝</div>
+                            <div class="tab-panel-content">
+                                <h4>Agent Networks</h4>
+                                <p class="tab-panel-summary">A solar company discovered that village agents outsold their website 40:1. The channel was the product.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Channel</span>
+                                    <p class="tab-panel-text">Local agents — trusted community members who earned commission on every sale. They demonstrated the product in person, handled objections, and collected mobile money payments.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Why It Worked</span>
+                                    <p class="tab-panel-text">Rural customers don't buy from websites. They buy from people they know. The agent network turned a hardware product into a relationship-based sale.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>In low-trust, low-internet environments, human distribution beats digital distribution every time.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="channels-panel-3" aria-labelledby="channels-tab-3">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">⛪</div>
+                            <div class="tab-panel-content">
+                                <h4>Church &amp; Community Groups</h4>
+                                <p class="tab-panel-summary">A savings platform grew by partnering with church savings circles (munno mukabi). Trust was the distribution channel.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Channel</span>
+                                    <p class="tab-panel-text">Existing church-based savings groups — munno mukabi — with established trust, regular meetings, and built-in accountability. The platform digitised what they were already doing.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Why It Worked</span>
+                                    <p class="tab-panel-text">The groups already met weekly. Money conversations were already happening. The platform didn't need to create trust — it borrowed it from the church community.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>Don't build communities from scratch. Find where your customers already gather and serve them there.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: The GTM Framework -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Framework</span>
+            <h2 class="section-title light">Building Your Go-to-Market Plan</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">A GTM plan answers three questions: Who are you selling to? How will you reach them? What will it cost?</p>
+
+            <div class="tab-set tab-set--dark fade-up" data-tab-group="gtm">
+                <div class="tab-set-hint">The GTM Framework · Select a Tab</div>
+                <div class="tab-nav" role="tablist" aria-label="GTM Framework">
+                    <button class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="gtm-panel-1" id="gtm-tab-1" data-tab-target="gtm-panel-1" onclick="switchTab(this)">
+                        <span class="tab-btn-num">01</span>
+                        <span class="tab-btn-icon">📡</span>
+                        <span class="tab-btn-label">Channels That Work in Uganda</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="gtm-panel-2" id="gtm-tab-2" data-tab-target="gtm-panel-2" onclick="switchTab(this)">
+                        <span class="tab-btn-num">02</span>
+                        <span class="tab-btn-icon">💵</span>
+                        <span class="tab-btn-label">Pricing &amp; Revenue Model</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="gtm-panel-3" id="gtm-tab-3" data-tab-target="gtm-panel-3" onclick="switchTab(this)">
+                        <span class="tab-btn-num">03</span>
+                        <span class="tab-btn-icon">🏃</span>
+                        <span class="tab-btn-label">The 90-Day Sprint</span>
+                    </button>
+                </div>
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" id="gtm-panel-1" aria-labelledby="gtm-tab-1">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">📡</div>
+                            <div class="tab-panel-content">
+                                <h4>Channels That Work in Uganda</h4>
+                                <p class="tab-panel-summary">Rank channels by cost and reach: WhatsApp, Facebook, agent networks, market days, radio, community groups, referral programs. Not every channel works for every product.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Low Cost, High Trust</span>
+                                    <p class="tab-panel-text">WhatsApp groups, church/community networks, referral programs, word of mouth. These cost almost nothing but require you to be embedded in the community.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Medium Cost, Wide Reach</span>
+                                    <p class="tab-panel-text">Facebook ads, market day activations, agent networks, radio spots. These scale but require cash. Test with small budgets first.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Rule</span>
+                                    <p class="tab-panel-text"><em>Start with the channel closest to your customer. If your persona is a market vendor in Owino, don't start with Instagram ads. Go to Owino.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="gtm-panel-2" aria-labelledby="gtm-tab-2">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">💵</div>
+                            <div class="tab-panel-content">
+                                <h4>Pricing &amp; Revenue Model</h4>
+                                <p class="tab-panel-summary">Freemium, subscription, pay-per-use, one-time purchase. Mobile money pricing considerations. Round to clean numbers. Test willingness to pay.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Common Models</span>
+                                    <p class="tab-panel-text">Freemium (free tier + paid upgrade), subscription (weekly/monthly via mobile money), pay-per-use (per transaction or per service), one-time purchase (hardware, training).</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Uganda-Specific Considerations</span>
+                                    <p class="tab-panel-text">Mobile money transaction fees eat into small payments. Round prices to clean numbers (5,000 UGX, not 4,750). Weekly payments often work better than monthly for low-income customers. Test the price before you build the product.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Test</span>
+                                    <p class="tab-panel-text"><em>"Would you pay 10,000 UGX for this?" is a bad question. "Here is my mobile money number — send 10,000 UGX and I'll deliver it Friday" is the real test.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="gtm-panel-3" aria-labelledby="gtm-tab-3">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">🏃</div>
+                            <div class="tab-panel-content">
+                                <h4>The 90-Day Sprint</h4>
+                                <p class="tab-panel-summary">Three months. Three milestones. From first customer to system.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Month 1: Validate</span>
+                                    <p class="tab-panel-text">Pick one channel. Reach 50 people. Get 10 paying customers. Learn what works and what doesn't. Your only goal: prove someone will pay you.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Month 2: Optimise</span>
+                                    <p class="tab-panel-text">Calculate your real CAC and LTV. Double down on what works, cut what doesn't. Get to 50 paying customers. Start tracking unit economics weekly.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Month 3: Systematise</span>
+                                    <p class="tab-panel-text">Build repeatable processes. Can someone else run this channel without you? Document your sales process. Prepare to scale or add a second channel.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--white); text-transform: uppercase; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.1em; margin-top: 64px;">The GTM Funnel</h3>
+
+            <div class="learning-loop fade-up">
+                <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="GTM Funnel: Awareness, Interest, Conversion, Retention">
+                  <defs>
+                    <pattern id="bauhaus-hatch" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="20" stroke="#B85A2E" stroke-width="0.5" opacity="0.08"/>
+                    </pattern>
+                  </defs>
+
+                  <!-- Background crosshatch -->
+                  <rect x="0" y="0" width="680" height="440" fill="url(#bauhaus-hatch)"/>
+
+                  <!-- Decorative: Bauhaus corner accents -->
+                  <line x1="30" y1="20" x2="80" y2="20" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="20" x2="30" y2="70" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="600" y1="20" x2="650" y2="20" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="650" y1="20" x2="650" y2="70" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="420" x2="80" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="370" x2="30" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="600" y1="420" x2="650" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="650" y1="370" x2="650" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+
+                  <!-- Decorative: small gold diamonds -->
+                  <rect x="337" y="30" width="6" height="6" fill="#B85A2E" transform="rotate(45,340,33)" opacity="0.4"/>
+                  <rect x="337" y="411" width="6" height="6" fill="#B85A2E" transform="rotate(45,340,414)" opacity="0.4"/>
+
+                  <!-- Funnel Layer 1: AWARENESS (widest) -->
+                  <g class="funnel-layer">
+                    <polygon points="100,60 580,60 540,140 140,140" fill="#B85A2E" opacity="1"/>
+                    <polygon points="105,65 575,65 537,135 143,135" fill="none" stroke="#1A201E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="340" y="95" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#1A201E">AWARENESS</text>
+                    <text x="340" y="118" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#1A201E" opacity="0.7">They know you exist</text>
+                    <text x="115" y="90" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#1A201E" opacity="0.5">01</text>
+                  </g>
+
+                  <!-- Funnel Layer 2: INTEREST -->
+                  <g class="funnel-layer">
+                    <polygon points="140,150 540,150 500,230 180,230" fill="#213A2D" opacity="1"/>
+                    <polygon points="145,155 535,155 497,225 183,225" fill="none" stroke="#B85A2E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="340" y="185" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#FFFFFF">INTEREST</text>
+                    <text x="340" y="208" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">They want to learn more</text>
+                    <text x="155" y="180" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#B85A2E" opacity="0.5">02</text>
+                  </g>
+
+                  <!-- Funnel Layer 3: CONVERSION -->
+                  <g class="funnel-layer">
+                    <polygon points="180,240 500,240 460,320 220,320" fill="#B85A2E" opacity="1"/>
+                    <polygon points="185,245 495,245 457,315 223,315" fill="none" stroke="#1A201E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="340" y="275" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#1A201E">CONVERSION</text>
+                    <text x="340" y="298" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#1A201E" opacity="0.7">They pay you</text>
+                    <text x="195" y="270" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#1A201E" opacity="0.5">03</text>
+                  </g>
+
+                  <!-- Funnel Layer 4: RETENTION (narrowest) -->
+                  <g class="funnel-layer">
+                    <polygon points="220,330 460,330 420,410 260,410" fill="#213A2D" opacity="1"/>
+                    <polygon points="225,335 455,335 417,405 263,405" fill="none" stroke="#B85A2E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="340" y="365" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#FFFFFF">RETENTION</text>
+                    <text x="340" y="388" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">They come back</text>
+                    <text x="235" y="360" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#B85A2E" opacity="0.5">04</text>
+                  </g>
+
+                  <!-- Centre decorative element between funnel label -->
+                  <line x1="60" y1="240" x2="160" y2="240" stroke="#B85A2E" stroke-width="0.5" opacity="0.2"/>
+                  <line x1="520" y1="240" x2="620" y2="240" stroke="#B85A2E" stroke-width="0.5" opacity="0.2"/>
+                </svg>
+            </div>
+
+            <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 16px; max-width: 700px; margin: 0 auto; line-height: 1.7;">Every customer passes through these four stages. Your GTM plan must address each one. Most founders only think about awareness — but conversion and retention are where the money is.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: Unit Economics -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Framework</span>
+            <h2 class="section-title">The Numbers That Matter</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Unit economics separate real businesses from expensive hobbies. Know these numbers before you scale.</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card comparison-false fade-up">
+                    <h4 style="color: var(--green-dark);">Dangerous Assumptions</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div>"We'll figure out monetisation later"</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div>"If we get enough users, revenue will follow"</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div>"Our customer acquisition cost is zero because we use social media"</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div>"We'll undercut competitors on price to win market share"</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div>"Everyone we talked to said they'd pay"</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card comparison-true fade-up">
+                    <h4 style="color: var(--green-dark);">How to Think About Unit Economics</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div>Know your CAC (Customer Acquisition Cost) before you scale</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div>Know your LTV (Lifetime Value) — how much does one customer generate?</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div>LTV must be at least 3x CAC for a sustainable business</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div>Price based on value delivered, not cost of production</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div>"Would you pay?" is not the same as "Here is my payment link"</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Your 90-Day GTM Plan -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Exercise</span>
+            <h2 class="section-title light">Your 90-Day GTM Plan</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">Fill in your go-to-market plan below. Be specific. Vague plans produce vague results. This is your deliverable for Week 3.</p>
+
+            <div class="problem-statement-box">
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Primary Channel:</label>
+                    <input type="text" class="editable-field" placeholder="e.g. WhatsApp groups in Kampala suburbs" maxlength="150" style="width: 100%;">
+                </div>
+
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Secondary Channel:</label>
+                    <input type="text" class="editable-field" placeholder="e.g. Facebook community page + market day activations" maxlength="150" style="width: 100%;">
+                </div>
+
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Price Point:</label>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <input type="text" class="editable-field" placeholder="e.g. 15,000" maxlength="40" style="min-width: 160px;">
+                        <span class="problem-template">UGX per</span>
+                        <input type="text" class="editable-field" placeholder="[unit]" maxlength="40" style="min-width: 120px;">
+                    </div>
+                </div>
+
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Customer Acquisition Cost (est.):</label>
+                    <input type="text" class="editable-field" placeholder="e.g. 5,000 UGX per customer" maxlength="100" style="width: 100%;">
+                </div>
+
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Month 1 Target:</label>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <input type="text" class="editable-field" placeholder="e.g. 10" maxlength="20" style="min-width: 100px;">
+                        <span class="problem-template">paying customers</span>
+                    </div>
+                </div>
+
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Month 2 Target:</label>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <input type="text" class="editable-field" placeholder="e.g. 50" maxlength="20" style="min-width: 100px;">
+                        <span class="problem-template">paying customers</span>
+                    </div>
+                </div>
+
+                <div class="problem-statement-field">
+                    <label class="problem-statement-label">Month 3 Target:</label>
+                    <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                        <input type="text" class="editable-field" placeholder="e.g. 100" maxlength="20" style="min-width: 100px;">
+                        <span class="problem-template">paying customers</span>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-futurist" onclick="saveGtmPlan()">Save GTM Plan</button>
+                    <button class="btn-futurist-ghost" onclick="clearGtmPlan()">Clear</button>
+                </div>
+            </div>
+
+            <p class="form-footnote"><strong>Your browser saves this locally.</strong> Print or screenshot before you leave — this is your deliverable for this week.</p>
+        </div>
+    </section>
+
+    <!-- Section 5: Homework & Next Steps -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Action</span>
+            <h2 class="section-title">Your Homework This Week</h2>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark);">Test Your Channel &amp; Get Your First Customer</h3>
+            <p style="margin-bottom: 32px; font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.8; color: var(--gray-700);">This week is about action, not planning. You have your persona from Week 2 and your GTM plan from today. Now go test it in the real world.</p>
+
+            <div class="task-table">
+                <div class="task-row">
+                    <span class="task-num">01</span>
+                    <div class="task-body">
+                        <h4>Pick Your Primary Channel</h4>
+                        <p>Based on where your persona spends time. Don't guess — you have interview data.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">02</span>
+                    <div class="task-body">
+                        <h4>Create a Simple Offer</h4>
+                        <p>One sentence: what you'll do, for whom, at what price. No website needed.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">03</span>
+                    <div class="task-body">
+                        <h4>Reach 20 People</h4>
+                        <p>Through your chosen channel. Track responses.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">04</span>
+                    <div class="task-body">
+                        <h4>Get 3 Commitments</h4>
+                        <p>Not "I'd buy that" — actual commitments. Deposits, sign-ups, pre-orders.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">05</span>
+                    <div class="task-body">
+                        <h4>Calculate Your CAC</h4>
+                        <p>Time + money spent ÷ customers acquired. Is it sustainable?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">06</span>
+                    <div class="task-body">
+                        <h4>Map Your Retention Play</h4>
+                        <p>How will you keep customers coming back? What's the natural loop?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">07</span>
+                    <div class="task-body">
+                        <h4>Draft Your 90-Day Plan</h4>
+                        <p>Use the worksheet. Be specific about weekly milestones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark); margin-top: 48px;">Secondary Tasks</h3>
+
+            <div class="task-table secondary-table">
+                <div class="task-row">
+                    <span class="task-num">A</span>
+                    <div class="task-body">
+                        <h4>Read: Traction</h4>
+                        <p>Gabriel Weinberg &amp; Justin Mares, chapters on Bullseye Framework.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">B</span>
+                    <div class="task-body">
+                        <h4>Study One Competitor's Channel</h4>
+                        <p>How do they acquire customers? What can you learn?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">C</span>
+                    <div class="task-body">
+                        <h4>Prepare for Week 4</h4>
+                        <p>Bring your GTM plan and early traction data. We'll build your brand and pricing strategy.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-card fade-up">
+                <h3>Week 4: Branding, Pricing &amp; Business Model</h3>
+                <p>You'll take your GTM learnings and early traction data and build the brand identity, pricing strategy, and business model that will carry your startup from scrappy experiment to sustainable business. Bring your numbers — we'll pressure-test them together.</p>
+                <p style="margin-top: 16px;"><em>Deliverable: Brand &amp; Pricing Strategy</em></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tier-specific content -->
+    <div class="tier-divider tier-section" data-min-tier="group"></div>
+    <section class="tier-block tier-section" data-min-tier="group">
+        <div class="container">
+            <span class="eyebrow">Group Session</span>
+            <h2>GTM Strategy Workshop</h2>
+            <p>This week's group session is a working workshop. You'll map your go-to-market channels, test your pricing assumptions against the group, and stress-test your unit economics together.</p>
+            <div class="tier-card">
+                <h4>What to bring</h4>
+                <p>Your draft GTM Plan and initial P&amp;L model. Be ready to explain your first 100 customers acquisition strategy.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="oneOnOne"></div>
+    <section class="tier-block tier-section" data-min-tier="oneOnOne">
+        <div class="container">
+            <span class="eyebrow">1-on-1 Coaching</span>
+            <h2>Session Prep: Week 3</h2>
+            <p>The coaching session this week is the most numbers-heavy. Come ready to walk through your unit economics and defend your channel strategy.</p>
+            <div class="tier-card">
+                <h4>Before your session</h4>
+                <p>Calculate your CAC (Customer Acquisition Cost) and LTV (Lifetime Value) for at least two channels. Know your break-even point in customers and timeline.</p>
+            </div>
+            <div class="tier-card">
+                <h4>Teddy will review</h4>
+                <p>Your GTM Plan and P&amp;L Model — with specific feedback on channel viability, pricing strategy, and whether your unit economics support a real business or just a hobby.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="vip"></div>
+    <section class="tier-block tier-section" data-min-tier="vip">
+        <div class="container">
+            <span class="eyebrow">VIP Bonus</span>
+            <h2>Distribution Playbook: East Africa</h2>
+            <p>A detailed breakdown of distribution channels that work in Uganda and the region — agent networks, WhatsApp commerce, last-mile logistics partners, and mobile money integration strategies. Includes case studies from founders who cracked distribution before scale.</p>
+            <div class="tier-card">
+                <h4>Priority async access</h4>
+                <p>Share your P&amp;L model with Teddy via WhatsApp for early feedback before the session. Get direction on which numbers to pressure-test further.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="brand">The Founder's Sprint</span>
+        <p>&copy; 2026 TMS Ruge. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ==================== TIER GATING ====================
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const tier = params.get('tier') || 'group';
+            const tierLevels = { selfPaced: 0, group: 1, oneOnOne: 2, vip: 3 };
+            const userLevel = tierLevels[tier] ?? 1;
+            document.querySelectorAll('.tier-section').forEach(el => {
+                const minLevel = tierLevels[el.dataset.minTier] ?? 0;
+                if (userLevel >= minLevel) {
+                    el.classList.add('tier-visible');
+                }
+            });
+        })();
+
+        // ==================== PROGRESS BAR ====================
+        function updateProgressBar() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+
+        window.addEventListener('scroll', updateProgressBar);
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ==================== PILLAR CARD TOGGLE ====================
+        // ==================== TABBED ACCORDION ====================
+        function switchTab(btn) {
+            const target = btn.dataset.tabTarget;
+            const tabSet = btn.closest('.tab-set');
+            if (!tabSet || !target) return;
+
+            // Update tab buttons
+            tabSet.querySelectorAll('.tab-btn').forEach(b => {
+                const isActive = b === btn;
+                b.classList.toggle('is-active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+
+            // Update panels
+            tabSet.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.toggle('is-active', panel.id === target);
+            });
+        }
+
+        // Arrow-key navigation for tab lists
+        document.querySelectorAll('.tab-nav').forEach(nav => {
+            nav.addEventListener('keydown', (e) => {
+                const btns = Array.from(nav.querySelectorAll('.tab-btn'));
+                const current = btns.indexOf(document.activeElement);
+                if (current === -1) return;
+                let next = current;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % btns.length;
+                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + btns.length) % btns.length;
+                else if (e.key === 'Home') next = 0;
+                else if (e.key === 'End') next = btns.length - 1;
+                else return;
+                e.preventDefault();
+                btns[next].focus();
+                switchTab(btns[next]);
+            });
+        });
+
+        // ==================== GTM PLAN FORM ====================
+        function saveGtmPlan() {
+            const fields = document.querySelectorAll('.editable-field');
+            const data = {
+                primaryChannel: fields[0].value,
+                secondaryChannel: fields[1].value,
+                pricePoint: fields[2].value,
+                priceUnit: fields[3].value,
+                cac: fields[4].value,
+                month1Target: fields[5].value,
+                month2Target: fields[6].value,
+                month3Target: fields[7].value
+            };
+
+            // Save to localStorage
+            localStorage.setItem('gtmPlan', JSON.stringify(data));
+
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Saved!';
+            btn.style.background = 'var(--gold-light)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        function clearGtmPlan() {
+            document.querySelectorAll('.editable-field').forEach(field => {
+                field.value = '';
+            });
+            localStorage.removeItem('gtmPlan');
+        }
+
+        // Load saved GTM plan on page load
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('gtmPlan');
+            if (saved) {
+                const data = JSON.parse(saved);
+                const fields = document.querySelectorAll('.editable-field');
+                fields[0].value = data.primaryChannel || '';
+                fields[1].value = data.secondaryChannel || '';
+                fields[2].value = data.pricePoint || '';
+                fields[3].value = data.priceUnit || '';
+                fields[4].value = data.cac || '';
+                fields[5].value = data.month1Target || '';
+                fields[6].value = data.month2Target || '';
+                fields[7].value = data.month3Target || '';
+            }
+        });
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        document.addEventListener('keydown', (e) => {
+            // Smooth scroll on anchor links
+            if (e.key === 'Enter' && e.target.classList.contains('editable-field')) {
+                e.target.blur();
+            }
+        });
+
+        // ==================== PRINT HANDLER ====================
+        // When printing, reveal all tab panels so nothing is hidden
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.tab-panel').forEach(el => {
+                el.classList.add('is-active');
+                el.style.display = 'block';
+            });
+        });
+
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.tab-panel').forEach(el => {
+                el.style.display = '';
+                if (!el.matches('.tab-set .tab-panel:first-of-type') &&
+                    !el.closest('.tab-set').querySelector('.tab-btn.is-active')?.dataset.tabTarget === el.id) {
+                    el.classList.remove('is-active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

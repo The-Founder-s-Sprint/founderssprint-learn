@@ -1,0 +1,1127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Founder's Toolkit — The Founder's Sprint</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cormorant:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CSS CUSTOM PROPERTIES — "CALM" PALETTE ==================== */
+        :root {
+            --ink: #1A201E;
+            --green-deep: #152B1F;
+            --green-dark: #213A2D;
+            --green: #2D6A4F;
+            --green-mid: #40916C;
+            --gold: #B85A2E;
+            --gold-light: #D4845A;
+            --gold-pale: #F0E4CC;
+            --cream: #EADFC6;
+            --ivory: #F5EBD6;
+            --white: #FFFFFF;
+            --bush-deep: #152B1F;
+            --bush: #213A2D;
+            --bush-mid: #2D6A4F;
+            --sienna: #B85A2E;
+            --sienna-deep: #8F4420;
+            --sienna-light: #D4845A;
+            --oak: #B89674;
+            --oak-light: #D4BC9E;
+            --cashmere: #D5C3A1;
+            --cashmere-pale: #EADFC6;
+            --gray-300: #C8C5BB;
+            --gray-500: #8C8880;
+            --gray-700: #3D3B35;
+        }
+
+        /* ==================== RESET & BASE ==================== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gray-700);
+            background: var(--ivory);
+            line-height: 1.7;
+            font-size: 18px;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        .eyebrow {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 12px;
+        }
+        .section-title {
+            font-size: 36px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+        .section-title.light { color: var(--white); }
+
+        .container { max-width: 1120px; margin: 0 auto; padding: 0 40px; }
+        @media (max-width: 768px) { .container { padding: 0 24px; } }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-bar {
+            position: fixed; top: 0; left: 0; height: 3px;
+            background: var(--gold); z-index: 1000; width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section { padding: 80px 0; position: relative; }
+        section.hero {
+            background: var(--ink); color: var(--white);
+            padding: 172px 0 100px;
+            display: flex; align-items: center; min-height: 60vh;
+        }
+        section.light { background: var(--ivory); }
+        section.dark { background: var(--ink); color: var(--white); }
+        section.dark h2, section.dark h3 { color: var(--white); }
+
+        .crosshatch { position: relative; overflow: hidden; }
+        .crosshatch::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(184,90,46,0.03) 10px, rgba(184,90,46,0.03) 20px);
+            pointer-events: none;
+        }
+
+        /* ==================== MODULE NAVIGATION ==================== */
+        .module-nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+            background: rgba(26,32,30,0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(201,160,54,0.15);
+        }
+        .module-nav-inner {
+            max-width: 1120px; margin: 0 auto;
+            padding: 0 40px; display: flex;
+            align-items: center; justify-content: space-between;
+            height: 52px;
+        }
+        .module-nav-brand {
+            font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--white); text-decoration: none;
+        }
+        .module-nav-brand:hover { opacity: 0.8; }
+        .module-nav-links {
+            list-style: none; display: flex;
+            align-items: center; gap: 0;
+        }
+        .module-nav-link {
+            font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: rgba(255,255,255,0.5); text-decoration: none;
+            padding: 8px 12px; transition: color 0.3s ease;
+        }
+        .module-nav-link:hover { color: var(--white); }
+        .module-nav-link.is-current {
+            color: #C9A036; border-bottom: 2px solid #C9A036;
+        }
+        .module-nav-link.is-locked {
+            color: rgba(255,255,255,0.2); cursor: default;
+        }
+        .module-nav-sep {
+            width: 1px; height: 14px;
+            background: rgba(255,255,255,0.1);
+            margin: 0 2px;
+        }
+        @media (max-width: 768px) {
+            .module-nav-link { padding: 8px 8px; font-size: 8px; letter-spacing: 0.1em; }
+            .module-nav-brand { font-size: 9px; letter-spacing: 0.15em; }
+        }
+
+        /* ==================== HERO ==================== */
+        .hero-content { animation: fadeInUp 0.8s ease-out; }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .display-title {
+            font-size: 52px; font-weight: 300; line-height: 1.15;
+            color: var(--white); margin-bottom: 24px;
+        }
+        .display-title em {
+            font-family: 'Cormorant', serif; font-style: italic; font-weight: 300;
+            color: var(--gold-light);
+        }
+        .hero-subtitle {
+            font-size: 20px; color: rgba(255,255,255,0.7);
+            max-width: 600px; line-height: 1.6;
+        }
+
+        /* ==================== SECTION NAV PILLS ==================== */
+        .section-nav {
+            display: flex; flex-wrap: wrap; gap: 12px;
+            justify-content: center; margin-bottom: 48px;
+        }
+        .section-nav a {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px; font-weight: 600;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--gray-500); text-decoration: none;
+            padding: 10px 20px;
+            border: 1px solid rgba(201,160,54,0.15);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 16px) 100%, 0 100%);
+            transition: all 0.3s ease;
+            background: rgba(201,160,54,0.03);
+        }
+        .section-nav a:hover {
+            color: #C9A036;
+            border-color: rgba(201,160,54,0.4);
+            background: rgba(201,160,54,0.06);
+        }
+
+        /* ==================== BUTTONS ==================== */
+        .btn-futurist {
+            font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #C9A036 0%, #B85A2E 100%);
+            color: #1A201E; border: none; cursor: pointer;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 20px) 100%, 0 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+        .btn-futurist:hover {
+            transform: translateY(-3px) translateX(2px);
+            box-shadow: 0 8px 24px rgba(201,160,54,0.2);
+            filter: brightness(1.1);
+        }
+        .btn-futurist:active { transform: translateY(0) translateX(0); }
+
+        .btn-futurist-ghost {
+            font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            padding: 16px 28px; background: transparent;
+            color: rgba(201,160,54,0.6);
+            border: 1px solid rgba(201,160,54,0.2);
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+        .btn-futurist-ghost:hover { color: #C9A036; border-color: rgba(201,160,54,0.5); }
+
+        .form-actions {
+            display: flex; gap: 16px; justify-content: center;
+            border-top: none; margin-top: 32px;
+        }
+
+        .form-footnote {
+            margin-top: 28px; font-size: 14px;
+            color: var(--gray-500); max-width: 700px;
+            text-align: center; margin-left: auto; margin-right: auto;
+        }
+
+        /* ==================== RESOURCE DIRECTORY ==================== */
+        .directory-card {
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                rgba(26,32,30,0.6);
+            border: 1px solid rgba(201,160,54,0.2);
+            padding: 32px 28px 28px; overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.35s ease;
+        }
+        .directory-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.03) 38px, rgba(201,160,54,0.03) 39px);
+            pointer-events: none;
+        }
+        .directory-card::after {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 80px; height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+        .directory-card:hover { transform: translateY(-3px); border-color: rgba(201,160,54,0.4); }
+        .directory-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+        .directory-icon { font-size: 24px; line-height: 1; }
+        .directory-header h4 {
+            font-family: 'Josefin Sans', sans-serif; font-size: 15px; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase; color: #C9A036; margin: 0;
+        }
+        .directory-desc { font-size: 14px; color: rgba(255,255,255,0.55); line-height: 1.6; margin-bottom: 20px; }
+        .directory-slots { display: flex; flex-direction: column; gap: 8px; }
+        .directory-slot {
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+            background: rgba(201,160,54,0.04);
+            border: 1px dashed rgba(201,160,54,0.15);
+        }
+        .slot-badge {
+            font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 700;
+            color: rgba(201,160,54,0.4); width: 22px; height: 22px;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid rgba(201,160,54,0.2); flex-shrink: 0;
+        }
+        .slot-label {
+            font-family: 'Cormorant Garamond', serif; font-size: 14px;
+            color: rgba(255,255,255,0.3); font-style: italic;
+        }
+        .directory-slot.filled {
+            border-style: solid; border-color: rgba(201,160,54,0.25);
+            background: rgba(201,160,54,0.06);
+        }
+        .slot-provider-name {
+            font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 600;
+            color: #C9A036; letter-spacing: 0.03em;
+        }
+        .slot-provider-link {
+            font-family: 'Cormorant Garamond', serif; font-size: 12px;
+            color: rgba(255,255,255,0.45); text-decoration: none;
+            margin-left: auto; transition: color 0.2s;
+        }
+        .slot-provider-link:hover { color: #C9A036; }
+        .featured-badge {
+            display: inline-block;
+            font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            background: linear-gradient(135deg, #C9A036, #B85A2E);
+            color: #1A201E; padding: 2px 8px; margin-left: 8px; vertical-align: middle;
+        }
+
+        /* ==================== LAUNCH CHECKLIST ==================== */
+        .checklist-tier {
+            position: relative; overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 48px) 100%, 0 100%);
+        }
+        .checklist-tier::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.03) 38px, rgba(201,160,54,0.03) 39px);
+            pointer-events: none; z-index: 0;
+        }
+        .tier-header { position: relative; z-index: 1; padding: 32px 36px 20px; }
+        .tier-header h3 {
+            font-family: 'Josefin Sans', sans-serif; font-size: 18px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px;
+        }
+        .tier-header p { font-size: 15px; margin: 0; opacity: 0.7; }
+        .tier-1 { background: linear-gradient(135deg, rgba(70,150,100,0.12) 0%, transparent 60%); border-bottom: 2px solid rgba(70,150,100,0.2); }
+        .tier-1 h3 { color: #46964A; }
+        .tier-1 p { color: var(--green-dark); }
+        .tier-2 { background: linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 60%); border-bottom: 2px solid rgba(201,160,54,0.2); }
+        .tier-2 h3 { color: #C9A036; }
+        .tier-2 p { color: var(--gray-700); }
+        .checklist-body {
+            position: relative; z-index: 1; padding: 24px 36px;
+            display: flex; flex-direction: column; gap: 4px;
+        }
+        .checklist-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 12px 0; border-bottom: 1px solid rgba(0,0,0,0.06);
+            cursor: pointer; transition: background 0.2s ease;
+        }
+        .checklist-item:hover { background: rgba(201,160,54,0.04); }
+        .checklist-item:last-child { border-bottom: none; }
+        .checklist-item input[type="checkbox"] { display: none; }
+        .check-mark {
+            width: 22px; height: 22px;
+            border: 2px solid rgba(201,160,54,0.3); flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.25s ease; position: relative;
+        }
+        .check-mark::after {
+            content: ''; width: 12px; height: 6px;
+            border-left: 2.5px solid #fff; border-bottom: 2.5px solid #fff;
+            transform: rotate(-45deg) scale(0);
+            transition: transform 0.2s cubic-bezier(0.25,0.46,0.45,0.94);
+            position: absolute; top: 4px;
+        }
+        .checklist-item input:checked + .check-mark {
+            background: linear-gradient(135deg, #C9A036, #B85A2E); border-color: #C9A036;
+        }
+        .checklist-item input:checked + .check-mark::after { transform: rotate(-45deg) scale(1); }
+        .checklist-item input:checked ~ .check-text {
+            color: rgba(0,0,0,0.4); text-decoration: line-through;
+            text-decoration-color: rgba(201,160,54,0.4);
+        }
+        .check-text {
+            font-family: 'Cormorant Garamond', serif; font-size: 16px;
+            color: var(--gray-700); line-height: 1.5; transition: color 0.25s ease;
+        }
+        .tier-progress { position: relative; z-index: 1; height: 4px; background: rgba(0,0,0,0.06); margin: 0 36px; }
+        .tier-progress-bar { height: 100%; background: linear-gradient(90deg, #C9A036, #B85A2E); transition: width 0.5s cubic-bezier(0.25,0.46,0.45,0.94); }
+        .tier-count {
+            position: relative; z-index: 1; text-align: center;
+            font-family: 'Josefin Sans', sans-serif; font-size: 11px;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            color: var(--gray-500); padding: 16px 36px 24px; margin: 0;
+        }
+        #tier-launch .checklist-tier, #tier-launch {
+            background: linear-gradient(135deg, rgba(70,150,100,0.04) 0%, transparent 40%), #fff;
+            border: 1px solid rgba(70,150,100,0.15);
+        }
+        #tier-investor {
+            background: linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%), #fff;
+            border: 1px solid rgba(201,160,54,0.15);
+        }
+
+        /* ==================== TOOLKIT CARDS ==================== */
+        .toolkit-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px; margin-top: 40px;
+        }
+        .toolkit-card {
+            position: relative;
+            background: linear-gradient(135deg, rgba(201,160,54,0.04) 0%, transparent 50%), #fff;
+            border: 1px solid rgba(201,160,54,0.15);
+            padding: 32px 28px 28px; overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 14px), calc(100% - 32px) 100%, 0 100%);
+            transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94), border-color 0.35s ease;
+        }
+        .toolkit-card::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.02) 38px, rgba(201,160,54,0.02) 39px);
+            pointer-events: none;
+        }
+        .toolkit-card::after {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 60px; height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+        .toolkit-card:hover { transform: translateY(-3px); border-color: rgba(201,160,54,0.3); }
+        .toolkit-card-icon { font-size: 28px; margin-bottom: 16px; display: block; }
+        .toolkit-card h4 {
+            font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700;
+            letter-spacing: 0.1em; text-transform: uppercase;
+            color: var(--green-dark); margin-bottom: 10px;
+        }
+        .toolkit-card p {
+            font-size: 15px; color: var(--gray-500); line-height: 1.6; margin-bottom: 16px;
+        }
+        .toolkit-link {
+            font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: #C9A036; text-decoration: none;
+            transition: color 0.2s; display: inline-block;
+        }
+        .toolkit-link:hover { color: var(--gold-light); }
+        .toolkit-link::after { content: ' \2197'; }
+
+        /* ==================== GOV LINKS ==================== */
+        .gov-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 16px; margin-top: 36px;
+        }
+        .gov-link-card {
+            display: flex; align-items: center; gap: 16px;
+            padding: 20px 24px;
+            background: rgba(26,32,30,0.5);
+            border: 1px solid rgba(201,160,54,0.12);
+            text-decoration: none; color: var(--white);
+            transition: border-color 0.3s, transform 0.3s;
+        }
+        .gov-link-card:hover { border-color: rgba(201,160,54,0.4); transform: translateY(-2px); }
+        .gov-link-card .gov-icon { font-size: 24px; flex-shrink: 0; }
+        .gov-link-card .gov-info h5 {
+            font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            color: #C9A036; margin-bottom: 4px;
+        }
+        .gov-link-card .gov-info p {
+            font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.4; margin: 0;
+        }
+
+        /* ==================== SCROLL ANIMATIONS ==================== */
+        .fade-up {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .fade-up.visible { opacity: 1; transform: translateY(0); }
+
+        /* ==================== PROVIDER POPUP ==================== */
+        .provider-overlay {
+            position: fixed; inset: 0; z-index: 2000;
+            background: rgba(26,32,30,0.75);
+            backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.3s ease;
+            padding: 24px;
+        }
+        .provider-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+        .provider-popup {
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 50%),
+                var(--ivory);
+            max-width: 440px; width: 100%;
+            padding: 48px 40px 40px;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 48px) 100%, 0 100%);
+            overflow: hidden;
+            transform: translateY(20px) scale(0.97);
+            transition: transform 0.35s cubic-bezier(0.25,0.46,0.45,0.94);
+        }
+        .provider-overlay.is-open .provider-popup {
+            transform: translateY(0) scale(1);
+        }
+        .provider-popup::before {
+            content: ''; position: absolute; inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.03) 38px, rgba(201,160,54,0.03) 39px);
+            pointer-events: none;
+        }
+        .provider-popup::after {
+            content: ''; position: absolute; top: 0; left: 0;
+            width: 100px; height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .popup-close {
+            position: absolute; top: 16px; right: 20px;
+            background: none; border: none; cursor: pointer;
+            font-size: 20px; color: var(--gray-500);
+            transition: color 0.2s;
+            z-index: 1;
+        }
+        .popup-close:hover { color: var(--gray-700); }
+
+        .popup-company {
+            font-family: 'Josefin Sans', sans-serif; font-size: 13px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: #C9A036; margin-bottom: 6px;
+        }
+        .popup-featured {
+            display: inline-block;
+            font-family: 'Josefin Sans', sans-serif; font-size: 8px; font-weight: 700;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            background: linear-gradient(135deg, #C9A036, #B85A2E);
+            color: #1A201E; padding: 2px 8px; margin-left: 8px; vertical-align: middle;
+        }
+        .popup-description {
+            font-size: 16px; color: var(--gray-700); line-height: 1.7;
+            margin: 16px 0 24px; position: relative;
+        }
+        .popup-contact-list {
+            list-style: none; padding: 0; margin: 0;
+            border-top: 1px solid rgba(201,160,54,0.15);
+        }
+        .popup-contact-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 14px 0;
+            border-bottom: 1px solid rgba(201,160,54,0.1);
+            font-size: 15px; color: var(--gray-700);
+        }
+        .popup-contact-item:last-child { border-bottom: none; }
+        .popup-contact-icon {
+            font-size: 16px; width: 20px; text-align: center; flex-shrink: 0;
+        }
+        .popup-contact-label {
+            font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600;
+            letter-spacing: 0.12em; text-transform: uppercase;
+            color: var(--gray-500); min-width: 60px;
+        }
+        .popup-contact-value {
+            color: var(--gray-700); word-break: break-word;
+        }
+        .popup-contact-value a {
+            color: #C9A036; text-decoration: none;
+            transition: color 0.2s;
+        }
+        .popup-contact-value a:hover { color: var(--gold-light); }
+        .popup-wa-btn {
+            display: inline-block;
+            font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 700;
+            letter-spacing: 0.08em; text-transform: uppercase;
+            background: #25D366; color: #fff !important;
+            padding: 3px 10px; margin-left: 10px;
+            border-radius: 0; text-decoration: none !important;
+            transition: background 0.2s, transform 0.2s;
+            vertical-align: middle;
+        }
+        .popup-wa-btn:hover { background: #1DA851 !important; color: #fff !important; transform: translateY(-1px); }
+
+        .popup-website-btn {
+            display: inline-block; margin-top: 24px;
+            font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, #C9A036 0%, #B85A2E 100%);
+            color: #1A201E; text-decoration: none;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 16px) 100%, 0 100%);
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+        .popup-website-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* Make filled slots clickable */
+        .directory-slot.filled.clickable {
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+        .directory-slot.filled.clickable:hover {
+            background: rgba(201,160,54,0.12);
+            border-color: rgba(201,160,54,0.4);
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--ink); color: rgba(255,255,255,0.55);
+            padding: 48px 0; text-align: center; font-size: 14px;
+        }
+        footer .brand {
+            font-family: 'Josefin Sans', sans-serif; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.2em; text-transform: uppercase;
+            color: var(--white); display: block; margin-bottom: 8px;
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            section { padding: 60px 0; }
+            section.hero { padding: 132px 0 80px; min-height: auto; }
+            .display-title { font-size: 36px; }
+            .section-title { font-size: 28px; }
+            .btn-futurist { padding: 16px 28px; }
+        }
+        @media (max-width: 600px) {
+            .directory-card { padding: 24px 20px 20px; }
+            .tier-header, .checklist-body, .tier-progress { padding-left: 20px; padding-right: 20px; }
+            .tier-progress { margin: 0 20px; }
+            .check-text { font-size: 15px; }
+            .section-nav { gap: 8px; }
+            .section-nav a { padding: 8px 14px; font-size: 9px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="progress-bar"></div>
+
+    <!-- Module Navigation -->
+    <nav class="module-nav">
+      <div class="module-nav-inner">
+        <a href="../index.html" class="module-nav-brand">The Founder's Sprint</a>
+        <ul class="module-nav-links">
+          <li><a href="/learn/week-1" target="_parent" class="module-nav-link">Week 1</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-2" target="_parent" class="module-nav-link">Week 2</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-3" target="_parent" class="module-nav-link">Week 3</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-4" target="_parent" class="module-nav-link">Week 4</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-5" target="_parent" class="module-nav-link">Week 5</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/resources" target="_parent" class="module-nav-link is-current">Resources</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero crosshatch">
+        <div class="container hero-content">
+            <span class="eyebrow">Paid Founders Only</span>
+            <h1 class="display-title">Founder's <em>Toolkit</em></h1>
+            <p class="hero-subtitle">Everything you need to go from idea to operating business. Vetted service providers, launch checklists, templates, and government resources — curated for Ugandan founders.</p>
+        </div>
+    </section>
+
+    <!-- Quick Nav -->
+    <section class="light" style="padding: 40px 0;">
+        <div class="container">
+            <nav class="section-nav">
+                <a href="#directory">Service Directory</a>
+                <a href="#checklist">Launch Checklist</a>
+                <a href="#templates">Templates & Tools</a>
+                <a href="#government">Government & Regulatory</a>
+            </nav>
+        </div>
+    </section>
+
+    <!-- Section 1: Resource Directory -->
+    <section class="dark crosshatch" id="directory">
+        <div class="container">
+            <span class="eyebrow">Exclusive</span>
+            <h2 class="section-title light">Founder's Resource Directory</h2>
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.7);">You've built the plan. Now you need the people to help you execute it. Every founder in The Sprint gets access to our vetted directory of Ugandan service providers — so you spend less time searching and more time building.</p>
+
+            <div id="directory-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; margin-bottom: 48px;">
+                <!-- Populated dynamically by JS -->
+            </div>
+
+            <p style="text-align: center; font-size: 14px; color: rgba(201,160,54,0.5); font-style: italic; font-family: 'Cormorant Garamond', serif;">Service providers: interested in reaching Uganda's next generation of founders? <a href="apply-directory.html" style="color: #C9A036; text-decoration: underline; text-underline-offset: 3px;">Apply to be listed.</a></p>
+        </div>
+    </section>
+
+    <!-- Section 2: Launch Readiness Checklist -->
+    <section class="light" id="checklist">
+        <div class="container">
+            <span class="eyebrow">Your Assignment</span>
+            <h2 class="section-title">Launch Readiness Checklist</h2>
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Before you pitch, make sure your business isn't just an idea on paper. This checklist separates founders who are <em>talking</em> about launching from founders who are <em>ready</em> to launch. Complete Tier 1 before Pitch Day. Tier 2 positions you for investment.</p>
+
+            <!-- Tier 1: Launch Ready -->
+            <div class="checklist-tier fade-up" id="tier-launch">
+                <div class="tier-header tier-1">
+                    <h3>Tier 1 — Launch Ready</h3>
+                    <p>The essentials to legally operate and start selling.</p>
+                </div>
+                <div class="checklist-body">
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Business name registered with URSB</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">TIN (Tax Identification Number) obtained from URA</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Business bank account opened</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Mobile money merchant account set up (if applicable)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Trading license obtained from local authority</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Basic bookkeeping system in place (spreadsheet or tool)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Product/service pricing finalised</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">First 10 target customers identified by name</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Brand identity created (logo, colours, business cards)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Online presence established (website, social media, or landing page)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">UNBS certification initiated (if selling physical products)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Basic contracts drafted (customer, supplier, co-founder)</span></label>
+                </div>
+                <div class="tier-progress">
+                    <div class="tier-progress-bar" id="tier1-bar" style="width: 0%;"></div>
+                </div>
+                <p class="tier-count" id="tier1-count">0 of 12 complete</p>
+            </div>
+
+            <!-- Tier 2: Investor Ready -->
+            <div class="checklist-tier fade-up" id="tier-investor" style="margin-top: 32px;">
+                <div class="tier-header tier-2">
+                    <h3>Tier 2 — Investor Ready</h3>
+                    <p>The additional structure that positions you for venture-scale funding.</p>
+                </div>
+                <div class="checklist-body">
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Company incorporated as a limited company (not sole proprietor)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Cap table created and documented (founder equity split)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Founder vesting schedule agreed and signed</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Board structure defined (even if just founders + advisor)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">IP assigned to company (not held personally)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Trademark application filed</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Financial model built (12-month P&amp;L projection minimum)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Data room assembled (pitch deck, financials, legal docs, team bios)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Advisory board identified (1-2 domain experts)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Key metrics defined and tracking in place (MRR, CAC, churn, etc.)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Compliance audit completed (data privacy, sector regulations)</span></label>
+                    <label class="checklist-item"><input type="checkbox" onchange="saveChecklist()"><span class="check-mark"></span><span class="check-text">Target investor list created (10+ relevant funds or angels)</span></label>
+                </div>
+                <div class="tier-progress">
+                    <div class="tier-progress-bar" id="tier2-bar" style="width: 0%;"></div>
+                </div>
+                <p class="tier-count" id="tier2-count">0 of 12 complete</p>
+            </div>
+
+            <div class="form-actions">
+                <button class="btn-futurist" onclick="saveChecklist()">Save Progress</button>
+                <button class="btn-futurist-ghost" onclick="resetChecklist()">Reset Checklist</button>
+            </div>
+            <p class="form-footnote"><strong>Your browser saves this locally.</strong> Print or screenshot your checklist progress before Pitch Day.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: Templates & Tools -->
+    <section class="light" id="templates" style="background: var(--cream);">
+        <div class="container">
+            <span class="eyebrow">Downloads</span>
+            <h2 class="section-title">Templates & Tools</h2>
+            <p style="margin-bottom: 8px; font-size: 18px; max-width: 800px;">Skip the blank page. These templates are tailored for Ugandan founders — from pitch decks to financial models — so you can move faster.</p>
+
+            <div class="toolkit-grid">
+                <div class="toolkit-card fade-up">
+                    <span class="toolkit-card-icon">&#128202;</span>
+                    <h4>Financial Model Template</h4>
+                    <p>12-month P&L projection spreadsheet pre-built for Ugandan startups. Includes revenue, COGS, opex, and cash flow tabs.</p>
+                    <a href="templates/Financial_Model_Template.xlsx" class="toolkit-link" download>Download .xlsx</a>
+                </div>
+
+                <div class="toolkit-card fade-up">
+                    <span class="toolkit-card-icon">&#127912;</span>
+                    <h4>Pitch Deck Template</h4>
+                    <p>10-slide investor deck structure with guidance notes on each slide. Designed for East African startups raising pre-seed to seed.</p>
+                    <a href="templates/Pitch_Deck_Template.pptx" class="toolkit-link" download>Download .pptx</a>
+                </div>
+
+                <div class="toolkit-card fade-up">
+                    <span class="toolkit-card-icon">&#128221;</span>
+                    <h4>Co-Founder Agreement</h4>
+                    <p>Template for equity splits, vesting schedules, roles, and IP assignment. Reviewed for Ugandan legal context.</p>
+                    <a href="templates/CoFounder_Agreement_Template.docx" class="toolkit-link" download>Download .docx</a>
+                </div>
+
+                <div class="toolkit-card fade-up">
+                    <span class="toolkit-card-icon">&#128200;</span>
+                    <h4>Cap Table Template</h4>
+                    <p>Track founder equity, ESOP pools, and investor dilution across funding rounds. Simple spreadsheet format.</p>
+                    <a href="templates/Cap_Table_Template.xlsx" class="toolkit-link" download>Download .xlsx</a>
+                </div>
+
+                <div class="toolkit-card fade-up">
+                    <span class="toolkit-card-icon">&#128203;</span>
+                    <h4>Business Registration Guide</h4>
+                    <p>Step-by-step walkthrough for URSB registration, TIN application, and trading license procurement in Uganda.</p>
+                    <a href="templates/Business_Registration_Guide.docx" class="toolkit-link" download>Download .docx</a>
+                </div>
+
+                <div class="toolkit-card fade-up">
+                    <span class="toolkit-card-icon">&#128232;</span>
+                    <h4>Investor Outreach Templates</h4>
+                    <p>Cold email templates, follow-up sequences, and intro request scripts for reaching East African and global investors.</p>
+                    <a href="templates/Investor_Outreach_Templates.docx" class="toolkit-link" download>Download .docx</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Government & Regulatory -->
+    <section class="dark crosshatch" id="government">
+        <div class="container">
+            <span class="eyebrow">Official Resources</span>
+            <h2 class="section-title light">Government & Regulatory Links</h2>
+            <p style="margin-bottom: 8px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.7);">Direct links to the Ugandan government agencies and regulatory bodies you'll interact with as a founder. Bookmark these — you'll need them.</p>
+
+            <div class="gov-grid">
+                <a href="https://ursb.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#127963;&#65039;</span>
+                    <div class="gov-info">
+                        <h5>URSB</h5>
+                        <p>Uganda Registration Services Bureau — company registration, business names, trademarks.</p>
+                    </div>
+                </a>
+
+                <a href="https://ura.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#128176;</span>
+                    <div class="gov-info">
+                        <h5>URA</h5>
+                        <p>Uganda Revenue Authority — TIN registration, tax filing, customs, and e-tax portal.</p>
+                    </div>
+                </a>
+
+                <a href="https://unbs.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#9989;</span>
+                    <div class="gov-info">
+                        <h5>UNBS</h5>
+                        <p>Uganda National Bureau of Standards — product certification, quality marks, import standards.</p>
+                    </div>
+                </a>
+
+                <a href="https://nita.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#128187;</span>
+                    <div class="gov-info">
+                        <h5>NITA-U</h5>
+                        <p>National IT Authority — IT governance, data protection registration, digital services compliance.</p>
+                    </div>
+                </a>
+
+                <a href="https://kcca.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#128203;</span>
+                    <div class="gov-info">
+                        <h5>KCCA</h5>
+                        <p>Kampala Capital City Authority — trading licenses, permits, and city business regulations.</p>
+                    </div>
+                </a>
+
+                <a href="https://bou.or.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#127974;</span>
+                    <div class="gov-info">
+                        <h5>Bank of Uganda</h5>
+                        <p>Central bank — fintech licensing, forex regulations, financial services guidelines.</p>
+                    </div>
+                </a>
+
+                <a href="https://uia.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#127793;</span>
+                    <div class="gov-info">
+                        <h5>UIA</h5>
+                        <p>Uganda Investment Authority — investment licenses, one-stop centre, incentives for startups.</p>
+                    </div>
+                </a>
+
+                <a href="https://pdpo.go.ug" target="_blank" rel="noopener" class="gov-link-card fade-up">
+                    <span class="gov-icon">&#128274;</span>
+                    <div class="gov-info">
+                        <h5>Data Protection Office</h5>
+                        <p>Personal Data Protection Office — data controller registration, privacy compliance.</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="brand">The Founder's Sprint</span>
+        <p>&copy; 2026 TMS Ruge. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ==================== PROGRESS BAR ====================
+        function updateProgressBar() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+        window.addEventListener('scroll', updateProgressBar);
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        window.__fadeObserver = observer;
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            // If already in viewport, show immediately
+            const rect = el.getBoundingClientRect();
+            if (rect.top < window.innerHeight && rect.bottom > 0) {
+                el.classList.add('visible');
+            } else {
+                observer.observe(el);
+            }
+        });
+
+        // ==================== LAUNCH CHECKLIST ====================
+        function saveChecklist() {
+            const tier1Checks = document.querySelectorAll('#tier-launch .checklist-item input');
+            const tier2Checks = document.querySelectorAll('#tier-investor .checklist-item input');
+
+            const data = {
+                tier1: Array.from(tier1Checks).map(cb => cb.checked),
+                tier2: Array.from(tier2Checks).map(cb => cb.checked)
+            };
+            localStorage.setItem('launchChecklist', JSON.stringify(data));
+            updateChecklistProgress();
+
+            const btn = event && event.target && event.target.classList.contains('btn-futurist') ? event.target : null;
+            if (btn) {
+                const orig = btn.textContent;
+                btn.textContent = '\u2713 Saved!';
+                btn.style.background = 'var(--gold-light)';
+                setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 2000);
+            }
+        }
+
+        function resetChecklist() {
+            document.querySelectorAll('.checklist-item input').forEach(cb => cb.checked = false);
+            localStorage.removeItem('launchChecklist');
+            updateChecklistProgress();
+        }
+
+        function updateChecklistProgress() {
+            const tier1Checks = document.querySelectorAll('#tier-launch .checklist-item input');
+            const tier2Checks = document.querySelectorAll('#tier-investor .checklist-item input');
+            const t1Done = Array.from(tier1Checks).filter(cb => cb.checked).length;
+            const t1Total = tier1Checks.length;
+            const t2Done = Array.from(tier2Checks).filter(cb => cb.checked).length;
+            const t2Total = tier2Checks.length;
+
+            const bar1 = document.getElementById('tier1-bar');
+            const bar2 = document.getElementById('tier2-bar');
+            const count1 = document.getElementById('tier1-count');
+            const count2 = document.getElementById('tier2-count');
+
+            if (bar1) bar1.style.width = (t1Total ? (t1Done / t1Total * 100) : 0) + '%';
+            if (bar2) bar2.style.width = (t2Total ? (t2Done / t2Total * 100) : 0) + '%';
+            if (count1) count1.textContent = t1Done + ' of ' + t1Total + ' complete';
+            if (count2) count2.textContent = t2Done + ' of ' + t2Total + ' complete';
+        }
+
+        // Load saved checklist
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('launchChecklist');
+            if (saved) {
+                const data = JSON.parse(saved);
+                const tier1Checks = document.querySelectorAll('#tier-launch .checklist-item input');
+                const tier2Checks = document.querySelectorAll('#tier-investor .checklist-item input');
+                if (data.tier1) data.tier1.forEach((val, i) => { if (tier1Checks[i]) tier1Checks[i].checked = val; });
+                if (data.tier2) data.tier2.forEach((val, i) => { if (tier2Checks[i]) tier2Checks[i].checked = val; });
+            }
+            updateChecklistProgress();
+        });
+    </script>
+
+    <!-- Provider Popup Modal -->
+    <div class="provider-overlay" id="providerOverlay" onclick="if(event.target===this)closeProviderPopup()">
+        <div class="provider-popup">
+            <button class="popup-close" onclick="closeProviderPopup()" aria-label="Close">&times;</button>
+            <div id="popupContent"></div>
+        </div>
+    </div>
+
+    <script>
+    // ==================== PROVIDER POPUP ====================
+    var _providerData = {};
+
+    function openProviderPopup(key) {
+        var p = _providerData[key];
+        if (!p) return;
+
+        var html = '<div class="popup-company">' + escHtml(p.company_name);
+        if (p.featured) html += '<span class="popup-featured">Featured Partner</span>';
+        html += '</div>';
+
+        if (p.description) {
+            html += '<p class="popup-description">' + escHtml(p.description) + '</p>';
+        }
+
+        html += '<ul class="popup-contact-list">';
+        if (p.contact_name) {
+            html += '<li class="popup-contact-item"><span class="popup-contact-icon">&#128100;</span><span class="popup-contact-label">Contact</span><span class="popup-contact-value">' + escHtml(p.contact_name) + '</span></li>';
+        }
+        if (p.email) {
+            html += '<li class="popup-contact-item"><span class="popup-contact-icon">&#9993;&#65039;</span><span class="popup-contact-label">Email</span><span class="popup-contact-value"><a href="mailto:' + escHtml(p.email) + '">' + escHtml(p.email) + '</a></span></li>';
+        }
+        if (p.phone) {
+            var cleanPhone = p.phone.replace(/[\s\-\(\)]/g, '').replace(/^\+/, '');
+            var waLink = 'https://api.whatsapp.com/send?phone=' + cleanPhone;
+            html += '<li class="popup-contact-item"><span class="popup-contact-icon">&#128222;</span><span class="popup-contact-label">Phone</span><span class="popup-contact-value"><a href="tel:' + escHtml(p.phone) + '">' + escHtml(p.phone) + '</a> <a href="' + waLink + '" target="_blank" rel="noopener" class="popup-wa-btn" title="Chat on WhatsApp">WhatsApp</a></span></li>';
+        }
+        html += '</ul>';
+
+        if (p.website) {
+            html += '<a href="' + escHtml(p.website) + '" target="_blank" rel="noopener" class="popup-website-btn">Visit Website &#8599;</a>';
+        }
+
+        document.getElementById('popupContent').innerHTML = html;
+        document.getElementById('providerOverlay').classList.add('is-open');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeProviderPopup() {
+        document.getElementById('providerOverlay').classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    // Close on Escape key; Enter on focused slot opens popup
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeProviderPopup();
+        if (e.key === 'Enter' && e.target.classList.contains('clickable')) {
+            e.target.click();
+        }
+    });
+
+    function escHtml(s) { return s ? String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') : ''; }
+    </script>
+
+    <!-- Supabase SDK for directory -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+    <script>
+    // ==================== RESOURCE DIRECTORY (Supabase) ====================
+    (function() {
+        const SUPA_URL  = 'https://ivedeivyotwevjxvcuoe.supabase.co';
+        const SUPA_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2ZWRlaXZ5b3R3ZXZqeHZjdW9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxOTk1OTIsImV4cCI6MjA5MDc3NTU5Mn0.qMqjTMDRcvuuSy0yXLPH-yZpWFZdUv63enAsEWxzsss';
+
+        const CATEGORIES = [
+            { key: 'legal',      icon: '\u2696\uFE0F', label: 'Legal & Corporate',          desc: 'Company registration, shareholder agreements, contracts, and legal compliance for startups.' },
+            { key: 'accounting', icon: '\uD83D\uDCCA', label: 'Accounting & Audit',          desc: 'Bookkeeping, tax filings, financial statements, and audit-ready accounting for early-stage companies.' },
+            { key: 'design',     icon: '\uD83C\uDFA8', label: 'Graphic Design & Branding',   desc: 'Logo design, brand identity systems, pitch deck design, and marketing collateral.' },
+            { key: 'unbs',       icon: '\uD83C\uDFDB\uFE0F', label: 'UNBS & Standards',     desc: 'Product certification, quality standards, labelling compliance, and UNBS registration guidance.' },
+            { key: 'banking',    icon: '\uD83C\uDFE6', label: 'Banking & Finance',           desc: 'Business accounts, mobile money integration, merchant services, and startup-friendly banking.' },
+            { key: 'insurance',  icon: '\uD83D\uDEE1\uFE0F', label: 'Insurance',             desc: 'Business liability, professional indemnity, asset protection, and employee coverage for startups.' },
+            { key: 'ip',         icon: '\uD83D\uDCDD', label: 'IP & Trademark',              desc: 'Trademark registration, patent filing, intellectual property protection, and brand defence.' },
+            { key: 'digital',    icon: '\uD83D\uDCBB', label: 'Digital & Web Development',   desc: 'Website builds, mobile apps, e-commerce platforms, and technical MVPs for founders.' }
+        ];
+
+        function renderDirectory(providers) {
+            const grid = document.getElementById('directory-grid');
+            if (!grid) return;
+
+            // Store provider data globally for popup access
+            providers.forEach(p => {
+                const key = p.category + '_' + p.position;
+                _providerData[key] = p;
+            });
+
+            grid.innerHTML = CATEGORIES.map(cat => {
+                const catProviders = providers.filter(p => p.category === cat.key);
+
+                const slots = [1, 2, 3].map(pos => {
+                    const prov = catProviders.find(p => p.position === pos);
+                    if (prov) {
+                        const key = prov.category + '_' + prov.position;
+                        const featuredTag = prov.featured ? '<span class="featured-badge">Featured</span>' : '';
+                        return `<div class="directory-slot filled clickable" onclick="openProviderPopup('${key}')" role="button" tabindex="0" aria-label="View ${escHtml(prov.company_name)} details">
+                            <span class="slot-badge" style="border-color:rgba(201,160,54,0.4);color:#C9A036">${pos}</span>
+                            <span class="slot-provider-name">${escHtml(prov.company_name)}${featuredTag}</span>
+                            <span class="slot-provider-link" style="pointer-events:none;">Info &#8599;</span>
+                        </div>`;
+                    }
+                    return `<div class="directory-slot">
+                        <span class="slot-badge">${pos}</span>
+                        <span class="slot-label">Partner Coming Soon</span>
+                    </div>`;
+                }).join('');
+
+                return `<div class="directory-card fade-up">
+                    <div class="directory-header">
+                        <span class="directory-icon">${cat.icon}</span>
+                        <h4>${cat.label}</h4>
+                    </div>
+                    <p class="directory-desc">${cat.desc}</p>
+                    <div class="directory-slots">${slots}</div>
+                </div>`;
+            }).join('');
+
+            // Observe newly-created .fade-up cards
+            grid.querySelectorAll('.fade-up').forEach(el => {
+                if (window.__fadeObserver) {
+                    const rect = el.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        el.classList.add('visible');
+                    } else {
+                        window.__fadeObserver.observe(el);
+                    }
+                } else {
+                    el.classList.add('visible');
+                }
+            });
+        }
+
+        // Render static placeholders immediately
+        renderDirectory([]);
+
+        // Then fetch from Supabase once SDK is ready
+        function fetchProviders() {
+            if (typeof supabase === 'undefined' || !supabase.createClient) {
+                setTimeout(fetchProviders, 500);
+                return;
+            }
+            try {
+                var client = supabase.createClient(SUPA_URL, SUPA_ANON);
+                client.from('directory_providers')
+                    .select('company_name,category,position,website,featured,description,contact_name,email,phone')
+                    .eq('status', 'active')
+                    .order('position')
+                    .then(function(response) {
+                        if (response.error) {
+                            console.error('[Directory] Supabase error:', response.error);
+                            return;
+                        }
+                        if (response.data && response.data.length > 0) {
+                            renderDirectory(response.data);
+                        }
+                    })
+                    .catch(function(err) {
+                        console.error('[Directory] Fetch failed:', err);
+                    });
+            } catch(e) {
+                console.error('[Directory] Client init failed:', e);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', fetchProviders);
+        } else {
+            setTimeout(fetchProviders, 300);
+        }
+    })();
+    </script>
+</body>
+</html>

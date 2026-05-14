@@ -1,0 +1,2586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 4: Branding, Pricing & Business Model — The Founder's Sprint</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cormorant:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CSS CUSTOM PROPERTIES — "CALM" PALETTE ==================== */
+        :root {
+            /* Backgrounds — charcoal & bush greens */
+            --ink: #1A201E;
+            --green-deep: #152B1F;
+            --green-dark: #213A2D;
+            --green: #2D6A4F;
+            --green-mid: #40916C;
+
+            /* Primary accent — Sienna (replaces gold) */
+            --gold: #B85A2E;
+            --gold-light: #D4845A;
+            --gold-pale: #F0E4CC;
+
+            /* Warm neutrals — Cashmere & Ivory */
+            --cream: #EADFC6;
+            --ivory: #F5EBD6;
+            --white: #FFFFFF;
+
+            /* New Calm-palette aliases (preferred for new code) */
+            --bush-deep: #152B1F;
+            --bush: #213A2D;
+            --bush-mid: #2D6A4F;
+            --sienna: #B85A2E;
+            --sienna-deep: #8F4420;
+            --sienna-light: #D4845A;
+            --oak: #B89674;
+            --oak-light: #D4BC9E;
+            --cashmere: #D5C3A1;
+            --cashmere-pale: #EADFC6;
+
+            /* Greys */
+            --gray-300: #C8C5BB;
+            --gray-500: #8C8880;
+            --gray-700: #3D3B35;
+        }
+
+        /* ==================== RESET & BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gray-700);
+            background: var(--ivory);
+            line-height: 1.7;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* ==================== TYPOGRAPHY ==================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        .eyebrow {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .display-title {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(48px, 8vw, 76px);
+            font-weight: 300;
+            line-height: 1.1;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .display-title em {
+            font-style: italic;
+            color: var(--gold-light);
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.55);
+            max-width: 700px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--green-dark);
+            margin-bottom: 24px;
+            position: relative;
+            padding-top: 32px;
+        }
+
+        .section-title.light {
+            color: var(--white);
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .section-title::after {
+            content: '\25C6';
+            display: block;
+            position: absolute;
+            top: -12px;
+            left: 35px;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+        }
+
+        .gold-diamond {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .btn-gold {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== CROSSHATCH PATTERN ==================== */
+        .crosshatch {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crosshatch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(184, 90, 46, 0.03) 10px,
+                rgba(184, 90, 46, 0.03) 20px
+            );
+            pointer-events: none;
+        }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        section.hero {
+            background: var(--ink);
+            color: var(--white);
+            padding: 140px 0 80px;
+            display: flex;
+            align-items: flex-end;
+            min-height: 70vh;
+        }
+
+        /* ── DUOTONE HERO BACKGROUND ── */
+        .hero-bg-photo {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            filter: grayscale(1) contrast(1.05) brightness(0.9);
+        }
+        .hero-duotone-shadow {
+            position: absolute; inset: 0;
+            background: var(--ink);
+            mix-blend-mode: multiply;
+            opacity: 0.72;
+            pointer-events: none;
+        }
+        .hero-duotone-highlight {
+            position: absolute; inset: 0;
+            background: #7a5a18;
+            mix-blend-mode: screen;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .hero-duotone-gradient {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(to right, rgba(11,24,16,0.92) 0%, rgba(11,24,16,0.55) 55%, rgba(11,24,16,0.15) 100%),
+                linear-gradient(to top,   rgba(11,24,16,0.80) 0%, transparent 45%);
+            pointer-events: none;
+        }
+        .hero .container { position: relative; z-index: 2; }
+
+        section.light {
+            background: var(--ivory);
+        }
+
+        section.dark {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        section.dark h2,
+        section.dark h3 {
+            color: var(--white);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .session-info {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            display: inline-block;
+        }
+
+        /* ==================== FRAMEWORK CARDS ==================== */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 860px) {
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .framework-card {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                var(--cream);
+            border: none;
+            border-left: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+            transition: background 0.35s ease, transform 0.35s ease;
+        }
+
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 32px,
+                rgba(201,160,54,0.04) 32px,
+                rgba(201,160,54,0.04) 33px
+            );
+            pointer-events: none;
+        }
+
+        .framework-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .framework-card:hover {
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 50%),
+                var(--gold-pale);
+            transform: translateY(-3px);
+        }
+
+        .framework-card-icon {
+            font-size: 80px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+        }
+
+        .framework-card-body h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--green-dark);
+        }
+
+        .framework-card-body p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .framework-card-body p + p {
+            margin-top: 8px;
+        }
+
+        /* ==================== CASE STUDY GRID ==================== */
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 48px 0;
+        }
+
+        .case-study {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                var(--cream);
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            transition: transform 0.35s ease;
+        }
+
+        .case-study::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .case-study:hover {
+            transform: translateY(-2px);
+        }
+
+        .case-study h4 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--green-dark);
+        }
+
+        .case-study-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            font-size: 15px;
+        }
+
+        .case-study-flow strong {
+            color: var(--green-dark);
+            font-weight: 600;
+        }
+
+        .case-study-flow::before {
+            content: '\25C6';
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        /* ==================== PILLAR CARDS ==================== */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        .pillar-card {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 28px;
+            align-items: start;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.04) 0%, transparent 40%),
+                rgba(26,32,30,0.5);
+            border: 1px solid rgba(201,160,54,0.15);
+            cursor: pointer;
+            transition: background 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 48px) 100%, 0 100%);
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 38px,
+                rgba(201,160,54,0.03) 38px,
+                rgba(201,160,54,0.03) 39px
+            );
+            pointer-events: none;
+        }
+
+        .pillar-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .pillar-card:hover {
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.06) 0%, transparent 40%),
+                rgba(26,32,30,0.6);
+            transform: translateY(-3px);
+            border-color: rgba(201,160,54,0.3);
+        }
+
+        .pillar-card-icon {
+            font-size: 112px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 112px;
+            height: 112px;
+        }
+
+        .pillar-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .pillar-card h3 {
+            font-size: 20px;
+            margin: 0;
+            color: var(--white);
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .pillar-card-expand-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            opacity: 0.6;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .pillar-card:hover .pillar-card-expand-hint {
+            opacity: 1;
+        }
+
+        .pillar-card-summary {
+            font-size: 16px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 0;
+        }
+
+        .pillar-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .pillar-card-content.expanded {
+            max-height: 600px;
+        }
+
+        .pillar-card-section {
+            margin-bottom: 16px;
+        }
+
+        .pillar-card-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .pillar-card-text {
+            font-size: 15px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ==================== TABBED ACCORDION ==================== */
+        .tab-set {
+            margin: 48px 0;
+        }
+
+        .tab-set-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tab-set-hint::before,
+        .tab-set-hint::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(184, 90, 46, 0.25);
+        }
+
+        .tab-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            border-bottom: 1px solid rgba(184, 90, 46, 0.3);
+            background: rgba(184, 90, 46, 0.04);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 24px 20px 20px;
+            font-family: 'Josefin Sans', sans-serif;
+            cursor: pointer;
+            color: inherit;
+            position: relative;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            border-right: 1px solid rgba(184, 90, 46, 0.18);
+            text-align: center;
+            min-height: 130px;
+        }
+
+        .tab-btn:last-child { border-right: none; }
+
+        .tab-btn:hover {
+            background: rgba(184, 90, 46, 0.08);
+        }
+
+        .tab-btn:focus {
+            outline: 2px solid var(--gold);
+            outline-offset: -4px;
+        }
+
+        .tab-btn.is-active {
+            background: rgba(184, 90, 46, 0.12);
+        }
+
+        .tab-btn.is-active::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            bottom: -1px;
+            height: 4px;
+            background: var(--gold);
+        }
+
+        .tab-btn-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 13px;
+            letter-spacing: 0.15em;
+            opacity: 0.45;
+            display: block;
+        }
+
+        .tab-btn-icon {
+            font-size: 40px;
+            line-height: 1;
+            margin: 2px 0;
+            display: block;
+            filter: saturate(1) opacity(0.85);
+            transition: filter 0.2s;
+        }
+
+        .tab-btn.is-active .tab-btn-icon {
+            filter: saturate(1) opacity(1);
+        }
+
+        .tab-btn-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            line-height: 1.4;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .tab-btn.is-active .tab-btn-label {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .tab-panels {
+            position: relative;
+            padding: 40px 0 0;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: tab-fade 0.35s ease;
+        }
+
+        .tab-panel.is-active {
+            display: block;
+        }
+
+        @keyframes tab-fade {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel content — grid split for sections */
+        .tab-panel-body {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                rgba(184, 90, 46, 0.06);
+            border: none;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 32px;
+            align-items: start;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+        }
+
+        .tab-panel-body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 32px,
+                rgba(201,160,54,0.035) 32px,
+                rgba(201,160,54,0.035) 33px
+            );
+            pointer-events: none;
+        }
+
+        .tab-panel-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .tab-panel-icon {
+            font-size: 96px;
+            line-height: 1;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-panel-content h4 {
+            font-size: 22px;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .tab-panel-summary {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            opacity: 0.85;
+        }
+
+        .tab-panel-section {
+            margin-bottom: 20px;
+        }
+
+        .tab-panel-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .tab-panel-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .tab-panel-text {
+            font-size: 15px;
+            line-height: 1.75;
+            margin: 0;
+        }
+
+        /* Dark variant (for dark sections) */
+        .tab-set--dark .tab-nav {
+            background: rgba(184, 90, 46, 0.06);
+            border-top-color: rgba(184, 90, 46, 0.35);
+            border-bottom-color: rgba(184, 90, 46, 0.35);
+        }
+
+        .tab-set--dark .tab-btn {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .tab-set--dark .tab-panel-body {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-set--dark .tab-panel-content h4 {
+            color: var(--white);
+        }
+
+        .tab-set--dark .tab-panel-summary,
+        .tab-set--dark .tab-panel-text {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Mobile — stack tabs vertically */
+        @media (max-width: 768px) {
+            .tab-nav {
+                grid-template-columns: 1fr;
+                border-top: none;
+                border-bottom: none;
+            }
+
+            .tab-btn {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+                min-height: auto;
+                padding: 18px 20px;
+                border-right: none;
+                border-top: 1px solid rgba(184, 90, 46, 0.2);
+                gap: 16px;
+            }
+
+            .tab-btn:first-child {
+                border-top: 1px solid rgba(184, 90, 46, 0.35);
+            }
+
+            .tab-btn:last-child {
+                border-bottom: 1px solid rgba(184, 90, 46, 0.35);
+            }
+
+            .tab-btn.is-active::after {
+                top: 0; bottom: 0; left: 0; right: auto;
+                width: 4px; height: auto;
+            }
+
+            .tab-btn-icon {
+                font-size: 32px;
+                flex-shrink: 0;
+            }
+
+            .tab-btn-num {
+                display: none;
+            }
+
+            .tab-panels {
+                padding-top: 24px;
+            }
+
+            .tab-panel-body {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+            }
+
+            .tab-panel-icon {
+                font-size: 72px;
+                width: 88px;
+                height: 88px;
+            }
+        }
+
+        /* ==================== LEARNING LOOP DIAGRAM ==================== */
+        .learning-loop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 48px 0 24px;
+        }
+
+        .learning-loop svg {
+            max-width: 680px;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .learning-loop svg {
+                max-width: 100%;
+            }
+        }
+
+        /* --- Learning Loop Hover --- */
+        .loop-node {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .loop-node:hover {
+            transform: scale(1.08);
+            filter: brightness(1.15);
+        }
+        .loop-arrow {
+            stroke-dashoffset: 0;
+            opacity: 0.6;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .loop-node { transition: none !important; }
+            .loop-node:hover { transform: none; filter: none; }
+        }
+
+        /* --- Brand Diamond Hover --- */
+        .diamond-node {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .diamond-node:hover {
+            transform: scale(1.08);
+            filter: brightness(1.15);
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .diamond-node { transition: none !important; }
+            .diamond-node:hover { transform: none; filter: none; }
+        }
+
+        /* ==================== COMPARISON CARDS ==================== */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            position: relative;
+            padding: 40px 36px;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 36px,
+                rgba(201,160,54,0.03) 36px,
+                rgba(201,160,54,0.03) 37px
+            );
+            pointer-events: none;
+        }
+
+        .comparison-false {
+            background:
+                linear-gradient(135deg, rgba(204,85,85,0.06) 0%, transparent 50%),
+                rgba(220, 100, 100, 0.06);
+            border: 1px solid rgba(204,85,85,0.2);
+        }
+
+        .comparison-false::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #cc5555, transparent);
+        }
+
+        .comparison-true {
+            background:
+                linear-gradient(135deg, rgba(70,150,100,0.06) 0%, transparent 50%),
+                rgba(70, 150, 100, 0.06);
+            border: 1px solid rgba(70,150,100,0.2);
+        }
+
+        .comparison-true::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #469664, transparent);
+        }
+
+        .comparison-card h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .comparison-item-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        /* ==================== EXERCISE FORM — FUTURIST ==================== */
+
+        .problem-statement-box {
+            position: relative;
+            padding: 56px 52px 52px;
+            margin: 48px 0;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.05) 0%, transparent 40%),
+                rgba(26,32,30,0.6);
+            border: 1px solid rgba(201,160,54,0.25);
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 28px), calc(100% - 64px) 100%, 0 100%);
+        }
+
+        .problem-statement-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    -55deg,
+                    transparent,
+                    transparent 38px,
+                    rgba(201,160,54,0.04) 38px,
+                    rgba(201,160,54,0.04) 39px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .problem-statement-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background: linear-gradient(90deg, #C9A036 0%, rgba(201,160,54,0) 100%);
+            z-index: 2;
+        }
+
+        .problem-statement-box .problem-template,
+        .problem-statement-box .problem-statement-field {
+            position: relative;
+            z-index: 1;
+        }
+
+        .problem-statement-field {
+            margin-bottom: 28px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(201,160,54,0.12);
+            transition: border-left-color 0.4s ease, padding-left 0.4s ease;
+        }
+
+        .problem-statement-field:hover {
+            border-left-color: rgba(201,160,54,0.45);
+            padding-left: 24px;
+        }
+
+        .problem-statement-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .problem-statement-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #C9A036;
+            margin-right: 10px;
+            transform: rotate(45deg);
+            vertical-align: middle;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .problem-statement-field:hover .problem-statement-label::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.3);
+        }
+
+        .problem-template {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .editable-field {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(201,160,54,0.25);
+            color: #C9A036;
+            padding: 6px 12px 6px 8px;
+            min-width: 200px;
+            outline: none;
+            transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editable-field:hover {
+            border-bottom-color: rgba(201,160,54,0.5);
+        }
+
+        .editable-field:focus {
+            border-bottom-color: #C9A036;
+            background: rgba(201,160,54,0.06);
+            box-shadow: 0 4px 20px rgba(201,160,54,0.08);
+        }
+
+        .editable-field::placeholder {
+            color: rgba(201,160,54,0.35);
+            font-style: italic;
+        }
+
+        .form-actions {
+            position: relative;
+            z-index: 1;
+            margin-top: 44px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(201,160,54,0.12);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-futurist {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #C9A036 0%, #B85A2E 100%);
+            color: #1A201E;
+            border: none;
+            cursor: pointer;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 20px) 100%, 0 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+
+        .btn-futurist:hover {
+            transform: translateY(-3px) translateX(2px);
+            box-shadow: 0 8px 24px rgba(201,160,54,0.2);
+            filter: brightness(1.1);
+        }
+
+        .btn-futurist:active {
+            transform: translateY(0) translateX(0);
+        }
+
+        .btn-futurist-ghost {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 28px;
+            background: transparent;
+            color: rgba(201,160,54,0.6);
+            border: 1px solid rgba(201,160,54,0.2);
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-futurist-ghost:hover {
+            color: #C9A036;
+            border-color: rgba(201,160,54,0.5);
+        }
+
+        .form-footnote {
+            margin-top: 28px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+            max-width: 700px;
+            position: relative;
+            padding-left: 18px;
+        }
+        .form-footnote::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 6px;
+            height: 6px;
+            background: #C9A036;
+            transform: rotate(45deg);
+            opacity: 0.5;
+        }
+
+        .editable-field--wide {
+            min-width: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .editable-field--wide {
+                min-width: 200px;
+            }
+        }
+
+        /* ==================== TASK TABLE ==================== */
+        .task-table {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin: 32px 0;
+            border-top: 2px solid var(--gold);
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(184, 90, 46, 0.25);
+            align-items: baseline;
+        }
+
+        .task-row:last-child {
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .task-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 28px;
+            color: var(--gold);
+            line-height: 1;
+            padding-top: 2px;
+        }
+
+        .task-body h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--green-dark);
+            margin: 0 0 6px 0;
+        }
+
+        .task-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .secondary-table .task-num {
+            color: var(--green-mid);
+        }
+
+        .secondary-table .task-row {
+            border-bottom-color: rgba(45, 106, 79, 0.15);
+        }
+
+        .secondary-table .task-row:last-child {
+            border-bottom: 2px solid var(--green-mid);
+        }
+
+        .secondary-table {
+            border-top-color: var(--green-mid);
+        }
+
+        /* ==================== NEXT WEEK PREVIEW ==================== */
+        .preview-card {
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.08) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.06) 0%, transparent 40%),
+                var(--green-dark);
+            border: 1px solid rgba(201,160,54,0.3);
+            padding: 64px 56px 56px;
+            margin: 48px 0;
+            text-align: center;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 56px) 100%, 0 100%);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        border-color 0.35s ease;
+        }
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.04) 38px, rgba(201,160,54,0.04) 39px);
+            pointer-events: none;
+        }
+        .preview-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+        .preview-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(201,160,54,0.5);
+        }
+
+        .preview-card h3 {
+            position: relative;
+            font-size: 28px;
+            color: var(--gold-light);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .preview-card h3::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+            margin: 16px auto 0;
+        }
+
+        .preview-card p {
+            position: relative;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, 0.55);
+            padding: 48px 0;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        footer .brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ==================== SCROLL ANIMATIONS ==================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            .progress-bar {
+                display: none;
+            }
+
+            section {
+                padding: 40px 0;
+                page-break-inside: avoid;
+            }
+
+            .btn-gold {
+                background: var(--gold);
+                color: var(--ink);
+            }
+
+            body {
+                font-size: 16px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            section.hero {
+                padding: 132px 0 80px;
+                min-height: auto;
+            }
+
+            .display-title {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .framework-grid,
+            .case-studies,
+            .pillar-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .problem-statement-box {
+                padding: 36px 28px 32px;
+                clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            }
+
+            .problem-statement-field {
+                padding-left: 14px;
+            }
+
+            .editable-field {
+                min-width: 100px;
+            }
+
+            .btn-futurist {
+                padding: 16px 28px;
+            }
+        }
+
+        /* ==================== MENTOR SECTION ==================== */
+        .mentor-section {
+            background: var(--bush-deep);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .mentor-grid {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            min-height: 600px;
+        }
+
+        /* ---- Photo column ---- */
+        .mentor-photo-col {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mentor-photo-frame {
+            position: relative;
+            height: 100%;
+            min-height: 560px;
+        }
+
+        .mentor-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            filter: contrast(1.05);
+        }
+
+        /* Art Deco frame overlay */
+        .mentor-photo-frame::before {
+            content: '';
+            position: absolute;
+            inset: 20px;
+            border: 1px solid rgba(184, 90, 46, 0.35);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Corner accents — top-left */
+        .mentor-corner {
+            position: absolute;
+            z-index: 3;
+            width: 40px;
+            height: 40px;
+        }
+        .mentor-corner.tl { top: 10px; left: 10px;
+            border-top: 2px solid var(--sienna); border-left: 2px solid var(--sienna); }
+        .mentor-corner.tr { top: 10px; right: 10px;
+            border-top: 2px solid var(--sienna); border-right: 2px solid var(--sienna); }
+        .mentor-corner.bl { bottom: 10px; left: 10px;
+            border-bottom: 2px solid var(--sienna); border-left: 2px solid var(--sienna); }
+        .mentor-corner.br { bottom: 10px; right: 10px;
+            border-bottom: 2px solid var(--sienna); border-right: 2px solid var(--sienna); }
+
+        /* Sienna left-edge accent bar */
+        .mentor-photo-col::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 4px; height: 100%;
+            background: var(--sienna);
+        }
+
+        /* Step numeral watermark */
+        .mentor-numeral {
+            position: absolute;
+            bottom: 28px;
+            left: 28px;
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 120px;
+            line-height: 1;
+            color: var(--sienna);
+            opacity: 0.15;
+            z-index: 1;
+            user-select: none;
+        }
+
+        /* ---- Content column ---- */
+        .mentor-content-col {
+            padding: clamp(40px, 6vw, 72px) clamp(32px, 5vw, 64px) clamp(40px, 6vw, 72px) clamp(40px, 5vw, 56px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mentor-name {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: clamp(52px, 6vw, 80px);
+            line-height: 0.95;
+            color: var(--ivory);
+            margin: 12px 0 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .mentor-name em {
+            font-style: italic;
+            color: var(--sienna-light);
+        }
+
+        .mentor-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: rgba(245, 235, 214, 0.55);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .mentor-rule {
+            width: 64px;
+            height: 2px;
+            background: var(--sienna);
+            margin-bottom: 28px;
+        }
+
+        .mentor-bio {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(245, 235, 214, 0.7);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .mentor-bio strong {
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        /* Credentials — 4 stats in a row */
+        .mentor-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid rgba(184, 90, 46, 0.25);
+            padding-top: 28px;
+            margin-bottom: 36px;
+        }
+
+        .mentor-stat {
+            padding-right: 20px;
+        }
+
+        .mentor-stat + .mentor-stat {
+            padding-left: 20px;
+            border-left: 1px solid rgba(184, 90, 46, 0.2);
+        }
+
+        .mentor-stat-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 40px;
+            line-height: 1;
+            color: var(--sienna-light);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mentor-stat-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(245, 235, 214, 0.45);
+            line-height: 1.4;
+        }
+
+        /* Press strip */
+        .mentor-press {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .mentor-press-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--sienna);
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+
+        .mentor-press-outlets {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .mentor-press-name {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 15px;
+            font-style: italic;
+            color: rgba(245, 235, 214, 0.35);
+            letter-spacing: 0.05em;
+        }
+
+        .mentor-press-sep {
+            color: var(--sienna);
+            opacity: 0.4;
+            font-size: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .mentor-grid { grid-template-columns: 1fr; }
+            .mentor-photo-frame { min-height: 340px; }
+            .mentor-photo-col::after { display: none; }
+            .mentor-stats { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .mentor-stat + .mentor-stat { border-left: none; padding-left: 0; }
+            .mentor-stat:nth-child(odd) { border-right: 1px solid rgba(184,90,46,0.2); padding-right: 20px; }
+        }
+
+        /* ==================== MODULE NAVIGATION ==================== */
+        .module-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 32, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(201, 160, 54, 0.2);
+            padding: 0 24px;
+        }
+        .module-nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+        .module-nav-brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .module-nav-brand:hover { opacity: 0.8; }
+        .module-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .module-nav-link {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 8px 14px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .module-nav-link:hover {
+            color: #C9A036;
+            background: rgba(201, 160, 54, 0.08);
+        }
+        .module-nav-link.is-current {
+            color: #C9A036;
+            border-bottom: 2px solid #C9A036;
+        }
+        .module-nav-link.is-locked {
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            cursor: default;
+        }
+        .module-nav-sep {
+            width: 1px;
+            height: 16px;
+            background: rgba(201, 160, 54, 0.15);
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .module-nav-link { padding: 8px 8px; font-size: 8px; letter-spacing: 0.1em; }
+            .module-nav-brand { font-size: 9px; letter-spacing: 0.15em; }
+        }
+
+        /* ==================== TIER-SPECIFIC CONTENT ==================== */
+        .tier-section { display: none; margin: 0; }
+        .tier-section.tier-visible { display: block; }
+        .tier-block {
+            background: var(--green-deep);
+            padding: 56px clamp(24px, 5vw, 80px);
+            color: var(--cream);
+        }
+        .tier-block .eyebrow { color: var(--gold); margin-bottom: 12px; }
+        .tier-block h2 { color: var(--white); font-size: clamp(28px, 4vw, 36px); margin-bottom: 24px; font-weight: 300; }
+        .tier-block p { color: rgba(234, 223, 198, 0.8); margin-bottom: 16px; line-height: 1.75; }
+        .tier-block .tier-card {
+            background: rgba(255,255,255,0.06);
+            border-left: 3px solid var(--gold);
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .tier-block .tier-card h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .tier-block .tier-card p { color: rgba(234,223,198,0.7); font-size: 16px; margin-bottom: 0; }
+        .tier-divider {
+            height: 3px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin: 0;
+        }
+</style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Module Navigation -->
+    <nav class="module-nav">
+      <div class="module-nav-inner">
+        <a href="../index.html" class="module-nav-brand">The Founder's Sprint</a>
+        <ul class="module-nav-links">
+          <li><a href="/learn/week-1" target="_parent" class="module-nav-link">Week 1</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-2" target="_parent" class="module-nav-link">Week 2</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-3" target="_parent" class="module-nav-link">Week 3</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-4" target="_parent" class="module-nav-link is-current">Week 4</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-5" target="_parent" class="module-nav-link">Week 5</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/resources" target="_parent" class="module-nav-link">Resources</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero crosshatch">
+        <img src="images/week-4-hero.jpg" alt="" class="hero-bg-photo">
+        <div class="hero-duotone-shadow"></div>
+        <div class="hero-duotone-highlight"></div>
+        <div class="hero-duotone-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="eyebrow">The Founder's Sprint · Week 4</span>
+                <h1 class="display-title">Branding, Pricing<br>&amp; <em>Business Model</em></h1>
+                <p class="subtitle">Build the identity, pricing, and revenue engine that makes customers choose you.</p>
+                <div class="session-info">2 Hours · Max 10 Founders · Deliverable: Brand Guide + Pricing Strategy</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Section 1: The Brand Gap -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Foundation</span>
+            <h2 class="section-title">The Brand Gap</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Your brand isn't your logo. It's the gut feeling people have when they hear your name. Most early-stage founders skip branding entirely or waste money on a logo before they know who they're talking to.</p>
+
+            <div class="framework-grid">
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">&#x1FA9E;</span>
+                    <div class="framework-card-body">
+                        <h4>Brand = Perception</h4>
+                        <p>What people say about you when you're not in the room. You don't control your brand — you influence it.</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">&#x1F4AC;</span>
+                    <div class="framework-card-body">
+                        <h4>Story Before Design</h4>
+                        <p>Your brand story comes from your customer's pain. The best brands narrate the transformation from problem to solution.</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">&#x1F3F7;&#xFE0F;</span>
+                    <div class="framework-card-body">
+                        <h4>Price Is Brand</h4>
+                        <p>How you price signals who you're for. Cheap isn't a strategy — it's a race to the bottom. Value-based pricing starts here.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--green-dark); margin-top: 48px;">Uganda Brand Case Studies</h3>
+
+            <div class="tab-set fade-up" data-tab-group="brands">
+                <div class="tab-set-hint">Three Case Studies · Select a Tab</div>
+                <div class="tab-nav" role="tablist" aria-label="Uganda Brand Case Studies">
+                    <button class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="brands-panel-1" id="brands-tab-1" data-tab-target="brands-panel-1" onclick="switchTab(this)">
+                        <span class="tab-btn-num">01</span>
+                        <span class="tab-btn-icon">&#x1F6E1;&#xFE0F;</span>
+                        <span class="tab-btn-label">SafeBoda's Trust Play</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="brands-panel-2" id="brands-tab-2" data-tab-target="brands-panel-2" onclick="switchTab(this)">
+                        <span class="tab-btn-num">02</span>
+                        <span class="tab-btn-icon">&#x1F32F;</span>
+                        <span class="tab-btn-label">Rolex Street Food</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="brands-panel-3" id="brands-tab-3" data-tab-target="brands-panel-3" onclick="switchTab(this)">
+                        <span class="tab-btn-num">03</span>
+                        <span class="tab-btn-icon">&#x1F4F6;</span>
+                        <span class="tab-btn-label">MTN vs Airtel</span>
+                    </button>
+                </div>
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" id="brands-panel-1" aria-labelledby="brands-tab-1">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">&#x1F6E1;&#xFE0F;</div>
+                            <div class="tab-panel-content">
+                                <h4>SafeBoda's Trust Play</h4>
+                                <p class="tab-panel-summary">How SafeBoda differentiated from regular boda-bodas not through technology but through safety branding — helmets, insurance, and a name that led with the benefit.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Brand Move</span>
+                                    <p class="tab-panel-text">SafeBoda didn't build a better motorcycle. They built a better promise. The name itself — <em>Safe</em>Boda — tells the customer exactly what they get before they even download the app.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Why It Worked</span>
+                                    <p class="tab-panel-text">Helmets, reflective jackets, and insurance weren't just operational decisions — they were brand decisions. Every rider became a walking billboard for trust.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>Your brand is what you do, not what you say. SafeBoda's brand was visible on every street corner — no billboard needed.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="brands-panel-2" aria-labelledby="brands-tab-2">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">&#x1F32F;</div>
+                            <div class="tab-panel-content">
+                                <h4>Rolex Street Food</h4>
+                                <p class="tab-panel-summary">Uganda's beloved rolex (rolled eggs) has no brand owner, yet it's the most recognised street food in East Africa. What unbranded products teach about product-market fit.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Paradox</span>
+                                    <p class="tab-panel-text">No company owns the rolex. No trademark. No packaging. Yet every Ugandan knows what a rolex is, where to get one, and how much it costs. That's product-market fit so strong it doesn't need branding.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What It Teaches</span>
+                                    <p class="tab-panel-text">Before you invest in logos and colour palettes, ask: is my product so good that people talk about it without being asked? The rolex spreads by word of mouth because the experience is consistent and delicious.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>The best brand is a product people can't stop talking about. Get the product right first — then amplify with branding.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="brands-panel-3" aria-labelledby="brands-tab-3">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">&#x1F4F6;</div>
+                            <div class="tab-panel-content">
+                                <h4>MTN vs Airtel</h4>
+                                <p class="tab-panel-summary">How two telecom giants compete on brand positioning in Uganda. MTN owns "everywhere you go." Airtel fights on price. Who wins?</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">MTN's Position</span>
+                                    <p class="tab-panel-text">MTN positioned on ubiquity and reliability. Yellow is everywhere — on shops, umbrellas, walls. "Everywhere you go" isn't just a slogan; it's a promise of network coverage. They own the premium position.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Airtel's Position</span>
+                                    <p class="tab-panel-text">Airtel fights on price — cheaper data bundles, promotional offers, aggressive discounts. They position as the value alternative. But price wars erode margins and train customers to wait for the next deal.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>The brand that owns a clear position in the customer's mind wins long-term. Competing on price alone is a race to the bottom. What position will you own?</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Building Your Brand Position -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Framework</span>
+            <h2 class="section-title light">Building Your Brand Position</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">A brand position is the space you occupy in your customer's mind. It answers: For whom? What category? What benefit? Why believe us?</p>
+
+            <div class="tab-set tab-set--dark fade-up" data-tab-group="positioning">
+                <div class="tab-set-hint">Three Frameworks · Select a Tab</div>
+                <div class="tab-nav" role="tablist" aria-label="Brand Positioning Frameworks">
+                    <button class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="positioning-panel-1" id="positioning-tab-1" data-tab-target="positioning-panel-1" onclick="switchTab(this)">
+                        <span class="tab-btn-num">01</span>
+                        <span class="tab-btn-icon">&#x1F3AF;</span>
+                        <span class="tab-btn-label">Positioning Statement</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="positioning-panel-2" id="positioning-tab-2" data-tab-target="positioning-panel-2" onclick="switchTab(this)">
+                        <span class="tab-btn-num">02</span>
+                        <span class="tab-btn-icon">&#x1F5E3;&#xFE0F;</span>
+                        <span class="tab-btn-label">Brand Voice &amp; Personality</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="positioning-panel-3" id="positioning-tab-3" data-tab-target="positioning-panel-3" onclick="switchTab(this)">
+                        <span class="tab-btn-num">03</span>
+                        <span class="tab-btn-icon">&#x1F3A8;</span>
+                        <span class="tab-btn-label">Visual Identity Basics</span>
+                    </button>
+                </div>
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" id="positioning-panel-1" aria-labelledby="positioning-tab-1">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">&#x1F3AF;</div>
+                            <div class="tab-panel-content">
+                                <h4>The Positioning Statement</h4>
+                                <p class="tab-panel-summary">A simple template that forces clarity. Every word earns its place.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Template</span>
+                                    <p class="tab-panel-text">For <strong>[target customer]</strong> who <strong>[need/problem]</strong>, <strong>[brand name]</strong> is the <strong>[category]</strong> that <strong>[key benefit]</strong> because <strong>[reason to believe]</strong>.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">How to Use It</span>
+                                    <p class="tab-panel-text">Walk through each element one at a time. Target customer comes from your Week 2 persona. Need/problem comes from your Week 1 problem statement. Category defines your competitive set. Key benefit is one thing — not five. Reason to believe is your proof.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Common Trap</span>
+                                    <p class="tab-panel-text">Trying to be everything to everyone. If your positioning statement works for any company in your space, it's too generic. Be specific enough that your competitors <em>can't</em> say the same thing.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="positioning-panel-2" aria-labelledby="positioning-tab-2">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">&#x1F5E3;&#xFE0F;</div>
+                            <div class="tab-panel-content">
+                                <h4>Brand Voice &amp; Personality</h4>
+                                <p class="tab-panel-summary">Are you the Expert? The Friend? The Rebel? The Guide? Pick one archetype. Everything flows from it.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Pick One Archetype</span>
+                                    <p class="tab-panel-text"><strong>The Expert</strong> — authoritative, data-driven, precise. <strong>The Friend</strong> — warm, approachable, conversational. <strong>The Rebel</strong> — bold, provocative, challengers. <strong>The Guide</strong> — wise, supportive, empowering. Your archetype shapes how you write, speak, design, and price.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Voice Test</span>
+                                    <p class="tab-panel-text">Write three sentences in your chosen voice. Read them aloud. If they could have been written by any company, try again. Your voice should be recognisable even without your logo attached.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Why It Matters</span>
+                                    <p class="tab-panel-text">Customers buy from brands that feel consistent. If your website sounds corporate but your WhatsApp sounds casual, you're creating confusion. Pick a lane and stay in it.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="positioning-panel-3" aria-labelledby="positioning-tab-3">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">&#x1F3A8;</div>
+                            <div class="tab-panel-content">
+                                <h4>Visual Identity Basics</h4>
+                                <p class="tab-panel-summary">You don't need a branding agency yet. You need just enough to look consistent and intentional.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What You Need Now</span>
+                                    <p class="tab-panel-text">A name. A colour palette (2-3 colours). A font pairing (one for headings, one for body). A consistent tone. That's enough to start. Everything else — logo, brand book, style guide — can come later.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Quick Wins</span>
+                                    <p class="tab-panel-text">Use Canva to create a simple wordmark. Pick colours from Coolors.co. Choose Google Fonts that are free and load fast. Consistency beats perfection — use the same colours and fonts everywhere.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Common Trap</span>
+                                    <p class="tab-panel-text">Spending UGX 2M on a logo before you've made UGX 1 in revenue. Your visual identity should cost you time, not money, at this stage. The logo can evolve — your positioning shouldn't.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--white); text-transform: uppercase; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.1em; margin-top: 64px;">The Brand Diamond</h3>
+
+            <div class="learning-loop fade-up">
+                <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Brand Diamond: Purpose, Promise, Personality, Position">
+                  <defs>
+                    <pattern id="bauhaus-hatch" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="20" stroke="#B85A2E" stroke-width="0.5" opacity="0.08"/>
+                    </pattern>
+                  </defs>
+
+                  <!-- Background crosshatch -->
+                  <rect x="0" y="0" width="680" height="440" fill="url(#bauhaus-hatch)"/>
+
+                  <!-- Decorative: Bauhaus corner accents -->
+                  <line x1="30" y1="20" x2="80" y2="20" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="20" x2="30" y2="70" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="600" y1="20" x2="650" y2="20" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="650" y1="20" x2="650" y2="70" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="420" x2="80" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="370" x2="30" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="600" y1="420" x2="650" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="650" y1="370" x2="650" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+
+                  <!-- Diamond connecting lines -->
+                  <line x1="340" y1="70" x2="560" y2="220" stroke="#B85A2E" stroke-width="2" opacity="0.35"/>
+                  <line x1="560" y1="220" x2="340" y2="370" stroke="#B85A2E" stroke-width="2" opacity="0.35"/>
+                  <line x1="340" y1="370" x2="120" y2="220" stroke="#B85A2E" stroke-width="2" opacity="0.35"/>
+                  <line x1="120" y1="220" x2="340" y2="70" stroke="#B85A2E" stroke-width="2" opacity="0.35"/>
+
+                  <!-- Subtle inner diamond -->
+                  <line x1="340" y1="130" x2="480" y2="220" stroke="#B85A2E" stroke-width="0.5" opacity="0.15"/>
+                  <line x1="480" y1="220" x2="340" y2="310" stroke="#B85A2E" stroke-width="0.5" opacity="0.15"/>
+                  <line x1="340" y1="310" x2="200" y2="220" stroke="#B85A2E" stroke-width="0.5" opacity="0.15"/>
+                  <line x1="200" y1="220" x2="340" y2="130" stroke="#B85A2E" stroke-width="0.5" opacity="0.15"/>
+
+                  <!-- Centre label -->
+                  <text x="340" y="215" text-anchor="middle" font-family="'Cormorant', serif" font-weight="300" font-size="32" fill="#C9A036" opacity="0.5" letter-spacing="4">BRAND</text>
+                  <text x="340" y="236" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="8" letter-spacing="4" fill="#C9A036" opacity="0.4">I D E N T I T Y</text>
+
+                  <!-- NODE: PURPOSE (Top) -->
+                  <g class="diamond-node">
+                    <rect x="260" y="38" width="160" height="64" fill="#B85A2E" rx="0"/>
+                    <rect x="265" y="43" width="150" height="54" fill="none" stroke="#1A201E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="340" y="68" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#1A201E">PURPOSE</text>
+                    <text x="340" y="88" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#1A201E" opacity="0.7">Why you exist</text>
+                  </g>
+
+                  <!-- NODE: PROMISE (Right) -->
+                  <g class="diamond-node">
+                    <rect x="490" y="188" width="160" height="64" fill="#213A2D" rx="0"/>
+                    <rect x="495" y="193" width="150" height="54" fill="none" stroke="#B85A2E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="570" y="218" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#FFFFFF">PROMISE</text>
+                    <text x="570" y="238" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">What you deliver</text>
+                  </g>
+
+                  <!-- NODE: PERSONALITY (Bottom) -->
+                  <g class="diamond-node">
+                    <rect x="260" y="338" width="160" height="64" fill="#B85A2E" rx="0"/>
+                    <rect x="265" y="343" width="150" height="54" fill="none" stroke="#1A201E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="340" y="368" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="12" letter-spacing="3" fill="#1A201E">PERSONALITY</text>
+                    <text x="340" y="388" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#1A201E" opacity="0.7">How you show up</text>
+                  </g>
+
+                  <!-- NODE: POSITION (Left) -->
+                  <g class="diamond-node">
+                    <rect x="30" y="188" width="160" height="64" fill="#213A2D" rx="0"/>
+                    <rect x="35" y="193" width="150" height="54" fill="none" stroke="#B85A2E" stroke-width="0.75" opacity="0.3"/>
+                    <text x="110" y="218" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#FFFFFF">POSITION</text>
+                    <text x="110" y="238" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">Where you stand</text>
+                  </g>
+
+                  <!-- Decorative: small gold diamonds -->
+                  <rect x="337" y="22" width="6" height="6" fill="#B85A2E" transform="rotate(45,340,25)" opacity="0.4"/>
+                  <rect x="337" y="415" width="6" height="6" fill="#B85A2E" transform="rotate(45,340,418)" opacity="0.4"/>
+                </svg>
+            </div>
+
+            <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 16px; max-width: 700px; margin: 0 auto; line-height: 1.7;">Your brand diamond connects four elements. Purpose drives everything. Promise faces the customer. Personality shapes how you communicate. Position defines where you stand relative to alternatives.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: Pricing Strategy -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Framework</span>
+            <h2 class="section-title">Pricing That Works</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Most founders underprice because they're afraid of rejection. Here's how to set prices that reflect your value — and that your customers will actually pay.</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card comparison-false fade-up">
+                    <h4 style="color: var(--green-dark);">Pricing Mistakes Founders Make</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x274C;</div>
+                        <div>Pricing based on what it costs you to make</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x274C;</div>
+                        <div>Copying competitor pricing without understanding their cost structure</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x274C;</div>
+                        <div>Offering the lowest price to "win" customers</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x274C;</div>
+                        <div>One price for everyone, regardless of value received</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x274C;</div>
+                        <div>Changing price every week based on who's complaining</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card comparison-true fade-up">
+                    <h4 style="color: var(--green-dark);">How to Price With Confidence</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x2705;</div>
+                        <div>Price based on the value you create for the customer</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x2705;</div>
+                        <div>Test willingness to pay during customer interviews — don't guess</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x2705;</div>
+                        <div>Create 2-3 tiers: anchor high, sell the middle</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x2705;</div>
+                        <div>Round to mobile money-friendly numbers (avoid odd figures)</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">&#x2705;</div>
+                        <div>Your price communicates your quality. Own it.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Brand & Pricing Worksheet -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Exercise</span>
+            <h2 class="section-title light">Your Brand &amp; Pricing Worksheet</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">Fill in each field below. This is your working brand guide and pricing strategy — the deliverable you'll refine and bring to Week 5.</p>
+
+            <div class="problem-statement-box">
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">Brand Name</span>
+                    <input type="text" class="editable-field" id="field-brandName" placeholder="[Your brand name]" maxlength="80">
+                </div>
+
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">Positioning Statement</span>
+                    <input type="text" class="editable-field editable-field--wide" id="field-positioning" placeholder="For [target customer] who [need], [brand] is the [category] that [benefit] because [reason]." maxlength="300">
+                </div>
+
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">Brand Archetype</span>
+                    <input type="text" class="editable-field" id="field-archetype" placeholder="[e.g. The Expert, The Guide, The Creator]" maxlength="80">
+                </div>
+
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">One-Line Brand Promise</span>
+                    <input type="text" class="editable-field editable-field--wide" id="field-promise" placeholder="[What your customer can always count on from you]" maxlength="200">
+                </div>
+
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">Tier 1 — Basic</span>
+                    <input type="text" class="editable-field" id="field-tier1" placeholder="[Price]" maxlength="40"> <span style="color: var(--gold-light); font-family: 'Josefin Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em;">UGX</span>
+                </div>
+
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">Tier 2 — Standard</span>
+                    <input type="text" class="editable-field" id="field-tier2" placeholder="[Price]" maxlength="40"> <span style="color: var(--gold-light); font-family: 'Josefin Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em;">UGX</span>
+                </div>
+
+                <div class="problem-statement-field">
+                    <span class="problem-statement-label">Tier 3 — Premium</span>
+                    <input type="text" class="editable-field" id="field-tier3" placeholder="[Price]" maxlength="40"> <span style="color: var(--gold-light); font-family: 'Josefin Sans', sans-serif; font-size: 12px; letter-spacing: 0.1em;">UGX</span>
+                </div>
+
+                <div class="form-actions">
+                    <button class="btn-futurist" onclick="saveBrandPricing()">Save Brand &amp; Pricing</button>
+                    <button class="btn-futurist-ghost" onclick="clearBrandPricing()">Clear</button>
+                </div>
+            </div>
+
+            <p class="form-footnote"><strong>Your browser saves this locally.</strong> Print or screenshot before you leave — this is your deliverable for this week.</p>
+        </div>
+    </section>
+
+    <!-- Section 5: Homework & Next Steps -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Action</span>
+            <h2 class="section-title">Your Homework This Week</h2>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark);">Define Your Brand &amp; Test Your Pricing</h3>
+            <p style="margin-bottom: 32px; font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.8; color: var(--gray-700);">This week you move from strategy to identity. Build your brand guide, set your pricing tiers, and test them with real customers before Week 5.</p>
+
+            <div class="task-table">
+                <div class="task-row">
+                    <span class="task-num">01</span>
+                    <div class="task-body">
+                        <h4>Write Your Positioning Statement</h4>
+                        <p>Use the template. Read it aloud. If it sounds like corporate jargon, simplify.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">02</span>
+                    <div class="task-body">
+                        <h4>Choose Your Brand Archetype</h4>
+                        <p>Pick one. Write three sentences in that voice. Does it feel like you?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">03</span>
+                    <div class="task-body">
+                        <h4>Design a Simple Visual Identity</h4>
+                        <p>Pick 2 colours, 1 font pair, and a simple wordmark. Use Canva if you need to.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">04</span>
+                    <div class="task-body">
+                        <h4>Set Your Pricing Tiers</h4>
+                        <p>Basic, Standard, Premium. Make the middle tier the obvious choice.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">05</span>
+                    <div class="task-body">
+                        <h4>Test Your Price</h4>
+                        <p>Go back to 5 interview contacts. Show them the offer and the price. Watch their reaction.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">06</span>
+                    <div class="task-body">
+                        <h4>Map Your Revenue Model</h4>
+                        <p>Subscription? Per-transaction? Freemium? What makes sense for your customer's cash flow?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">07</span>
+                    <div class="task-body">
+                        <h4>Write Your Origin Story</h4>
+                        <p>Two paragraphs: why you started this, and why you're the right person to solve it.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark); margin-top: 48px;">Secondary Tasks</h3>
+
+            <div class="task-table secondary-table">
+                <div class="task-row">
+                    <span class="task-num">A</span>
+                    <div class="task-body">
+                        <h4>Read: Obviously Awesome</h4>
+                        <p>April Dunford. The best book on positioning. Chapters 1-5.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">B</span>
+                    <div class="task-body">
+                        <h4>Audit 3 Competitors' Brands</h4>
+                        <p>What do they communicate? Where are the gaps?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">C</span>
+                    <div class="task-body">
+                        <h4>Prepare for Week 5</h4>
+                        <p>Bring your brand guide, pricing tiers, and origin story. We build your pitch deck.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-card fade-up">
+                <h3>Week 5: Pitch, Story &amp; Launch Readiness</h3>
+                <p>Everything comes together. You'll build a pitch deck that tells your story — problem, solution, market, brand, traction. Then you'll deliver it live in Kampala on Pitch Day. This is the moment you stop being "someone with an idea" and start being a founder with a plan.</p>
+                <p style="margin-top: 16px;"><em>Deliverable: Pitch Deck + Live Presentation</em></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tier-specific content -->
+    <div class="tier-divider tier-section" data-min-tier="group"></div>
+    <section class="tier-block tier-section" data-min-tier="group">
+        <div class="container">
+            <span class="eyebrow">Group Session</span>
+            <h2>Brand & Pricing Critique</h2>
+            <p>Present your brand identity and pricing model to the cohort for structured critique. You'll give and receive feedback using a framework that separates personal taste from strategic effectiveness.</p>
+            <div class="tier-card">
+                <h4>What to bring</h4>
+                <p>Your Brand Identity brief (name, positioning, visual direction) and your pricing tiers with the rationale behind each.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="oneOnOne"></div>
+    <section class="tier-block tier-section" data-min-tier="oneOnOne">
+        <div class="container">
+            <span class="eyebrow">1-on-1 Coaching</span>
+            <h2>Session Prep: Week 4</h2>
+            <p>This session is about making sure your brand tells the right story and your pricing captures the value you create. Come ready to explain your positioning choices.</p>
+            <div class="tier-card">
+                <h4>Before your session</h4>
+                <p>Write a one-sentence brand positioning statement. Prepare 2–3 pricing scenarios (low/mid/high) with your reasoning for each. Know your competitor pricing landscape.</p>
+            </div>
+            <div class="tier-card">
+                <h4>Teddy will review</h4>
+                <p>Your Brand Identity + Pricing Model — with feedback on whether your positioning is distinct enough, your pricing reflects real value, and your brand voice resonates with your target customer.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="vip"></div>
+    <section class="tier-block tier-section" data-min-tier="vip">
+        <div class="container">
+            <span class="eyebrow">VIP Bonus</span>
+            <h2>Brand Building on a Bootstrap Budget</h2>
+            <p>A practical guide to building a credible brand identity when you can't afford an agency — tools, templates, and the exact steps to create a professional presence that punches above your weight. Includes vendor recommendations for the East African market.</p>
+            <div class="tier-card">
+                <h4>Priority async access</h4>
+                <p>Send Teddy your brand concepts or mood boards via WhatsApp for a quick directional check before investing more time in any single direction.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="brand">The Founder's Sprint</span>
+        <p>&copy; 2026 TMS Ruge. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ==================== TIER GATING ====================
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const tier = params.get('tier') || 'group';
+            const tierLevels = { selfPaced: 0, group: 1, oneOnOne: 2, vip: 3 };
+            const userLevel = tierLevels[tier] ?? 1;
+            document.querySelectorAll('.tier-section').forEach(el => {
+                const minLevel = tierLevels[el.dataset.minTier] ?? 0;
+                if (userLevel >= minLevel) {
+                    el.classList.add('tier-visible');
+                }
+            });
+        })();
+
+        // ==================== PROGRESS BAR ====================
+        function updateProgressBar() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+
+        window.addEventListener('scroll', updateProgressBar);
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ==================== TABBED ACCORDION ====================
+        function switchTab(btn) {
+            const target = btn.dataset.tabTarget;
+            const tabSet = btn.closest('.tab-set');
+            if (!tabSet || !target) return;
+
+            // Update tab buttons
+            tabSet.querySelectorAll('.tab-btn').forEach(b => {
+                const isActive = b === btn;
+                b.classList.toggle('is-active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+
+            // Update panels
+            tabSet.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.toggle('is-active', panel.id === target);
+            });
+        }
+
+        // Arrow-key navigation for tab lists
+        document.querySelectorAll('.tab-nav').forEach(nav => {
+            nav.addEventListener('keydown', (e) => {
+                const btns = Array.from(nav.querySelectorAll('.tab-btn'));
+                const current = btns.indexOf(document.activeElement);
+                if (current === -1) return;
+                let next = current;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % btns.length;
+                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + btns.length) % btns.length;
+                else if (e.key === 'Home') next = 0;
+                else if (e.key === 'End') next = btns.length - 1;
+                else return;
+                e.preventDefault();
+                btns[next].focus();
+                switchTab(btns[next]);
+            });
+        });
+
+        // ==================== BRAND & PRICING FORM ====================
+        function saveBrandPricing() {
+            const data = {
+                brandName: document.getElementById('field-brandName').value,
+                positioning: document.getElementById('field-positioning').value,
+                archetype: document.getElementById('field-archetype').value,
+                promise: document.getElementById('field-promise').value,
+                tier1: document.getElementById('field-tier1').value,
+                tier2: document.getElementById('field-tier2').value,
+                tier3: document.getElementById('field-tier3').value
+            };
+
+            // Save to localStorage
+            localStorage.setItem('brandPricing', JSON.stringify(data));
+
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '\u2713 Saved!';
+            btn.style.background = 'var(--gold-light)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        function clearBrandPricing() {
+            document.getElementById('field-brandName').value = '';
+            document.getElementById('field-positioning').value = '';
+            document.getElementById('field-archetype').value = '';
+            document.getElementById('field-promise').value = '';
+            document.getElementById('field-tier1').value = '';
+            document.getElementById('field-tier2').value = '';
+            document.getElementById('field-tier3').value = '';
+            localStorage.removeItem('brandPricing');
+        }
+
+        // Load saved brand & pricing data on page load
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('brandPricing');
+            if (saved) {
+                const data = JSON.parse(saved);
+                document.getElementById('field-brandName').value = data.brandName || '';
+                document.getElementById('field-positioning').value = data.positioning || '';
+                document.getElementById('field-archetype').value = data.archetype || '';
+                document.getElementById('field-promise').value = data.promise || '';
+                document.getElementById('field-tier1').value = data.tier1 || '';
+                document.getElementById('field-tier2').value = data.tier2 || '';
+                document.getElementById('field-tier3').value = data.tier3 || '';
+            }
+        });
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        document.addEventListener('keydown', (e) => {
+            // Smooth scroll on anchor links
+            if (e.key === 'Enter' && e.target.classList.contains('editable-field')) {
+                e.target.blur();
+            }
+        });
+
+        // ==================== PRINT HANDLER ====================
+        // When printing, reveal all tab panels so nothing is hidden
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.tab-panel').forEach(el => {
+                el.classList.add('is-active');
+                el.style.display = 'block';
+            });
+        });
+
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.tab-panel').forEach(el => {
+                el.style.display = '';
+                if (!el.matches('.tab-set .tab-panel:first-of-type') &&
+                    !el.closest('.tab-set').querySelector('.tab-btn.is-active')?.dataset.tabTarget === el.id) {
+                    el.classList.remove('is-active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

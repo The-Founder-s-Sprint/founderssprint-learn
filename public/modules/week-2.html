@@ -1,0 +1,3183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: Customer Discovery & Market Sizing — The Founder's Sprint</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cormorant:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CSS CUSTOM PROPERTIES — "CALM" PALETTE ==================== */
+        :root {
+            /* Backgrounds — charcoal & bush greens */
+            --ink: #1A201E;
+            --green-deep: #152B1F;
+            --green-dark: #213A2D;
+            --green: #2D6A4F;
+            --green-mid: #40916C;
+
+            /* Primary accent — Sienna (replaces gold) */
+            --gold: #B85A2E;
+            --gold-light: #D4845A;
+            --gold-pale: #F0E4CC;
+
+            /* Warm neutrals — Cashmere & Ivory */
+            --cream: #EADFC6;
+            --ivory: #F5EBD6;
+            --white: #FFFFFF;
+
+            /* New Calm-palette aliases (preferred for new code) */
+            --bush-deep: #152B1F;
+            --bush: #213A2D;
+            --bush-mid: #2D6A4F;
+            --sienna: #B85A2E;
+            --sienna-deep: #8F4420;
+            --sienna-light: #D4845A;
+            --oak: #B89674;
+            --oak-light: #D4BC9E;
+            --cashmere: #D5C3A1;
+            --cashmere-pale: #EADFC6;
+
+            /* Greys */
+            --gray-300: #C8C5BB;
+            --gray-500: #8C8880;
+            --gray-700: #3D3B35;
+        }
+
+        /* ==================== RESET & BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gray-700);
+            background: var(--ivory);
+            line-height: 1.7;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* ==================== TYPOGRAPHY ==================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        .eyebrow {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .display-title {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(48px, 8vw, 76px);
+            font-weight: 300;
+            line-height: 1.1;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .display-title em {
+            font-style: italic;
+            color: var(--gold-light);
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.55);
+            max-width: 700px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--green-dark);
+            margin-bottom: 24px;
+            position: relative;
+            padding-top: 32px;
+        }
+
+        .section-title.light {
+            color: var(--white);
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .section-title::after {
+            content: '\25C6';
+            display: block;
+            position: absolute;
+            top: -12px;
+            left: 35px;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+        }
+
+        .gold-diamond {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .btn-gold {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== CROSSHATCH PATTERN ==================== */
+        .crosshatch {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crosshatch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(184, 90, 46, 0.03) 10px,
+                rgba(184, 90, 46, 0.03) 20px
+            );
+            pointer-events: none;
+        }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        section.hero {
+            background: var(--ink);
+            color: var(--white);
+            padding: 140px 0 80px;
+            display: flex;
+            align-items: flex-end;
+            min-height: 70vh;
+        }
+
+        /* ── DUOTONE HERO BACKGROUND ── */
+        .hero-bg-photo {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            filter: grayscale(1) contrast(1.05) brightness(0.9);
+        }
+        .hero-duotone-shadow {
+            position: absolute; inset: 0;
+            background: var(--ink);
+            mix-blend-mode: multiply;
+            opacity: 0.72;
+            pointer-events: none;
+        }
+        .hero-duotone-highlight {
+            position: absolute; inset: 0;
+            background: #7a5a18;
+            mix-blend-mode: screen;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .hero-duotone-gradient {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(to right, rgba(11,24,16,0.92) 0%, rgba(11,24,16,0.55) 55%, rgba(11,24,16,0.15) 100%),
+                linear-gradient(to top,   rgba(11,24,16,0.80) 0%, transparent 45%);
+            pointer-events: none;
+        }
+        .hero .container { position: relative; z-index: 2; }
+
+        section.light {
+            background: var(--ivory);
+        }
+
+        section.dark {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        section.dark h2,
+        section.dark h3 {
+            color: var(--white);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .session-info {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            display: inline-block;
+        }
+
+        /* ==================== FRAMEWORK CARDS ==================== */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 860px) {
+            .framework-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .framework-card {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                var(--cream);
+            border: none;
+            border-left: none;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: flex-start;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+            transition: background 0.35s ease, transform 0.35s ease;
+        }
+
+        .framework-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 32px,
+                rgba(201,160,54,0.04) 32px,
+                rgba(201,160,54,0.04) 33px
+            );
+            pointer-events: none;
+        }
+
+        .framework-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .framework-card:hover {
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 50%),
+                var(--gold-pale);
+            transform: translateY(-3px);
+        }
+
+        .framework-card-icon {
+            font-size: 80px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+        }
+
+        .framework-card-body h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--green-dark);
+        }
+
+        .framework-card-body p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .framework-card-body p + p {
+            margin-top: 8px;
+        }
+
+        /* ==================== CASE STUDY GRID ==================== */
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 48px 0;
+        }
+
+        .case-study {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                var(--cream);
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            transition: transform 0.35s ease;
+        }
+
+        .case-study::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .case-study:hover {
+            transform: translateY(-2px);
+        }
+
+        .case-study h4 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--green-dark);
+        }
+
+        .case-study-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            font-size: 15px;
+        }
+
+        .case-study-flow strong {
+            color: var(--green-dark);
+            font-weight: 600;
+        }
+
+        .case-study-flow::before {
+            content: '\25C6';
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        /* ==================== PILLAR CARDS ==================== */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        .pillar-card {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 28px;
+            align-items: start;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.04) 0%, transparent 40%),
+                rgba(26,32,30,0.5);
+            border: 1px solid rgba(201,160,54,0.15);
+            cursor: pointer;
+            transition: background 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+            position: relative;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 22px), calc(100% - 48px) 100%, 0 100%);
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 38px,
+                rgba(201,160,54,0.03) 38px,
+                rgba(201,160,54,0.03) 39px
+            );
+            pointer-events: none;
+        }
+
+        .pillar-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .pillar-card:hover {
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.1) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.06) 0%, transparent 40%),
+                rgba(26,32,30,0.6);
+            transform: translateY(-3px);
+            border-color: rgba(201,160,54,0.3);
+        }
+
+        .pillar-card-icon {
+            font-size: 112px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 112px;
+            height: 112px;
+        }
+
+        .pillar-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .pillar-card h3 {
+            font-size: 20px;
+            margin: 0;
+            color: var(--white);
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .pillar-card-expand-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            opacity: 0.6;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .pillar-card:hover .pillar-card-expand-hint {
+            opacity: 1;
+        }
+
+        .pillar-card-summary {
+            font-size: 16px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 0;
+        }
+
+        .pillar-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .pillar-card-content.expanded {
+            max-height: 600px;
+        }
+
+        .pillar-card-section {
+            margin-bottom: 16px;
+        }
+
+        .pillar-card-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .pillar-card-text {
+            font-size: 15px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ==================== TABBED ACCORDION ==================== */
+        .tab-set {
+            margin: 48px 0;
+        }
+
+        .tab-set-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .tab-set-hint::before,
+        .tab-set-hint::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(184, 90, 46, 0.25);
+        }
+
+        .tab-nav {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            border-bottom: 1px solid rgba(184, 90, 46, 0.3);
+            background: rgba(184, 90, 46, 0.04);
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            padding: 24px 20px 20px;
+            font-family: 'Josefin Sans', sans-serif;
+            cursor: pointer;
+            color: inherit;
+            position: relative;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 10px;
+            border-right: 1px solid rgba(184, 90, 46, 0.18);
+            text-align: center;
+            min-height: 130px;
+        }
+
+        .tab-btn:last-child { border-right: none; }
+
+        .tab-btn:hover {
+            background: rgba(184, 90, 46, 0.08);
+        }
+
+        .tab-btn:focus {
+            outline: 2px solid var(--gold);
+            outline-offset: -4px;
+        }
+
+        .tab-btn.is-active {
+            background: rgba(184, 90, 46, 0.12);
+        }
+
+        .tab-btn.is-active::after {
+            content: '';
+            position: absolute;
+            left: 0; right: 0;
+            bottom: -1px;
+            height: 4px;
+            background: var(--gold);
+        }
+
+        .tab-btn-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 13px;
+            letter-spacing: 0.15em;
+            opacity: 0.45;
+            display: block;
+        }
+
+        .tab-btn-icon {
+            font-size: 40px;
+            line-height: 1;
+            margin: 2px 0;
+            display: block;
+            filter: saturate(1) opacity(0.85);
+            transition: filter 0.2s;
+        }
+
+        .tab-btn.is-active .tab-btn-icon {
+            filter: saturate(1) opacity(1);
+        }
+
+        .tab-btn-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            line-height: 1.4;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+
+        .tab-btn.is-active .tab-btn-label {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .tab-panels {
+            position: relative;
+            padding: 40px 0 0;
+        }
+
+        .tab-panel {
+            display: none;
+            animation: tab-fade 0.35s ease;
+        }
+
+        .tab-panel.is-active {
+            display: block;
+        }
+
+        @keyframes tab-fade {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Panel content — grid split for sections */
+        .tab-panel-body {
+            position: relative;
+            padding: 36px 32px;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.05) 0%, transparent 50%),
+                rgba(184, 90, 46, 0.06);
+            border: none;
+            display: grid;
+            grid-template-columns: auto 1fr;
+            gap: 32px;
+            align-items: start;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+        }
+
+        .tab-panel-body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 32px,
+                rgba(201,160,54,0.035) 32px,
+                rgba(201,160,54,0.035) 33px
+            );
+            pointer-events: none;
+        }
+
+        .tab-panel-body::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+
+        .tab-panel-icon {
+            font-size: 96px;
+            line-height: 1;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tab-panel-content h4 {
+            font-size: 22px;
+            margin: 0 0 8px 0;
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .tab-panel-summary {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 24px;
+            opacity: 0.85;
+        }
+
+        .tab-panel-section {
+            margin-bottom: 20px;
+        }
+
+        .tab-panel-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .tab-panel-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .tab-panel-text {
+            font-size: 15px;
+            line-height: 1.75;
+            margin: 0;
+        }
+
+        /* Dark variant (for Founder Mindset section) */
+        .tab-set--dark .tab-nav {
+            background: rgba(184, 90, 46, 0.06);
+            border-top-color: rgba(184, 90, 46, 0.35);
+            border-bottom-color: rgba(184, 90, 46, 0.35);
+        }
+
+        .tab-set--dark .tab-btn {
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .tab-set--dark .tab-panel-body {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .tab-set--dark .tab-panel-content h4 {
+            color: var(--white);
+        }
+
+        .tab-set--dark .tab-panel-summary,
+        .tab-set--dark .tab-panel-text {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Mobile — stack tabs vertically */
+        @media (max-width: 768px) {
+            .tab-nav {
+                grid-template-columns: 1fr;
+                border-top: none;
+                border-bottom: none;
+            }
+
+            .tab-btn {
+                flex-direction: row;
+                justify-content: flex-start;
+                text-align: left;
+                min-height: auto;
+                padding: 18px 20px;
+                border-right: none;
+                border-top: 1px solid rgba(184, 90, 46, 0.2);
+                gap: 16px;
+            }
+
+            .tab-btn:first-child {
+                border-top: 1px solid rgba(184, 90, 46, 0.35);
+            }
+
+            .tab-btn:last-child {
+                border-bottom: 1px solid rgba(184, 90, 46, 0.35);
+            }
+
+            .tab-btn.is-active::after {
+                top: 0; bottom: 0; left: 0; right: auto;
+                width: 4px; height: auto;
+            }
+
+            .tab-btn-icon {
+                font-size: 32px;
+                flex-shrink: 0;
+            }
+
+            .tab-btn-num {
+                display: none;
+            }
+
+            .tab-panels {
+                padding-top: 24px;
+            }
+
+            .tab-panel-body {
+                grid-template-columns: 1fr;
+                padding: 24px;
+                gap: 20px;
+            }
+
+            .tab-panel-icon {
+                font-size: 72px;
+                width: 88px;
+                height: 88px;
+            }
+        }
+
+        /* ==================== LEARNING LOOP DIAGRAM ==================== */
+        .learning-loop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 48px 0 24px;
+        }
+
+        .learning-loop svg {
+            max-width: 680px;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .learning-loop svg {
+                max-width: 100%;
+            }
+        }
+
+        /* --- Learning Loop Hover --- */
+        .loop-node {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .loop-node:hover {
+            transform: scale(1.08);
+            filter: brightness(1.15);
+        }
+        .loop-arrow {
+            stroke-dashoffset: 0;
+            opacity: 0.6;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .loop-node { transition: none !important; }
+            .loop-node:hover { transform: none; filter: none; }
+            .pyramid-layer { transition: none !important; }
+            .pyramid-layer:hover { transform: none; filter: none; }
+            .market-layer { transition: none !important; }
+            .market-layer:hover { transform: none; filter: none; }
+            .market-layer circle, .market-layer text, .market-layer path { animation: none !important; opacity: 1 !important; }
+        }
+
+        /* Persona Pyramid hover */
+        .pyramid-layer {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .pyramid-layer:hover {
+            transform: scale(1.06);
+            filter: brightness(1.15);
+        }
+
+        /* Market sizing circles hover */
+        .market-layer {
+            cursor: pointer;
+            transform-origin: center center;
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        filter 0.35s ease;
+        }
+        .market-layer:hover {
+            transform: scale(1.05);
+            filter: brightness(1.12) drop-shadow(0 4px 12px rgba(201,160,54,0.2));
+        }
+
+        /* ==================== COMPARISON CARDS ==================== */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            position: relative;
+            padding: 40px 36px;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 20px), calc(100% - 44px) 100%, 0 100%);
+        }
+
+        .comparison-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                -55deg,
+                transparent, transparent 36px,
+                rgba(201,160,54,0.03) 36px,
+                rgba(201,160,54,0.03) 37px
+            );
+            pointer-events: none;
+        }
+
+        .comparison-false {
+            background:
+                linear-gradient(135deg, rgba(204,85,85,0.06) 0%, transparent 50%),
+                rgba(220, 100, 100, 0.06);
+            border: 1px solid rgba(204,85,85,0.2);
+        }
+
+        .comparison-false::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #cc5555, transparent);
+        }
+
+        .comparison-true {
+            background:
+                linear-gradient(135deg, rgba(70,150,100,0.06) 0%, transparent 50%),
+                rgba(70, 150, 100, 0.06);
+            border: 1px solid rgba(70,150,100,0.2);
+        }
+
+        .comparison-true::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #469664, transparent);
+        }
+
+        .comparison-card h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .comparison-item-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        /* ==================== EXERCISE FORM — FUTURIST ==================== */
+
+        .problem-statement-box {
+            position: relative;
+            padding: 56px 52px 52px;
+            margin: 48px 0;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.06) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.05) 0%, transparent 40%),
+                rgba(26,32,30,0.6);
+            border: 1px solid rgba(201,160,54,0.25);
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 28px), calc(100% - 64px) 100%, 0 100%);
+        }
+
+        .problem-statement-box::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(
+                    -55deg,
+                    transparent,
+                    transparent 38px,
+                    rgba(201,160,54,0.04) 38px,
+                    rgba(201,160,54,0.04) 39px
+                );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .problem-statement-box::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 140px;
+            height: 4px;
+            background: linear-gradient(90deg, #C9A036 0%, rgba(201,160,54,0) 100%);
+            z-index: 2;
+        }
+
+        .problem-statement-box .problem-template,
+        .problem-statement-box .problem-statement-field {
+            position: relative;
+            z-index: 1;
+        }
+
+        .problem-statement-field {
+            margin-bottom: 28px;
+            padding-left: 20px;
+            border-left: 2px solid rgba(201,160,54,0.12);
+            transition: border-left-color 0.4s ease, padding-left 0.4s ease;
+        }
+
+        .problem-statement-field:hover {
+            border-left-color: rgba(201,160,54,0.45);
+            padding-left: 24px;
+        }
+
+        .problem-statement-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .problem-statement-label::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background: #C9A036;
+            margin-right: 10px;
+            transform: rotate(45deg);
+            vertical-align: middle;
+            opacity: 0.7;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .problem-statement-field:hover .problem-statement-label::before {
+            opacity: 1;
+            transform: rotate(45deg) scale(1.3);
+        }
+
+        .problem-template {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 2;
+            color: rgba(255, 255, 255, 0.9);
+            position: relative;
+            z-index: 1;
+        }
+
+        .editable-field {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid rgba(201,160,54,0.25);
+            color: #C9A036;
+            padding: 6px 12px 6px 8px;
+            min-width: 200px;
+            outline: none;
+            transition: border-color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .editable-field:hover {
+            border-bottom-color: rgba(201,160,54,0.5);
+        }
+
+        .editable-field:focus {
+            border-bottom-color: #C9A036;
+            background: rgba(201,160,54,0.06);
+            box-shadow: 0 4px 20px rgba(201,160,54,0.08);
+        }
+
+        .editable-field::placeholder {
+            color: rgba(201,160,54,0.35);
+            font-style: italic;
+        }
+
+        .form-actions {
+            position: relative;
+            z-index: 1;
+            margin-top: 44px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(201,160,54,0.12);
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn-futurist {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            padding: 18px 36px;
+            background: linear-gradient(135deg, #C9A036 0%, #B85A2E 100%);
+            color: #1A201E;
+            border: none;
+            cursor: pointer;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 10px), calc(100% - 20px) 100%, 0 100%);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, filter 0.3s ease;
+        }
+
+        .btn-futurist:hover {
+            transform: translateY(-3px) translateX(2px);
+            box-shadow: 0 8px 24px rgba(201,160,54,0.2);
+            filter: brightness(1.1);
+        }
+
+        .btn-futurist:active {
+            transform: translateY(0) translateX(0);
+        }
+
+        .btn-futurist-ghost {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 28px;
+            background: transparent;
+            color: rgba(201,160,54,0.6);
+            border: 1px solid rgba(201,160,54,0.2);
+            cursor: pointer;
+            transition: color 0.3s ease, border-color 0.3s ease;
+        }
+
+        .btn-futurist-ghost:hover {
+            color: #C9A036;
+            border-color: rgba(201,160,54,0.5);
+        }
+
+        .form-footnote {
+            margin-top: 28px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.45);
+            max-width: 700px;
+            position: relative;
+            padding-left: 18px;
+        }
+        .form-footnote::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 4px;
+            width: 6px;
+            height: 6px;
+            background: #C9A036;
+            transform: rotate(45deg);
+            opacity: 0.5;
+        }
+
+        /* ==================== TASK TABLE ==================== */
+        .task-table {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin: 32px 0;
+            border-top: 2px solid var(--gold);
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(184, 90, 46, 0.25);
+            align-items: baseline;
+        }
+
+        .task-row:last-child {
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .task-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 28px;
+            color: var(--gold);
+            line-height: 1;
+            padding-top: 2px;
+        }
+
+        .task-body h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--green-dark);
+            margin: 0 0 6px 0;
+        }
+
+        .task-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .secondary-table .task-num {
+            color: var(--green-mid);
+        }
+
+        .secondary-table .task-row {
+            border-bottom-color: rgba(45, 106, 79, 0.15);
+        }
+
+        .secondary-table .task-row:last-child {
+            border-bottom: 2px solid var(--green-mid);
+        }
+
+        .secondary-table {
+            border-top-color: var(--green-mid);
+        }
+
+        /* ==================== NEXT WEEK PREVIEW ==================== */
+        .preview-card {
+            position: relative;
+            background:
+                linear-gradient(135deg, rgba(201,160,54,0.08) 0%, transparent 40%),
+                linear-gradient(315deg, rgba(184,90,46,0.06) 0%, transparent 40%),
+                var(--green-dark);
+            border: 1px solid rgba(201,160,54,0.3);
+            padding: 64px 56px 56px;
+            margin: 48px 0;
+            text-align: center;
+            overflow: hidden;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 56px) 100%, 0 100%);
+            transition: transform 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        border-color 0.35s ease;
+        }
+        .preview-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(-55deg, transparent, transparent 38px, rgba(201,160,54,0.04) 38px, rgba(201,160,54,0.04) 39px);
+            pointer-events: none;
+        }
+        .preview-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+        }
+        .preview-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(201,160,54,0.5);
+        }
+
+        .preview-card h3 {
+            position: relative;
+            font-size: 28px;
+            color: var(--gold-light);
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+        .preview-card h3::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #C9A036, transparent);
+            margin: 16px auto 0;
+        }
+
+        .preview-card p {
+            position: relative;
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 24px;
+            line-height: 1.7;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, 0.55);
+            padding: 48px 0;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        footer .brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ==================== SCROLL ANIMATIONS ==================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            .progress-bar {
+                display: none;
+            }
+
+            section {
+                padding: 40px 0;
+                page-break-inside: avoid;
+            }
+
+            .btn-gold {
+                background: var(--gold);
+                color: var(--ink);
+            }
+
+            body {
+                font-size: 16px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            section.hero {
+                padding: 132px 0 80px;
+                min-height: auto;
+            }
+
+            .display-title {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .framework-grid,
+            .case-studies,
+            .pillar-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .problem-statement-box {
+                padding: 36px 28px 32px;
+                clip-path: polygon(0 0, 100% 0, 100% calc(100% - 18px), calc(100% - 40px) 100%, 0 100%);
+            }
+
+            .problem-statement-field {
+                padding-left: 14px;
+            }
+
+            .editable-field {
+                min-width: 100px;
+            }
+
+            .btn-futurist {
+                padding: 16px 28px;
+            }
+        }
+
+        /* ==================== MENTOR SECTION ==================== */
+        .mentor-section {
+            background: var(--bush-deep);
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .mentor-grid {
+            display: grid;
+            grid-template-columns: 45% 55%;
+            min-height: 600px;
+        }
+
+        /* ---- Photo column ---- */
+        .mentor-photo-col {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mentor-photo-frame {
+            position: relative;
+            height: 100%;
+            min-height: 560px;
+        }
+
+        .mentor-photo-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            display: block;
+            filter: contrast(1.05);
+        }
+
+        /* Art Deco frame overlay */
+        .mentor-photo-frame::before {
+            content: '';
+            position: absolute;
+            inset: 20px;
+            border: 1px solid rgba(184, 90, 46, 0.35);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Corner accents — top-left */
+        .mentor-corner {
+            position: absolute;
+            z-index: 3;
+            width: 40px;
+            height: 40px;
+        }
+        .mentor-corner.tl { top: 10px; left: 10px;
+            border-top: 2px solid var(--sienna); border-left: 2px solid var(--sienna); }
+        .mentor-corner.tr { top: 10px; right: 10px;
+            border-top: 2px solid var(--sienna); border-right: 2px solid var(--sienna); }
+        .mentor-corner.bl { bottom: 10px; left: 10px;
+            border-bottom: 2px solid var(--sienna); border-left: 2px solid var(--sienna); }
+        .mentor-corner.br { bottom: 10px; right: 10px;
+            border-bottom: 2px solid var(--sienna); border-right: 2px solid var(--sienna); }
+
+        /* Sienna left-edge accent bar */
+        .mentor-photo-col::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 4px; height: 100%;
+            background: var(--sienna);
+        }
+
+        /* Step numeral watermark */
+        .mentor-numeral {
+            position: absolute;
+            bottom: 28px;
+            left: 28px;
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 120px;
+            line-height: 1;
+            color: var(--sienna);
+            opacity: 0.15;
+            z-index: 1;
+            user-select: none;
+        }
+
+        /* ---- Content column ---- */
+        .mentor-content-col {
+            padding: clamp(40px, 6vw, 72px) clamp(32px, 5vw, 64px) clamp(40px, 6vw, 72px) clamp(40px, 5vw, 56px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .mentor-name {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: clamp(52px, 6vw, 80px);
+            line-height: 0.95;
+            color: var(--ivory);
+            margin: 12px 0 6px;
+            letter-spacing: -0.01em;
+        }
+
+        .mentor-name em {
+            font-style: italic;
+            color: var(--sienna-light);
+        }
+
+        .mentor-tagline {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            color: rgba(245, 235, 214, 0.55);
+            line-height: 1.6;
+            margin-bottom: 28px;
+        }
+
+        .mentor-rule {
+            width: 64px;
+            height: 2px;
+            background: var(--sienna);
+            margin-bottom: 28px;
+        }
+
+        .mentor-bio {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.8;
+            color: rgba(245, 235, 214, 0.7);
+            margin-bottom: 40px;
+            max-width: 480px;
+        }
+
+        .mentor-bio strong {
+            color: var(--ivory);
+            font-weight: 600;
+        }
+
+        /* Credentials — 4 stats in a row */
+        .mentor-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+            border-top: 1px solid rgba(184, 90, 46, 0.25);
+            padding-top: 28px;
+            margin-bottom: 36px;
+        }
+
+        .mentor-stat {
+            padding-right: 20px;
+        }
+
+        .mentor-stat + .mentor-stat {
+            padding-left: 20px;
+            border-left: 1px solid rgba(184, 90, 46, 0.2);
+        }
+
+        .mentor-stat-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 40px;
+            line-height: 1;
+            color: var(--sienna-light);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mentor-stat-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: rgba(245, 235, 214, 0.45);
+            line-height: 1.4;
+        }
+
+        /* Press strip */
+        .mentor-press {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .mentor-press-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--sienna);
+            margin-right: 20px;
+            white-space: nowrap;
+        }
+
+        .mentor-press-outlets {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .mentor-press-name {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 15px;
+            font-style: italic;
+            color: rgba(245, 235, 214, 0.35);
+            letter-spacing: 0.05em;
+        }
+
+        .mentor-press-sep {
+            color: var(--sienna);
+            opacity: 0.4;
+            font-size: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .mentor-grid { grid-template-columns: 1fr; }
+            .mentor-photo-frame { min-height: 340px; }
+            .mentor-photo-col::after { display: none; }
+            .mentor-stats { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .mentor-stat + .mentor-stat { border-left: none; padding-left: 0; }
+            .mentor-stat:nth-child(odd) { border-right: 1px solid rgba(184,90,46,0.2); padding-right: 20px; }
+        }
+
+        /* ==================== MODULE NAVIGATION ==================== */
+        .module-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 32, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(201, 160, 54, 0.2);
+            padding: 0 24px;
+        }
+        .module-nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+        .module-nav-brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .module-nav-brand:hover { opacity: 0.8; }
+        .module-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .module-nav-link {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 8px 14px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .module-nav-link:hover {
+            color: #C9A036;
+            background: rgba(201, 160, 54, 0.08);
+        }
+        .module-nav-link.is-current {
+            color: #C9A036;
+            border-bottom: 2px solid #C9A036;
+        }
+        .module-nav-link.is-locked {
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            cursor: default;
+        }
+        .module-nav-sep {
+            width: 1px;
+            height: 16px;
+            background: rgba(201, 160, 54, 0.15);
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .module-nav-link { padding: 8px 8px; font-size: 8px; letter-spacing: 0.1em; }
+            .module-nav-brand { font-size: 9px; letter-spacing: 0.15em; }
+        }
+
+        /* ==================== TIER-SPECIFIC CONTENT ==================== */
+        .tier-section { display: none; margin: 0; }
+        .tier-section.tier-visible { display: block; }
+        .tier-block {
+            background: var(--green-deep);
+            padding: 56px clamp(24px, 5vw, 80px);
+            color: var(--cream);
+        }
+        .tier-block .eyebrow { color: var(--gold); margin-bottom: 12px; }
+        .tier-block h2 { color: var(--white); font-size: clamp(28px, 4vw, 36px); margin-bottom: 24px; font-weight: 300; }
+        .tier-block p { color: rgba(234, 223, 198, 0.8); margin-bottom: 16px; line-height: 1.75; }
+        .tier-block .tier-card {
+            background: rgba(255,255,255,0.06);
+            border-left: 3px solid var(--gold);
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .tier-block .tier-card h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .tier-block .tier-card p { color: rgba(234,223,198,0.7); font-size: 16px; margin-bottom: 0; }
+        .tier-divider {
+            height: 3px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin: 0;
+        }
+</style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Module Navigation -->
+    <nav class="module-nav">
+      <div class="module-nav-inner">
+        <a href="../index.html" class="module-nav-brand">The Founder's Sprint</a>
+        <ul class="module-nav-links">
+          <li><a href="/learn/week-1" target="_parent" class="module-nav-link">Week 1</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-2" target="_parent" class="module-nav-link is-current">Week 2</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-3" target="_parent" class="module-nav-link">Week 3</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-4" target="_parent" class="module-nav-link">Week 4</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-5" target="_parent" class="module-nav-link">Week 5</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/resources" target="_parent" class="module-nav-link">Resources</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero crosshatch">
+        <img src="images/week-2-hero.jpg" alt="" class="hero-bg-photo">
+        <div class="hero-duotone-shadow"></div>
+        <div class="hero-duotone-highlight"></div>
+        <div class="hero-duotone-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="eyebrow">The Founder's Sprint · Week 2</span>
+                <h1 class="display-title">Customer <em>Discovery</em><br>&amp; Market Sizing</h1>
+                <p class="subtitle">Turn interview insights into validated personas and a market worth pursuing.</p>
+                <div class="session-info">2 Hours · Max 10 Founders · Deliverable: Persona + TAM/SAM/SOM</div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Section 1: The Discovery Gap -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Foundation</span>
+            <h2 class="section-title">The Discovery Gap</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Most founders skip real customer research. They build on assumptions — guesses dressed up as insights. The gap between what you <em>think</em> customers want and what they <em>actually</em> need is where startups go to die. This week, we close that gap with data from real conversations.</p>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--green-dark);">The Interview-to-Insight Framework</h3>
+
+            <div class="framework-grid">
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">🎧</span>
+                    <div class="framework-card-body">
+                        <h4>Listen, Don't Pitch</h4>
+                        <p>A validation interview is not a sales conversation. Your job is to understand, not to convince. The moment you start explaining your solution, you stop learning.</p>
+                        <p style="font-size: 15px; color: var(--gray-500);"><em>Rule:</em> If you talked more than 30% of the time, it wasn't an interview.</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">📊</span>
+                    <div class="framework-card-body">
+                        <h4>Pattern Recognition</h4>
+                        <p>One interview tells you a story. Five interviews reveal a pattern. Ten interviews give you confidence. You need volume to separate individual quirks from market truths.</p>
+                        <p style="font-size: 15px; color: var(--gray-500);"><em>Threshold:</em> 5-10 interviews before drawing any conclusions.</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">🎯</span>
+                    <div class="framework-card-body">
+                        <h4>Signal vs Noise</h4>
+                        <p>People tell you what they think you want to hear. What they <em>do</em> matters more than what they <em>say</em>. Look for actions: money spent, time invested, workarounds built.</p>
+                        <p style="font-size: 15px; color: var(--gray-500);"><em>Test:</em> Have they spent money or time trying to solve this already?</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--green-dark); margin-top: 48px;">Discovery in Action: Uganda Case Studies</h3>
+
+            <div class="tab-set fade-up" data-tab-group="problems">
+                <div class="tab-set-hint">Three Case Studies · Select a Tab</div>
+                <div class="tab-nav" role="tablist" aria-label="Discovery Case Studies from Uganda">
+                    <button class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="problems-panel-1" id="problems-tab-1" data-tab-target="problems-panel-1" onclick="switchTab(this)">
+                        <span class="tab-btn-num">01</span>
+                        <span class="tab-btn-icon">🏍️</span>
+                        <span class="tab-btn-label">Boda-Boda Delivery Networks</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="problems-panel-2" id="problems-tab-2" data-tab-target="problems-panel-2" onclick="switchTab(this)">
+                        <span class="tab-btn-num">02</span>
+                        <span class="tab-btn-icon">🏫</span>
+                        <span class="tab-btn-label">School Fees Collection</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="problems-panel-3" id="problems-tab-3" data-tab-target="problems-panel-3" onclick="switchTab(this)">
+                        <span class="tab-btn-num">03</span>
+                        <span class="tab-btn-icon">🏪</span>
+                        <span class="tab-btn-label">Market Vendor Inventory</span>
+                    </button>
+                </div>
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" id="problems-panel-1" aria-labelledby="problems-tab-1">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">🏍️</div>
+                            <div class="tab-panel-content">
+                                <h4>Boda-Boda Delivery Networks</h4>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Assumption</span>
+                                    <p class="tab-panel-text">Riders' main problem is finding customers. Build an app to connect riders with delivery requests.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What Interviews Revealed</span>
+                                    <p class="tab-panel-text">After speaking with 8 boda-boda riders across Kampala, a founder discovered that finding customers wasn't the core issue at all. Riders had plenty of work. Their real struggle was managing cash flow between jobs — fuel costs, phone credit, and daily savings targets created a constant liquidity crunch.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Pivot</span>
+                                    <p class="tab-panel-text">Instead of a delivery marketplace, the founder explored micro-lending and daily savings tools tailored to the boda-boda economy.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>The real problem wasn't demand — it was cash flow. Without interviews, this founder would have built the wrong product entirely.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="problems-panel-2" aria-labelledby="problems-tab-2">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">🏫</div>
+                            <div class="tab-panel-content">
+                                <h4>School Fees Collection</h4>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Assumption</span>
+                                    <p class="tab-panel-text">Parents struggle to pay school fees. Build a mobile money payment tool to make fees easier to pay.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What Interviews Revealed</span>
+                                    <p class="tab-panel-text">A fintech founder interviewed 10 parents across Wakiso and Mukono districts. Payment itself wasn't the frustration. Parents already used mobile money. The real pain was tracking multiple children across different schools — different fee structures, different deadlines, different bank accounts. They were losing track and paying late fees unnecessarily.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Pivot</span>
+                                    <p class="tab-panel-text">The product shifted from a payment tool to a fee tracking and reminder system that aggregated all children's school obligations in one dashboard.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>The problem wasn't paying — it was organizing. Interviews separated the obvious symptom from the actual pain point.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="problems-panel-3" aria-labelledby="problems-tab-3">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">🏪</div>
+                            <div class="tab-panel-content">
+                                <h4>Market Vendor Inventory</h4>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Assumption</span>
+                                    <p class="tab-panel-text">Market vendors need a digital inventory system to track their stock. Build an app that lets them scan and manage products.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What Interviews Revealed</span>
+                                    <p class="tab-panel-text">After 7 conversations with vendors in Owino Market and Nakasero, the founder realized vendors already knew their stock — they could recite it from memory. What they desperately needed was access to credit to restock when demand spiked. The inventory "problem" was a solution looking for a customer.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">The Pivot</span>
+                                    <p class="tab-panel-text">The founder shifted to a micro-credit model using vendor transaction history (via mobile money) as a proxy for creditworthiness.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Key Insight</span>
+                                    <p class="tab-panel-text"><em>Vendors didn't need stock tracking — they needed credit access. The founder's assumption about the problem was completely wrong.</em></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Building Your Customer Persona -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Framework</span>
+            <h2 class="section-title light">Building Your Customer Persona</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">You've talked to 5-10 people. Now it's time to stop thinking about individuals and start building a composite — a single, vivid character who represents your target customer. A good persona isn't a spreadsheet row. It's a person you can name, describe, and empathise with.</p>
+
+            <div class="tab-set tab-set--dark fade-up" data-tab-group="persona">
+                <div class="tab-set-hint">Three Dimensions · Select a Tab</div>
+                <div class="tab-nav" role="tablist" aria-label="Customer Persona Dimensions">
+                    <button class="tab-btn is-active" role="tab" aria-selected="true" aria-controls="persona-panel-1" id="persona-tab-1" data-tab-target="persona-panel-1" onclick="switchTab(this)">
+                        <span class="tab-btn-num">01</span>
+                        <span class="tab-btn-icon">👤</span>
+                        <span class="tab-btn-label">Demographics &amp; Context</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="persona-panel-2" id="persona-tab-2" data-tab-target="persona-panel-2" onclick="switchTab(this)">
+                        <span class="tab-btn-num">02</span>
+                        <span class="tab-btn-icon">💔</span>
+                        <span class="tab-btn-label">Pain Points &amp; Motivations</span>
+                    </button>
+                    <button class="tab-btn" role="tab" aria-selected="false" aria-controls="persona-panel-3" id="persona-tab-3" data-tab-target="persona-panel-3" onclick="switchTab(this)">
+                        <span class="tab-btn-num">03</span>
+                        <span class="tab-btn-icon">📱</span>
+                        <span class="tab-btn-label">Behavior &amp; Channels</span>
+                    </button>
+                </div>
+                <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" id="persona-panel-1" aria-labelledby="persona-tab-1">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">👤</div>
+                            <div class="tab-panel-content">
+                                <h4>Demographics &amp; Context</h4>
+                                <p class="tab-panel-summary">The basic facts that define who your customer is and where they operate.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Core Demographics</span>
+                                    <p class="tab-panel-text">Age range, gender, location, income level, occupation, education, and family structure. Be specific — "25-35 year old mothers in Kampala" is better than "women in Uganda."</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Uganda-Specific Context</span>
+                                    <p class="tab-panel-text">Urban vs peri-urban vs rural. Formal economy vs informal economy. Mobile money usage level (MTN MoMo, Airtel Money). Language preferences. Access to smartphone vs feature phone. These factors shape what solutions are even possible.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Economic Reality</span>
+                                    <p class="tab-panel-text">Monthly income range, income stability (salaried vs daily earnings), savings behaviour, and existing financial obligations. Understanding economic context prevents you from pricing yourself out of your own market.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="persona-panel-2" aria-labelledby="persona-tab-2">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">💔</div>
+                            <div class="tab-panel-content">
+                                <h4>Pain Points &amp; Motivations</h4>
+                                <p class="tab-panel-summary">The emotional core of your persona — what drives them and what holds them back.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What Keeps Them Up at Night</span>
+                                    <p class="tab-panel-text">The anxieties, frustrations, and fears that relate to the problem you're solving. Use their actual words from interviews. "I never know if I'll have enough for school fees next term" is more powerful than "financial uncertainty."</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What They've Already Tried</span>
+                                    <p class="tab-panel-text">Previous attempts to solve the problem — other products, workarounds, manual processes. What worked partially? What failed? Why did they stop using past solutions? This tells you what your product must beat.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">What "Solved" Looks Like</span>
+                                    <p class="tab-panel-text">Map the emotional journey from frustration to resolution. What does your customer's life look like when this problem no longer exists? Paint that picture — it becomes your product's promise.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" id="persona-panel-3" aria-labelledby="persona-tab-3">
+                        <div class="tab-panel-body">
+                            <div class="tab-panel-icon">📱</div>
+                            <div class="tab-panel-content">
+                                <h4>Behavior &amp; Channels</h4>
+                                <p class="tab-panel-summary">How your customer moves through the world — and where you can reach them.</p>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Where They Spend Time</span>
+                                    <p class="tab-panel-text">WhatsApp groups, Facebook communities, market days, church or mosque gatherings, trading centres, SACCOs, village savings groups. Understanding their daily rhythms tells you when and where to show up.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">How They Find Solutions</span>
+                                    <p class="tab-panel-text">Word of mouth from neighbours? Radio advertisements? Posters at trading centres? Agent networks? WhatsApp forwards? The channel your customer trusts is the channel you must use.</p>
+                                </div>
+                                <div class="tab-panel-section">
+                                    <span class="tab-panel-label">Technology Comfort</span>
+                                    <p class="tab-panel-text">Do they use apps or just USSD? Do they type or prefer voice notes? Are they comfortable with digital payments or do they prefer cash? Your product's interface must match their comfort level, not yours.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--white); text-transform: uppercase; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.1em; margin-top: 64px;">The Persona Pyramid</h3>
+
+            <div class="learning-loop fade-up">
+                <svg viewBox="0 0 680 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Persona Pyramid: Demographics, Behaviors, Pain Points and Motivations">
+                  <defs>
+                    <pattern id="bauhaus-hatch" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="20" stroke="#C9A036" stroke-width="0.5" opacity="0.08"/>
+                    </pattern>
+                  </defs>
+
+                  <!-- Background hatch -->
+                  <rect x="0" y="0" width="680" height="420" fill="url(#bauhaus-hatch)"/>
+
+                  <!-- Decorative: Bauhaus corner accents — gold for contrast -->
+                  <line x1="30" y1="20" x2="80" y2="20" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="30" y1="20" x2="30" y2="70" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="600" y1="20" x2="650" y2="20" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="650" y1="20" x2="650" y2="70" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="30" y1="400" x2="80" y2="400" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="30" y1="350" x2="30" y2="400" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="600" y1="400" x2="650" y2="400" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+                  <line x1="650" y1="350" x2="650" y2="400" stroke="#C9A036" stroke-width="1" opacity="0.35"/>
+
+                  <!-- Decorative: small gold diamonds -->
+                  <rect x="337" y="24" width="6" height="6" fill="#C9A036" transform="rotate(45,340,27)" opacity="0.5"/>
+                  <rect x="337" y="394" width="6" height="6" fill="#C9A036" transform="rotate(45,340,397)" opacity="0.5"/>
+
+                  <!-- Pyramid: Bottom layer (largest) — Pain Points & Motivations -->
+                  <g class="pyramid-layer">
+                  <polygon points="130,375 550,375 460,250 220,250" fill="#B85A2E" opacity="0.25" stroke="#C9A036" stroke-width="1.5"/>
+                  <text x="340" y="278" text-anchor="middle" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#C9A036" opacity="0.7">03</text>
+                  <text x="340" y="306" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="14" letter-spacing="3" fill="#C9A036">WHAT THEY NEED</text>
+                  <text x="340" y="332" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="13" fill="rgba(201,160,54,0.8)">pain points + motivations</text>
+                  </g>
+
+                  <!-- Pyramid: Middle layer — Behaviors -->
+                  <g class="pyramid-layer">
+                  <polygon points="220,240 460,240 412,148 268,148" fill="#213A2D" stroke="#C9A036" stroke-width="1.5"/>
+                  <text x="340" y="172" text-anchor="middle" font-family="'Cormorant', serif" font-weight="300" font-size="14" fill="#C9A036" opacity="0.7">02</text>
+                  <text x="340" y="196" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="12" letter-spacing="2" fill="#FFFFFF">WHAT THEY DO</text>
+                  <text x="340" y="218" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">behaviors &amp; channels</text>
+                  </g>
+
+                  <!-- Pyramid: Top layer (smallest) — Demographics — wide enough for text -->
+                  <g class="pyramid-layer">
+                  <polygon points="260,138 420,138 378,58 302,58" fill="#B85A2E" opacity="0.85" stroke="#C9A036" stroke-width="1.5"/>
+                  <text x="340" y="80" text-anchor="middle" font-family="'Cormorant', serif" font-weight="300" font-size="13" fill="#1A201E" opacity="0.7">01</text>
+                  <text x="340" y="100" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="10" letter-spacing="1.5" fill="#1A201E">WHO THEY ARE</text>
+                  <text x="340" y="120" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="rgba(26,32,30,0.7)">demographics</text>
+                  </g>
+
+                  <!-- Side annotations — gold for readability -->
+                  <text x="120" y="100" text-anchor="end" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(201,160,54,0.6)" font-style="italic">demographics</text>
+                  <line x1="125" y1="97" x2="256" y2="97" stroke="#C9A036" stroke-width="0.75" opacity="0.35" stroke-dasharray="4,4"/>
+
+                  <text x="120" y="195" text-anchor="end" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(201,160,54,0.6)" font-style="italic">behaviors</text>
+                  <line x1="125" y1="192" x2="215" y2="192" stroke="#C9A036" stroke-width="0.75" opacity="0.35" stroke-dasharray="4,4"/>
+
+                  <text x="120" y="305" text-anchor="end" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(201,160,54,0.6)" font-style="italic">needs</text>
+                  <line x1="125" y1="302" x2="175" y2="302" stroke="#C9A036" stroke-width="0.75" opacity="0.35" stroke-dasharray="4,4"/>
+
+                  <!-- Size indicators on right — gold for visibility -->
+                  <text x="575" y="100" text-anchor="start" font-family="'Josefin Sans', sans-serif" font-size="8" letter-spacing="2" fill="rgba(201,160,54,0.5)">SMALLEST</text>
+                  <text x="575" y="310" text-anchor="start" font-family="'Josefin Sans', sans-serif" font-size="8" letter-spacing="2" fill="rgba(201,160,54,0.5)">LARGEST</text>
+                  <line x1="570" y1="110" x2="570" y2="295" stroke="#C9A036" stroke-width="0.75" opacity="0.3"/>
+                  <polygon points="566,295 574,295 570,305" fill="#C9A036" opacity="0.35"/>
+
+                </svg>
+            </div>
+
+            <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 16px; max-width: 700px; margin: 0 auto; line-height: 1.7;">The strongest personas are built from the bottom up. Start with needs, then understand behaviors, then layer on demographics. Most founders do this backwards — they start with who, but never get to why.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: Market Sizing -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Framework</span>
+            <h2 class="section-title">TAM, SAM, SOM — In Plain Language</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Market sizing is not about impressing investors with big numbers. It's about understanding whether the market you're entering is large enough to sustain a business — and small enough that you can actually reach it.</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card comparison-false fade-up">
+                    <h4 style="color: var(--green-dark);">Common Market Sizing Mistakes</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>"There are 45 million Ugandans, so our market is huge."</strong> Population is not a market. Most of those people will never hear of you, need you, or pay you.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>Googling "market size" and using someone else's number.</strong> Reports from consulting firms describe global markets, not your reality on the ground in Kampala.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>Top-down only: starting with GDP and dividing.</strong> This approach gives you a number that sounds impressive but has no connection to your actual business model.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>Ignoring willingness and ability to pay.</strong> A problem can be real and widespread — but if people can't or won't pay to solve it, it's not a market.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>Counting everyone who has the problem, not those who'd pay to solve it.</strong> The gap between "has the problem" and "would pay for a solution" is enormous.</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card comparison-true fade-up">
+                    <h4 style="color: var(--green-dark);">How to Size It Right</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>Start bottom-up: how many customers can you actually reach?</strong> Count the people you can physically or digitally access through your planned distribution channels.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>Use your interview data to estimate conversion.</strong> Of the people you talked to, how many showed genuine willingness to pay? That ratio is your conversion estimate.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>TAM = total addressable, SAM = serviceable, SOM = obtainable Year 1.</strong> Three concentric circles, each one smaller and more honest than the last.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>Factor in pricing, distribution channels, and payment methods.</strong> A customer who would pay UGX 5,000/month via mobile money is more valuable than one who "might" pay UGX 50,000 in cash.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>Be honest: a small, real market beats a large, imaginary one.</strong> Investors and partners respect founders who know their numbers. Honesty builds credibility.</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Eaxit.co: TAM/SAM/SOM Case Study Illustration -->
+            <div style="margin-top: 64px;">
+                <h3 style="text-align: center; color: var(--green-dark); font-size: 22px; letter-spacing: 1px; margin-bottom: 8px;">Case Study: Eaxit.co</h3>
+                <p style="text-align: center; font-size: 15px; color: rgba(26,32,30,0.6); margin-bottom: 40px; max-width: 600px; margin-left: auto; margin-right: auto;">An online marketplace selling African goods to the diaspora in America. Watch how the market narrows from ambition to reality.</p>
+
+                <div class="svg-container fade-up" style="max-width: 860px; margin: 0 auto;">
+                  <svg viewBox="0 0 860 520" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TAM SAM SOM concentric circle diagram for Eaxit.co showing market narrowing from 2.1 million Africans to 32,900 Ugandans">
+
+                    <!-- Definitions: gradients, patterns -->
+                    <defs>
+                      <radialGradient id="tam-grad" cx="55%" cy="45%">
+                        <stop offset="0%" stop-color="#5BC0EB" stop-opacity="0.25"/>
+                        <stop offset="70%" stop-color="#3A8FBF" stop-opacity="0.35"/>
+                        <stop offset="100%" stop-color="#2A6F9F" stop-opacity="0.45"/>
+                      </radialGradient>
+                      <radialGradient id="sam-grad" cx="45%" cy="40%">
+                        <stop offset="0%" stop-color="#E8734A" stop-opacity="0.5"/>
+                        <stop offset="60%" stop-color="#D4533A" stop-opacity="0.65"/>
+                        <stop offset="100%" stop-color="#C04030" stop-opacity="0.75"/>
+                      </radialGradient>
+                      <radialGradient id="som-grad" cx="40%" cy="35%">
+                        <stop offset="0%" stop-color="#C9A036" stop-opacity="0.55"/>
+                        <stop offset="60%" stop-color="#B08A28" stop-opacity="0.7"/>
+                        <stop offset="100%" stop-color="#8A6A18" stop-opacity="0.85"/>
+                      </radialGradient>
+                      <!-- Subtle Africa outline for TAM -->
+                      <clipPath id="tam-clip"><circle cx="590" cy="220" r="190"/></clipPath>
+                    </defs>
+
+                    <!-- Background grid lines for structure -->
+                    <line x1="30" y1="430" x2="830" y2="430" stroke="#213A2D" stroke-width="0.5" opacity="0.15"/>
+
+                    <!-- ===== TAM CIRCLE (right, largest) ===== -->
+                    <g class="market-layer" data-layer="tam">
+                      <circle cx="590" cy="220" r="190" fill="url(#tam-grad)" stroke="#5BC0EB" stroke-width="2" opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="0.3s" fill="freeze"/>
+                        <animate attributeName="r" from="20" to="190" dur="0.9s" begin="0.3s" fill="freeze" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                      </circle>
+                      <!-- Africa silhouette hint -->
+                      <g clip-path="url(#tam-clip)" opacity="0">
+                        <animate attributeName="opacity" from="0" to="0.12" dur="0.6s" begin="1.0s" fill="freeze"/>
+                        <path d="M570,60 C575,65 585,68 590,75 C595,85 600,95 598,108 C596,118 602,128 608,135 C615,142 622,148 628,158 C632,168 635,180 630,192 C625,205 618,215 620,228 C622,240 628,250 625,265 C622,278 615,290 608,300 C602,308 595,318 590,330 C585,340 578,348 572,338 C565,328 560,315 555,305 C550,295 542,288 538,278 C535,268 532,255 535,242 C538,230 545,220 542,208 C538,195 530,185 528,172 C526,160 530,148 535,138 C540,128 548,118 555,108 C560,98 565,85 568,72 Z" fill="#fff" opacity="0.5"/>
+                      </g>
+                      <!-- TAM label -->
+                      <text x="590" y="195" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="22" fill="#1A201E" opacity="0" letter-spacing="0.5">
+                        2.1 million Africans
+                        <animate attributeName="opacity" from="0" to="0.9" dur="0.5s" begin="1.1s" fill="freeze"/>
+                      </text>
+                      <text x="590" y="222" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="22" fill="#1A201E" opacity="0" letter-spacing="0.5">
+                        in America
+                        <animate attributeName="opacity" from="0" to="0.9" dur="0.5s" begin="1.1s" fill="freeze"/>
+                      </text>
+                      <text x="590" y="252" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="11" fill="#2A6F9F" opacity="0" letter-spacing="3">
+                        ( TAM )
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="1.3s" fill="freeze"/>
+                      </text>
+                    </g>
+
+                    <!-- ===== SAM CIRCLE (center, medium) ===== -->
+                    <g class="market-layer" data-layer="sam">
+                      <circle cx="310" cy="240" r="120" fill="url(#sam-grad)" stroke="#D4533A" stroke-width="1.5" opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.7s" begin="1.8s" fill="freeze"/>
+                        <animate attributeName="r" from="15" to="120" dur="0.8s" begin="1.8s" fill="freeze" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                      </circle>
+                      <!-- Uganda outline hint -->
+                      <path d="M305,177 C310,173 318,175 322,180 C326,185 328,193 325,200 C322,207 316,211 312,217 C308,223 306,230 308,237 C310,243 315,247 312,253 C308,259 302,263 300,270 C298,277 300,283 305,287 C310,290 305,295 300,293 C295,290 290,283 288,275 C286,267 288,257 292,250 C296,243 298,235 296,227 C294,219 290,213 292,203 C294,193 300,183 305,177 Z" fill="#fff" opacity="0" transform="translate(-2,0)">
+                        <animate attributeName="opacity" from="0" to="0.15" dur="0.5s" begin="2.4s" fill="freeze"/>
+                      </path>
+                      <text x="310" y="222" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="18" fill="#fff" opacity="0" letter-spacing="0.5">
+                        400,000
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.5s" fill="freeze"/>
+                      </text>
+                      <text x="310" y="244" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="14" fill="#fff" opacity="0" letter-spacing="0.5">
+                        East Africans
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.5s" fill="freeze"/>
+                      </text>
+                      <text x="310" y="262" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="14" fill="#fff" opacity="0" letter-spacing="0.5">
+                        in America
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.5s" fill="freeze"/>
+                      </text>
+                      <text x="310" y="288" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="10" fill="rgba(255,255,255,0.8)" opacity="0" letter-spacing="3">
+                        ( SAM )
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="2.7s" fill="freeze"/>
+                      </text>
+                    </g>
+
+                    <!-- ===== SOM CIRCLE (left, smallest) ===== -->
+                    <g class="market-layer" data-layer="som">
+                      <circle cx="130" cy="265" r="65" fill="url(#som-grad)" stroke="#C9A036" stroke-width="1.5" opacity="0">
+                        <animate attributeName="opacity" from="0" to="1" dur="0.6s" begin="3.2s" fill="freeze"/>
+                        <animate attributeName="r" from="8" to="65" dur="0.7s" begin="3.2s" fill="freeze" calcMode="spline" keySplines="0.25 0.46 0.45 0.94"/>
+                      </circle>
+                      <!-- Pulsing ring to draw attention to SOM -->
+                      <circle cx="130" cy="265" r="65" fill="none" stroke="#C9A036" stroke-width="1" opacity="0">
+                        <animate attributeName="opacity" from="0" to="0.4" dur="0.5s" begin="3.8s" fill="freeze"/>
+                        <animate attributeName="r" values="65;72;65" dur="2.5s" begin="3.8s" repeatCount="indefinite"/>
+                        <animate attributeName="opacity" values="0.4;0.1;0.4" dur="2.5s" begin="3.8s" repeatCount="indefinite"/>
+                      </circle>
+                      <text x="130" y="251" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="16" fill="#1A201E" opacity="0" letter-spacing="0.5">
+                        32,900
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3.8s" fill="freeze"/>
+                      </text>
+                      <text x="130" y="269" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="11" fill="#1A201E" opacity="0" letter-spacing="0.5">
+                        Ugandans
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3.8s" fill="freeze"/>
+                      </text>
+                      <text x="130" y="285" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="11" fill="#1A201E" opacity="0" letter-spacing="0.5">
+                        in America
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="3.8s" fill="freeze"/>
+                      </text>
+                      <text x="130" y="305" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="9" fill="rgba(26,32,30,0.7)" opacity="0" letter-spacing="3">
+                        ( SOM )
+                        <animate attributeName="opacity" from="0" to="1" dur="0.5s" begin="4.0s" fill="freeze"/>
+                      </text>
+                    </g>
+
+                    <!-- ===== CONNECTING ARROWS (narrowing) ===== -->
+                    <!-- TAM → SAM arrow -->
+                    <line x1="425" y1="225" x2="405" y2="230" stroke="#C9A036" stroke-width="1" opacity="0" stroke-dasharray="4,3">
+                      <animate attributeName="opacity" from="0" to="0.5" dur="0.4s" begin="2.6s" fill="freeze"/>
+                    </line>
+                    <polygon points="407,227 408,233 400,231" fill="#C9A036" opacity="0">
+                      <animate attributeName="opacity" from="0" to="0.5" dur="0.4s" begin="2.6s" fill="freeze"/>
+                    </polygon>
+
+                    <!-- SAM → SOM arrow -->
+                    <line x1="210" y1="252" x2="188" y2="258" stroke="#C9A036" stroke-width="1" opacity="0" stroke-dasharray="4,3">
+                      <animate attributeName="opacity" from="0" to="0.5" dur="0.4s" begin="3.9s" fill="freeze"/>
+                    </line>
+                    <polygon points="190,255 191,261 183,259" fill="#C9A036" opacity="0">
+                      <animate attributeName="opacity" from="0" to="0.5" dur="0.4s" begin="3.9s" fill="freeze"/>
+                    </polygon>
+
+                    <!-- ===== REVENUE CALCULATION (bottom) ===== -->
+                    <g opacity="0">
+                      <animate attributeName="opacity" from="0" to="1" dur="0.8s" begin="4.5s" fill="freeze"/>
+
+                      <!-- Divider line -->
+                      <line x1="50" y1="430" x2="810" y2="430" stroke="#C9A036" stroke-width="0.75" opacity="0.3"/>
+
+                      <!-- Revenue math -->
+                      <text x="50" y="460" font-family="'Cormorant Garamond', serif" font-size="17" fill="#1A201E" opacity="0.85">If 10% of 32,900 Ugandans spend $1,000/year by Year 3 →</text>
+                      <text x="50" y="485" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="18" fill="#C9A036" letter-spacing="1">$3.2M annual revenue</text>
+
+                      <!-- Amazon comparison -->
+                      <text x="50" y="508" font-family="'Cormorant Garamond', serif" font-size="13" fill="rgba(26,32,30,0.5)" font-style="italic">Avg. Amazon Prime account spends $1,400 annually — this estimate is conservative.</text>
+                    </g>
+
+                    <!-- ===== DECORATIVE: corner brackets ===== -->
+                    <line x1="30" y1="40" x2="60" y2="40" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+                    <line x1="30" y1="40" x2="30" y2="70" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+                    <line x1="800" y1="40" x2="830" y2="40" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+                    <line x1="830" y1="40" x2="830" y2="70" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+
+                    <!-- Gold diamond markers -->
+                    <rect x="427" y="30" width="6" height="6" fill="#C9A036" transform="rotate(45,430,33)" opacity="0.4"/>
+
+                  </svg>
+                </div>
+
+                <p style="text-align: center; color: rgba(26,32,30,0.6); font-size: 15px; max-width: 680px; margin: 32px auto 0; line-height: 1.7;">Notice how the market narrows at each level. The TAM is everyone who <em>could</em> buy. The SAM is everyone you <em>can reach</em>. The SOM is who you can <em>realistically sell to</em> in Year 1. Investors want to see that you understand the difference.</p>
+            </div>
+
+            <!-- ITM + Capture Rate Teaching -->
+            <div style="margin-top: 64px; max-width: 800px;">
+                <h3 style="color: var(--green-dark); font-size: 22px; margin-bottom: 16px;">A Note on Scope — and Honesty</h3>
+
+                <p style="margin-bottom: 20px; line-height: 1.8;">Your TAM could technically be all of Africa — or even the global market for your category. But as an early-stage founder in Uganda, it's more useful to scope your TAM to the country you're operating in. You can always expand later. Right now, you need focus.</p>
+
+                <p style="margin-bottom: 20px; line-height: 1.8;">More importantly, there's a concept most market sizing frameworks skip: your <strong style="color: var(--gold);">Initial Target Market (ITM)</strong>. This is even smaller than your SOM. It's the specific group of customers you'll go after <em>first</em> — your beachhead. The neighbourhood, the WhatsApp group, the market stall row. The people you can physically reach in Week 1.</p>
+
+                <div style="background: rgba(184,90,46,0.08); border-left: 3px solid var(--gold); padding: 20px 24px; margin: 28px 0;">
+                    <p style="margin-bottom: 8px; font-weight: 600; color: var(--green-dark);">The Capture Rate Reality Check</p>
+                    <p style="margin-bottom: 0; line-height: 1.75; color: var(--gray-700);">Just because your SOM is 5,000 people doesn't mean you'll win all 5,000. You won't. A realistic Year 1 capture rate for a new product might be 2–10% of your SOM. If you're projecting 50% market capture in Year 1, you're not being honest — you're writing fiction. Investors know the difference. The interactive tool below helps you model this honestly.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 4: Interactive Market Sizing Tool -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Exercise</span>
+            <h2 class="section-title light">Your Market — Visualized</h2>
+
+            <p style="margin-bottom: 16px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">Enter your numbers below. The diagram updates in real time as you type — watch your market narrow from ambition to reality. Use real data from your research, not guesses.</p>
+            <p style="margin-bottom: 48px; font-size: 15px; color: rgba(255,255,255,0.5);">Tip: Start with your ITM and work outward. It's easier to expand a real number than to shrink a fantasy.</p>
+
+            <!-- Interactive Input Form -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 800px; margin-bottom: 48px;">
+                <div>
+                    <label style="display: block; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #5BC0EB; margin-bottom: 6px;">TAM — Total Addressable Market</label>
+                    <input type="text" id="ms-tam" class="editable-field" placeholder="e.g. 2,000,000" maxlength="20" style="width: 100%; background: rgba(255,255,255,0.08); border-color: rgba(91,192,235,0.3); color: #fff;" oninput="updateMarketViz()">
+                    <span style="font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5;">Everyone in Uganda (or your country) who has this problem</span>
+                </div>
+                <div>
+                    <label style="display: block; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #D4533A; margin-bottom: 6px;">SAM — Serviceable Available Market</label>
+                    <input type="text" id="ms-sam" class="editable-field" placeholder="e.g. 200,000" maxlength="20" style="width: 100%; background: rgba(255,255,255,0.08); border-color: rgba(212,83,58,0.3); color: #fff;" oninput="updateMarketViz()">
+                    <span style="font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5;">Those you can actually reach with your channels</span>
+                    <span id="warn-sam" style="display: none; font-size: 12px; color: #D4533A; font-family: 'Josefin Sans', sans-serif; font-weight: 600; margin-top: 6px; line-height: 1.4; width: 100%;"></span>
+                </div>
+                <div>
+                    <label style="display: block; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #C9A036; margin-bottom: 6px;">SOM — Serviceable Obtainable Market</label>
+                    <input type="text" id="ms-som" class="editable-field" placeholder="e.g. 15,000" maxlength="20" style="width: 100%; background: rgba(255,255,255,0.08); border-color: rgba(201,160,54,0.3); color: #fff;" oninput="updateMarketViz()">
+                    <span style="font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5;">Realistic customers you could win in Year 1</span>
+                    <span id="warn-som" style="display: none; font-size: 12px; color: #D4533A; font-family: 'Josefin Sans', sans-serif; font-weight: 600; margin-top: 6px; line-height: 1.4; width: 100%;"></span>
+                </div>
+                <div>
+                    <label style="display: block; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: #7ED957; margin-bottom: 6px;">ITM — Initial Target Market</label>
+                    <input type="text" id="ms-itm" class="editable-field" placeholder="e.g. 500" maxlength="20" style="width: 100%; background: rgba(255,255,255,0.08); border-color: rgba(126,217,87,0.3); color: #fff;" oninput="updateMarketViz()">
+                    <span style="font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.5;">Your beachhead — the first customers you'll pursue</span>
+                    <span id="warn-itm" style="display: none; font-size: 12px; color: #D4533A; font-family: 'Josefin Sans', sans-serif; font-weight: 600; margin-top: 6px; line-height: 1.4; width: 100%;"></span>
+                </div>
+            </div>
+
+            <!-- Dynamic SVG Visualization — horizontal spread like Eaxit.co -->
+            <div id="market-viz-container" style="max-width: 860px; margin: 0 auto; position: relative;">
+                <svg id="market-viz" viewBox="0 -70 860 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Interactive TAM SAM SOM ITM market sizing visualization">
+                    <defs>
+                        <radialGradient id="v-tam-grad" cx="55%" cy="45%">
+                            <stop offset="0%" stop-color="#5BC0EB" stop-opacity="0.2"/>
+                            <stop offset="70%" stop-color="#3A8FBF" stop-opacity="0.3"/>
+                            <stop offset="100%" stop-color="#2A6F9F" stop-opacity="0.42"/>
+                        </radialGradient>
+                        <radialGradient id="v-sam-grad" cx="45%" cy="40%">
+                            <stop offset="0%" stop-color="#E8734A" stop-opacity="0.4"/>
+                            <stop offset="60%" stop-color="#D4533A" stop-opacity="0.55"/>
+                            <stop offset="100%" stop-color="#C04030" stop-opacity="0.7"/>
+                        </radialGradient>
+                        <radialGradient id="v-som-grad" cx="40%" cy="35%">
+                            <stop offset="0%" stop-color="#C9A036" stop-opacity="0.45"/>
+                            <stop offset="60%" stop-color="#B08A28" stop-opacity="0.6"/>
+                            <stop offset="100%" stop-color="#8A6A18" stop-opacity="0.8"/>
+                        </radialGradient>
+                        <radialGradient id="v-itm-grad" cx="40%" cy="35%">
+                            <stop offset="0%" stop-color="#7ED957" stop-opacity="0.5"/>
+                            <stop offset="60%" stop-color="#5CB840" stop-opacity="0.65"/>
+                            <stop offset="100%" stop-color="#4A8C32" stop-opacity="0.85"/>
+                        </radialGradient>
+                    </defs>
+
+                    <!-- Decorative corner brackets -->
+                    <line x1="30" y1="30" x2="60" y2="30" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+                    <line x1="30" y1="30" x2="30" y2="60" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+                    <line x1="800" y1="30" x2="830" y2="30" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+                    <line x1="830" y1="30" x2="830" y2="60" stroke="#C9A036" stroke-width="1" opacity="0.25"/>
+
+                    <!-- Placeholder text when empty -->
+                    <text id="viz-placeholder" x="430" y="240" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="20" fill="rgba(255,255,255,0.25)" font-style="italic">Enter your numbers above to see your market come to life</text>
+
+                    <!-- TAM circle (rightmost, largest) -->
+                    <circle id="viz-tam" cx="620" cy="230" r="0" fill="url(#v-tam-grad)" stroke="#5BC0EB" stroke-width="1.5" style="transition: all 0.5s ease;"/>
+                    <!-- TAM label line + caption -->
+                    <g id="viz-tam-callout" opacity="0">
+                        <line x1="620" y1="42" x2="620" y2="70" stroke="#5BC0EB" stroke-width="1" stroke-dasharray="3,3"/>
+                        <text x="620" y="32" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="18" fill="#5BC0EB" id="viz-tam-num"></text>
+                        <text x="620" y="18" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="9" fill="#5BC0EB" letter-spacing="3">( TAM )</text>
+                    </g>
+                    <!-- TAM inside label -->
+                    <text id="viz-tam-desc" x="620" y="230" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="14" fill="rgba(255,255,255,0.5)" font-style="italic" opacity="0">Everyone with the problem</text>
+
+                    <!-- SAM circle (center-right, medium) -->
+                    <circle id="viz-sam" cx="390" cy="245" r="0" fill="url(#v-sam-grad)" stroke="#D4533A" stroke-width="1.5" style="transition: all 0.5s ease;"/>
+                    <!-- SAM label line + caption -->
+                    <g id="viz-sam-callout" opacity="0">
+                        <line x1="390" y1="110" x2="390" y2="140" stroke="#D4533A" stroke-width="1" stroke-dasharray="3,3"/>
+                        <text x="390" y="100" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="16" fill="#fff" id="viz-sam-num"></text>
+                        <text x="390" y="86" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="9" fill="rgba(255,255,255,0.7)" letter-spacing="3">( SAM )</text>
+                    </g>
+                    <!-- SAM inside label -->
+                    <text id="viz-sam-desc" x="390" y="245" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="13" fill="rgba(255,255,255,0.6)" font-style="italic" opacity="0">Those you can reach</text>
+
+                    <!-- Narrowing arrow TAM → SAM -->
+                    <line id="viz-arrow-1" x1="500" y1="235" x2="475" y2="240" stroke="#C9A036" stroke-width="1" opacity="0" stroke-dasharray="4,3"/>
+                    <polygon id="viz-arrow-1-head" points="477,237 478,243 470,241" fill="#C9A036" opacity="0"/>
+
+                    <!-- SOM circle (center-left, smaller) -->
+                    <circle id="viz-som" cx="210" cy="260" r="0" fill="url(#v-som-grad)" stroke="#C9A036" stroke-width="1.5" style="transition: all 0.5s ease;"/>
+                    <!-- SOM label line + caption -->
+                    <g id="viz-som-callout" opacity="0">
+                        <line x1="210" y1="160" x2="210" y2="190" stroke="#C9A036" stroke-width="1" stroke-dasharray="3,3"/>
+                        <text x="210" y="150" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="15" fill="#C9A036" id="viz-som-num"></text>
+                        <text x="210" y="136" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="9" fill="rgba(201,160,54,0.8)" letter-spacing="3">( SOM )</text>
+                    </g>
+                    <!-- SOM inside label -->
+                    <text id="viz-som-desc" x="210" y="260" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(26,32,30,0.5)" font-style="italic" opacity="0">Year 1 obtainable</text>
+
+                    <!-- Narrowing arrow SAM → SOM -->
+                    <line id="viz-arrow-2" x1="305" y1="252" x2="280" y2="256" stroke="#C9A036" stroke-width="1" opacity="0" stroke-dasharray="4,3"/>
+                    <polygon id="viz-arrow-2-head" points="282,253 283,259 275,257" fill="#C9A036" opacity="0"/>
+
+                    <!-- ITM circle (leftmost, smallest) -->
+                    <circle id="viz-itm" cx="90" cy="275" r="0" fill="url(#v-itm-grad)" stroke="#7ED957" stroke-width="2" style="transition: all 0.5s ease;"/>
+                    <!-- ITM pulsing ring -->
+                    <circle id="viz-itm-pulse" cx="90" cy="275" r="0" fill="none" stroke="#7ED957" stroke-width="1" opacity="0">
+                        <animate attributeName="opacity" values="0.5;0.1;0.5" dur="2s" repeatCount="indefinite"/>
+                    </circle>
+                    <!-- ITM label line + caption -->
+                    <g id="viz-itm-callout" opacity="0">
+                        <line x1="90" y1="200" x2="90" y2="225" stroke="#7ED957" stroke-width="1" stroke-dasharray="3,3"/>
+                        <text x="90" y="190" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="14" fill="#7ED957" id="viz-itm-num"></text>
+                        <text x="90" y="176" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="9" fill="rgba(126,217,87,0.8)" letter-spacing="2">( ITM )</text>
+                    </g>
+                    <!-- ITM inside label -->
+                    <text id="viz-itm-desc" x="90" y="275" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="11" fill="rgba(26,32,30,0.6)" font-style="italic" opacity="0">Your beachhead</text>
+
+                    <!-- Narrowing arrow SOM → ITM -->
+                    <line id="viz-arrow-3" x1="150" y1="268" x2="130" y2="272" stroke="#7ED957" stroke-width="1" opacity="0" stroke-dasharray="4,3"/>
+                    <polygon id="viz-arrow-3-head" points="132,269 133,275 125,273" fill="#7ED957" opacity="0"/>
+
+                    <!-- Revenue calculation bar at bottom -->
+                    <line x1="50" y1="440" x2="810" y2="440" stroke="#C9A036" stroke-width="0.5" opacity="0.2"/>
+                    <text id="viz-revenue" x="430" y="470" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="14" fill="#C9A036" letter-spacing="1" opacity="0"></text>
+                    <text id="viz-revenue-sub" x="430" y="492" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="14" fill="rgba(255,255,255,0.4)" font-style="italic" opacity="0"></text>
+
+                    <!-- Caption bar -->
+                    <text id="viz-caption" x="430" y="530" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="15" fill="rgba(255,255,255,0.35)" opacity="0">The market narrows from right to left. Your ITM is where you start. Everything else is where you grow.</text>
+                </svg>
+            </div>
+
+            <!-- Capture Rate + Revenue Projection -->
+            <div style="max-width: 800px; margin: 48px auto 0; display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div>
+                    <label style="display: block; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px;">Avg Revenue per Customer (UGX/year)</label>
+                    <input type="text" id="ms-arpu" class="editable-field" placeholder="e.g. 120,000" maxlength="20" style="width: 100%; background: rgba(255,255,255,0.08); border-color: rgba(201,160,54,0.3); color: #fff;" oninput="updateMarketViz()">
+                </div>
+                <div>
+                    <label style="display: block; font-family: 'Josefin Sans', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 6px;">Capture Rate <span style="color: rgba(255,255,255,0.45);">(% of your SOM)</span>: <span id="capture-rate-display" style="color: #7ED957;">5%</span></label>
+                    <input type="range" id="ms-capture" min="1" max="30" value="5" style="width: 100%; accent-color: #C9A036; margin-top: 8px;" oninput="updateMarketViz()">
+                    <div style="display: flex; justify-content: space-between; font-size: 11px; color: rgba(255,255,255,0.35); font-family: 'Josefin Sans', sans-serif; margin-top: 4px;">
+                        <span>1% Conservative</span>
+                        <span>10% Ambitious</span>
+                        <span>30% Unrealistic</span>
+                    </div>
+                    <p style="font-size: 12px; color: rgba(255,255,255,0.3); margin-top: 8px; line-height: 1.5; font-style: italic;">This is the percentage of your SOM (obtainable market) you expect to actually win as paying customers in Year 1. Not your TAM, not your SAM — your SOM.</p>
+                </div>
+            </div>
+
+            <!-- Revenue Projection Hint (visible when projection is hidden) -->
+            <div id="revenue-hint" style="max-width: 800px; margin: 24px auto 0; text-align: center; padding: 20px; border: 1px dashed rgba(201,160,54,0.2);">
+                <p style="font-family: 'Josefin Sans', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin: 0;">Revenue projection will appear here</p>
+                <p style="font-size: 14px; color: rgba(255,255,255,0.25); margin: 6px 0 0; font-style: italic;">Fill in your SOM and ARPU above with valid numbers to see Year 1 projections</p>
+            </div>
+
+            <!-- Revenue Projection Box -->
+            <div id="revenue-projection" style="max-width: 800px; margin: 32px auto 0; background: rgba(201,160,54,0.08); border: 1px solid rgba(201,160,54,0.2); padding: 28px; display: none;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 24px; text-align: center;">
+                    <div>
+                        <div style="font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px;">Year 1 Customers</div>
+                        <div id="proj-customers" style="font-family: 'Josefin Sans', sans-serif; font-size: 28px; font-weight: 700; color: #7ED957;">—</div>
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.4);"><span id="proj-pct">5</span>% of your SOM</div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px;">Year 1 Revenue</div>
+                        <div id="proj-revenue" style="font-family: 'Josefin Sans', sans-serif; font-size: 28px; font-weight: 700; color: #C9A036;">—</div>
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.4);">Based on your ARPU</div>
+                    </div>
+                    <div>
+                        <div style="font-family: 'Josefin Sans', sans-serif; font-size: 9px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.5); margin-bottom: 4px;">Monthly Revenue</div>
+                        <div id="proj-monthly" style="font-family: 'Josefin Sans', sans-serif; font-size: 28px; font-weight: 700; color: rgba(255,255,255,0.8);">—</div>
+                        <div style="font-size: 13px; color: rgba(255,255,255,0.4);">Run rate</div>
+                    </div>
+                </div>
+                <div id="proj-warning" style="margin-top: 20px; padding: 12px 16px; background: rgba(212,83,58,0.15); border-left: 3px solid #D4533A; font-size: 14px; color: rgba(255,255,255,0.7); display: none;">
+                    <strong style="color: #D4533A;">Reality check:</strong> <span id="proj-warning-text"></span>
+                </div>
+                <div id="proj-encouragement" style="margin-top: 20px; padding: 12px 16px; background: rgba(126,217,87,0.1); border-left: 3px solid #7ED957; font-size: 14px; color: rgba(255,255,255,0.7); display: none;">
+                    <strong style="color: #7ED957;">Solid foundation.</strong> <span id="proj-encouragement-text"></span>
+                </div>
+            </div>
+
+            <div style="max-width: 800px; margin: 32px auto 0;">
+                <div class="form-actions">
+                    <button class="btn-futurist" onclick="saveMarketSizing()">Save Market Sizing</button>
+                    <button class="btn-futurist-ghost" onclick="clearMarketSizing()">Clear</button>
+                </div>
+                <p class="form-footnote"><strong>Your browser saves this locally.</strong> Print or screenshot before you leave — this worksheet and your persona document are your deliverables for this week.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 5: Homework & Next Steps -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Action</span>
+            <h2 class="section-title">Your Homework This Week</h2>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark);">Refine Your Persona &amp; Size Your Market</h3>
+            <p style="margin-bottom: 32px; font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.8; color: var(--gray-700);">This week is about turning raw interview data into structured tools you'll use for the rest of the programme. Your persona and market sizing worksheet will inform every decision from here on — your go-to-market strategy, your pricing, your MVP scope.</p>
+
+            <div class="task-table">
+                <div class="task-row">
+                    <span class="task-num">01</span>
+                    <div class="task-body">
+                        <h4>Review Your Interview Notes</h4>
+                        <p>Look for patterns across all 5-10 conversations. What phrases keep coming up? What frustrations were mentioned by 3 or more people? Highlight recurring themes.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">02</span>
+                    <div class="task-body">
+                        <h4>Build Your Persona</h4>
+                        <p>Use the framework above. Give them a name. Make them real. Include demographics, pain points, motivations, and behaviors. One page, not ten.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">03</span>
+                    <div class="task-body">
+                        <h4>Map the Customer Journey</h4>
+                        <p>From problem awareness to seeking a solution to paying for it. Where does your customer first feel the pain? What do they try? Where do they give up? Where can you intervene?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">04</span>
+                    <div class="task-body">
+                        <h4>Calculate Your TAM</h4>
+                        <p>How many people in Uganda (or your target geography) experience this problem? Use census data, industry reports, or extrapolate from your interviews.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">05</span>
+                    <div class="task-body">
+                        <h4>Calculate Your SAM</h4>
+                        <p>Of those, how many can you actually reach through your planned channels? If you're starting in Kampala, don't count rural Uganda. Be honest about your distribution.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">06</span>
+                    <div class="task-body">
+                        <h4>Calculate Your SOM</h4>
+                        <p>Realistically, how many can you convert in Year 1? Use your interview conversion signals. If 6 out of 10 people said they'd pay, apply that ratio conservatively.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">07</span>
+                    <div class="task-body">
+                        <h4>Define Your ITM (Initial Target Market)</h4>
+                        <p>Who are the very first customers you'll go after? This is your beachhead — the specific neighbourhood, WhatsApp group, or market row. If you can't name actual people or places, it's too vague.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">08</span>
+                    <div class="task-body">
+                        <h4>Set a Realistic Capture Rate</h4>
+                        <p>What percentage of your SOM will you actually capture in Year 1? Most startups land between 2–8%. Use the interactive tool above to model your revenue at different capture rates. If your business only works at 30% capture, rethink your pricing or market.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">09</span>
+                    <div class="task-body">
+                        <h4>Estimate Unit Economics</h4>
+                        <p>What will you charge? What does it cost to serve one customer? Even rough numbers matter — they tell you whether this business can sustain itself.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark); margin-top: 48px;">Secondary Tasks</h3>
+
+            <div class="task-table secondary-table">
+                <div class="task-row">
+                    <span class="task-num">A</span>
+                    <div class="task-body">
+                        <h4>Read: Running Lean</h4>
+                        <p>Ash Maurya, chapters on Customer Segments and Revenue Streams. A practical guide to sizing your market from the ground up.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">B</span>
+                    <div class="task-body">
+                        <h4>Talk to 3 More People</h4>
+                        <p>Specifically people who DON'T fit your persona. Understand why not. The boundaries of your market are just as important as the centre.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">C</span>
+                    <div class="task-body">
+                        <h4>Prepare for Week 3</h4>
+                        <p>Bring your persona document and market sizing worksheet. We'll build your go-to-market strategy — channels, pricing, and the 90-day launch plan.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-card fade-up">
+                <h3>Week 3: Go-to-Market Strategy</h3>
+                <p>You know your customer. You know your market size. Now the question becomes: how do you actually reach them? Week 3 covers distribution channels, pricing strategy, and building a concrete 90-day launch plan. We'll turn your persona and market data into an actionable roadmap.</p>
+                <p style="margin-top: 16px;"><em>Deliverable: Go-to-Market Plan + 90-Day Launch Roadmap</em></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tier-specific content -->
+    <div class="tier-divider tier-section" data-min-tier="group"></div>
+    <section class="tier-block tier-section" data-min-tier="group">
+        <div class="container">
+            <span class="eyebrow">Group Session</span>
+            <h2>Interview Pattern Review</h2>
+            <p>Bring your interview notes to the group session. We'll practise extracting patterns together — identifying which responses signal real demand versus polite enthusiasm.</p>
+            <div class="tier-card">
+                <h4>What to bring</h4>
+                <p>Notes from at least 5 customer conversations and your initial Market Sizing Worksheet draft.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="oneOnOne"></div>
+    <section class="tier-block tier-section" data-min-tier="oneOnOne">
+        <div class="container">
+            <span class="eyebrow">1-on-1 Coaching</span>
+            <h2>Session Prep: Week 2</h2>
+            <p>Your coaching session focuses on whether your interviews reveal a real market opportunity. Come ready to discuss what surprised you and where your assumptions were wrong.</p>
+            <div class="tier-card">
+                <h4>Before your session</h4>
+                <p>Highlight the 3 most surprising responses from your interviews. Note any patterns in what people are currently paying for (time, money, or frustration) to solve this problem.</p>
+            </div>
+            <div class="tier-card">
+                <h4>Teddy will review</h4>
+                <p>Your Market Sizing Worksheet — checking your TAM/SAM/SOM logic, whether your assumptions are grounded in real data, and if your beachhead market is specific enough.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="vip"></div>
+    <section class="tier-block tier-section" data-min-tier="vip">
+        <div class="container">
+            <span class="eyebrow">VIP Bonus</span>
+            <h2>East African Market Intelligence</h2>
+            <p>A curated briefing on market sizing data sources specific to East Africa — including UBOS, World Bank datasets, and sector-specific reports that most founders overlook. Includes a template for building bottom-up market estimates from local data.</p>
+            <div class="tier-card">
+                <h4>Priority async access</h4>
+                <p>Send Teddy your interview highlights via WhatsApp for a quick read before your formal session. Get early signal on whether you're asking the right questions.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="brand">The Founder's Sprint</span>
+        <p>&copy; 2026 TMS Ruge. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ==================== TIER GATING ====================
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const tier = params.get('tier') || 'group';
+            const tierLevels = { selfPaced: 0, group: 1, oneOnOne: 2, vip: 3 };
+            const userLevel = tierLevels[tier] ?? 1;
+            document.querySelectorAll('.tier-section').forEach(el => {
+                const minLevel = tierLevels[el.dataset.minTier] ?? 0;
+                if (userLevel >= minLevel) {
+                    el.classList.add('tier-visible');
+                }
+            });
+        })();
+
+        // ==================== PROGRESS BAR ====================
+        function updateProgressBar() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+
+        window.addEventListener('scroll', updateProgressBar);
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ==================== PILLAR CARD TOGGLE ====================
+        // ==================== TABBED ACCORDION ====================
+        function switchTab(btn) {
+            const target = btn.dataset.tabTarget;
+            const tabSet = btn.closest('.tab-set');
+            if (!tabSet || !target) return;
+
+            // Update tab buttons
+            tabSet.querySelectorAll('.tab-btn').forEach(b => {
+                const isActive = b === btn;
+                b.classList.toggle('is-active', isActive);
+                b.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+
+            // Update panels
+            tabSet.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.toggle('is-active', panel.id === target);
+            });
+        }
+
+        // Arrow-key navigation for tab lists
+        document.querySelectorAll('.tab-nav').forEach(nav => {
+            nav.addEventListener('keydown', (e) => {
+                const btns = Array.from(nav.querySelectorAll('.tab-btn'));
+                const current = btns.indexOf(document.activeElement);
+                if (current === -1) return;
+                let next = current;
+                if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next = (current + 1) % btns.length;
+                else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') next = (current - 1 + btns.length) % btns.length;
+                else if (e.key === 'Home') next = 0;
+                else if (e.key === 'End') next = btns.length - 1;
+                else return;
+                e.preventDefault();
+                btns[next].focus();
+                switchTab(btns[next]);
+            });
+        });
+
+        // ==================== INTERACTIVE MARKET SIZING ====================
+        function parseNum(str) {
+            if (!str) return 0;
+            return parseInt(str.replace(/[^0-9]/g, ''), 10) || 0;
+        }
+
+        function fmtNum(n) {
+            if (n >= 1000000) return (n / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+            if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+            return n.toLocaleString();
+        }
+
+        function fmtUGX(n) {
+            return 'UGX ' + n.toLocaleString();
+        }
+
+        function updateMarketViz() {
+            const tam = parseNum(document.getElementById('ms-tam').value);
+            const sam = parseNum(document.getElementById('ms-sam').value);
+            const som = parseNum(document.getElementById('ms-som').value);
+            const itm = parseNum(document.getElementById('ms-itm').value);
+            const arpu = parseNum(document.getElementById('ms-arpu').value);
+            const captureRate = parseInt(document.getElementById('ms-capture').value) || 5;
+
+            // Update capture rate display
+            document.getElementById('capture-rate-display').textContent = captureRate + '%';
+
+            // ================================================================
+            // ENFORCEMENT: The market MUST narrow at every step.
+            //   TAM >= SAM >= SOM >= ITM
+            // Each violation gets an inline warning on the field, a red border,
+            // and the circle flashes red in the SVG.
+            // ================================================================
+            var violations = { sam: false, som: false, itm: false };
+            var errorBorder = '2px solid #D4533A';
+            var inputEls = {
+                sam: document.getElementById('ms-sam'),
+                som: document.getElementById('ms-som'),
+                itm: document.getElementById('ms-itm'),
+            };
+            var warnEls = {
+                sam: document.getElementById('warn-sam'),
+                som: document.getElementById('warn-som'),
+                itm: document.getElementById('warn-itm'),
+            };
+
+            // Reset all warnings
+            ['sam','som','itm'].forEach(function(k) {
+                warnEls[k].style.display = 'none';
+                warnEls[k].textContent = '';
+                inputEls[k].style.borderColor = '';
+            });
+
+            // SAM must be <= TAM
+            if (sam > 0 && tam > 0 && sam > tam) {
+                violations.sam = true;
+                inputEls.sam.style.borderColor = '#D4533A';
+                warnEls.sam.style.display = 'block';
+                warnEls.sam.innerHTML = '\u26A0 SAM (' + fmtNum(sam) + ') exceeds your TAM (' + fmtNum(tam) + '). You can\u2019t reach more people than exist in the total market.';
+            }
+
+            // SOM must be <= SAM
+            if (som > 0 && sam > 0 && som > sam) {
+                violations.som = true;
+                inputEls.som.style.borderColor = '#D4533A';
+                warnEls.som.style.display = 'block';
+                warnEls.som.innerHTML = '\u26A0 SOM (' + fmtNum(som) + ') exceeds your SAM (' + fmtNum(sam) + '). You can\u2019t obtain more customers than you can reach.';
+            }
+            // SOM must also be <= TAM (in case SAM is empty)
+            if (som > 0 && tam > 0 && som > tam && !violations.som) {
+                violations.som = true;
+                inputEls.som.style.borderColor = '#D4533A';
+                warnEls.som.style.display = 'block';
+                warnEls.som.innerHTML = '\u26A0 SOM (' + fmtNum(som) + ') exceeds your TAM (' + fmtNum(tam) + '). The obtainable market can\u2019t be larger than the total market.';
+            }
+
+            // ITM must be <= SOM
+            if (itm > 0 && som > 0 && itm > som) {
+                violations.itm = true;
+                inputEls.itm.style.borderColor = '#D4533A';
+                warnEls.itm.style.display = 'block';
+                warnEls.itm.innerHTML = '\u26A0 ITM (' + fmtNum(itm) + ') exceeds your SOM (' + fmtNum(som) + '). Your initial beachhead can\u2019t be larger than your obtainable market.';
+            }
+            // ITM must also be <= SAM
+            if (itm > 0 && sam > 0 && itm > sam && !violations.itm) {
+                violations.itm = true;
+                inputEls.itm.style.borderColor = '#D4533A';
+                warnEls.itm.style.display = 'block';
+                warnEls.itm.innerHTML = '\u26A0 ITM (' + fmtNum(itm) + ') exceeds your SAM (' + fmtNum(sam) + '). Your beachhead can\u2019t be larger than the market you can reach.';
+            }
+            // ITM must also be <= TAM
+            if (itm > 0 && tam > 0 && itm > tam && !violations.itm) {
+                violations.itm = true;
+                inputEls.itm.style.borderColor = '#D4533A';
+                warnEls.itm.style.display = 'block';
+                warnEls.itm.innerHTML = '\u26A0 ITM (' + fmtNum(itm) + ') exceeds your TAM (' + fmtNum(tam) + '). Your beachhead can\u2019t be larger than the total market.';
+            }
+
+            var hasViolation = violations.sam || violations.som || violations.itm;
+
+            // ================================================================
+            // SVG VISUALIZATION
+            // ================================================================
+            const hasData = tam > 0 || sam > 0 || som > 0 || itm > 0;
+            document.getElementById('viz-placeholder').setAttribute('opacity', hasData ? '0' : '1');
+
+            // Circle positions (horizontal spread, fixed centres)
+            var circles = {
+                tam: { cx: 620, cy: 230, maxR: 190 },
+                sam: { cx: 390, cy: 245, maxR: 140 },
+                som: { cx: 210, cy: 260, maxR: 100 },
+                itm: { cx: 90,  cy: 275, maxR: 65  },
+            };
+
+            // Area-proportional scaling
+            var maxVal = Math.max(tam, sam, som, itm, 1);
+            function calcR(val, maxR) {
+                if (val <= 0) return 0;
+                return Math.max(22, Math.sqrt(val / maxVal) * maxR);
+            }
+
+            var rTam = tam > 0 ? calcR(tam, circles.tam.maxR) : 0;
+            var rSam = sam > 0 ? calcR(sam, circles.sam.maxR) : 0;
+            var rSom = som > 0 ? calcR(som, circles.som.maxR) : 0;
+            var rItm = itm > 0 ? calcR(itm, circles.itm.maxR) : 0;
+
+            // Helper: update a single circle + callout + label
+            function setCircle(key, r, val, violated) {
+                var c  = circles[key];
+                var el = document.getElementById('viz-' + key);
+                el.setAttribute('r', r);
+                // Flash stroke red on violation
+                if (violated) {
+                    el.setAttribute('stroke', '#D4533A');
+                    el.setAttribute('stroke-width', '3');
+                    el.setAttribute('stroke-dasharray', '8,4');
+                } else {
+                    el.setAttribute('stroke-dasharray', 'none');
+                    el.setAttribute('stroke-width', key === 'itm' ? '2' : '1.5');
+                    // Restore original stroke colour
+                    var colors = { tam:'#5BC0EB', sam:'#D4533A', som:'#C9A036', itm:'#7ED957' };
+                    el.setAttribute('stroke', colors[key]);
+                }
+
+                // Callout (dashed line + number above circle)
+                var callout = document.getElementById('viz-' + key + '-callout');
+                callout.setAttribute('opacity', val > 0 ? '1' : '0');
+
+                var numEl = document.getElementById('viz-' + key + '-num');
+                numEl.textContent = val > 0 ? fmtNum(val) : '';
+
+                if (val > 0) {
+                    var topY = c.cy - r;
+                    var line = callout.querySelector('line');
+                    if (line) {
+                        line.setAttribute('y2', topY - 2);
+                        line.setAttribute('y1', topY - 30);
+                    }
+                    numEl.setAttribute('y', topY - 36);
+                    // Acronym label is second <text> in callout
+                    var acronym = callout.querySelectorAll('text')[1];
+                    if (acronym) acronym.setAttribute('y', topY - 50);
+                }
+
+                // Inside-circle description (only on very large circles)
+                var desc = document.getElementById('viz-' + key + '-desc');
+                if (desc) desc.setAttribute('opacity', (val > 0 && r > 90) ? '0.6' : '0');
+            }
+
+            setCircle('tam', rTam, tam, false);
+            setCircle('sam', rSam, sam, violations.sam);
+            setCircle('som', rSom, som, violations.som);
+            setCircle('itm', rItm, itm, violations.itm);
+
+            // ITM pulsing ring
+            document.getElementById('viz-itm-pulse').setAttribute('r', rItm > 0 ? rItm + 5 : 0);
+            document.getElementById('viz-itm-pulse').setAttribute('opacity', rItm > 0 && !violations.itm ? '0.4' : '0');
+
+            // Narrowing arrows (hide if either neighbour is violated)
+            function setArrow(id, show) {
+                document.getElementById(id).setAttribute('opacity', show ? '0.6' : '0');
+                document.getElementById(id + '-head').setAttribute('opacity', show ? '0.6' : '0');
+            }
+            setArrow('viz-arrow-1', tam > 0 && sam > 0 && !violations.sam);
+            setArrow('viz-arrow-2', sam > 0 && som > 0 && !violations.som);
+            setArrow('viz-arrow-3', som > 0 && itm > 0 && !violations.itm);
+
+            // Caption
+            document.getElementById('viz-caption').setAttribute('opacity', (hasData && !hasViolation) ? '0.7' : '0');
+
+            // ================================================================
+            // REVENUE PROJECTION (only when data is valid)
+            // ================================================================
+            var projBox = document.getElementById('revenue-projection');
+            var projHint = document.getElementById('revenue-hint');
+            if (som > 0 && arpu > 0 && !hasViolation) {
+                projBox.style.display = 'block';
+                projHint.style.display = 'none';
+                var capturedCustomers = Math.round(som * captureRate / 100);
+                var yearRevenue = capturedCustomers * arpu;
+                var monthRevenue = Math.round(yearRevenue / 12);
+
+                document.getElementById('proj-customers').textContent = fmtNum(capturedCustomers);
+                document.getElementById('proj-pct').textContent = captureRate;
+                document.getElementById('proj-revenue').textContent = fmtUGX(yearRevenue);
+                document.getElementById('proj-monthly').textContent = fmtUGX(monthRevenue);
+
+                // Revenue line in SVG
+                document.getElementById('viz-revenue').textContent = fmtUGX(yearRevenue) + ' projected Year 1 revenue';
+                document.getElementById('viz-revenue').setAttribute('opacity', '1');
+                document.getElementById('viz-revenue-sub').textContent = fmtNum(capturedCustomers) + ' customers at ' + captureRate + '% capture rate';
+                document.getElementById('viz-revenue-sub').setAttribute('opacity', '1');
+
+                // Warning/encouragement for capture rate
+                var warning = document.getElementById('proj-warning');
+                var encouragement = document.getElementById('proj-encouragement');
+                warning.style.display = 'none';
+                encouragement.style.display = 'none';
+
+                if (captureRate > 15) {
+                    warning.style.display = 'block';
+                    document.getElementById('proj-warning-text').textContent =
+                        'A ' + captureRate + '% capture rate in Year 1 is very aggressive for a new product. Most startups capture 2\u20138% of their SOM initially. Can you defend this number with evidence from your interviews?';
+                } else if (captureRate <= 10 && capturedCustomers > 0) {
+                    encouragement.style.display = 'block';
+                    document.getElementById('proj-encouragement-text').textContent =
+                        'A ' + captureRate + '% capture rate is realistic and defensible. If you can show evidence from your interviews that ' + fmtNum(capturedCustomers) + ' people would pay ' + fmtUGX(arpu) + '/year, this model is credible.';
+                }
+            } else {
+                projBox.style.display = 'none';
+                projHint.style.display = 'block';
+                document.getElementById('viz-revenue').setAttribute('opacity', '0');
+                document.getElementById('viz-revenue-sub').setAttribute('opacity', '0');
+                document.getElementById('proj-warning').style.display = 'none';
+                document.getElementById('proj-encouragement').style.display = 'none';
+
+                // Tailor the hint message to what's missing
+                var hintP = projHint.querySelectorAll('p');
+                if (hasViolation) {
+                    hintP[0].textContent = 'Fix the errors above first';
+                    hintP[1].textContent = 'Your market must narrow at every step: TAM \u2265 SAM \u2265 SOM \u2265 ITM';
+                } else if (som <= 0 && arpu <= 0) {
+                    hintP[0].textContent = 'Revenue projection will appear here';
+                    hintP[1].textContent = 'Fill in your SOM and ARPU above to see Year 1 projections';
+                } else if (som <= 0) {
+                    hintP[0].textContent = 'Almost there \u2014 enter your SOM';
+                    hintP[1].textContent = 'Your Serviceable Obtainable Market is needed to calculate revenue';
+                } else {
+                    hintP[0].textContent = 'Almost there \u2014 enter your ARPU';
+                    hintP[1].textContent = 'Average Revenue Per User is needed to calculate projections';
+                }
+            }
+        }
+
+        function saveMarketSizing() {
+            const data = {
+                tam: document.getElementById('ms-tam').value,
+                sam: document.getElementById('ms-sam').value,
+                som: document.getElementById('ms-som').value,
+                itm: document.getElementById('ms-itm').value,
+                arpu: document.getElementById('ms-arpu').value,
+                captureRate: document.getElementById('ms-capture').value,
+            };
+            localStorage.setItem('marketSizing', JSON.stringify(data));
+
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '\u2713 Saved!';
+            btn.style.background = 'var(--gold-light)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        function clearMarketSizing() {
+            ['ms-tam', 'ms-sam', 'ms-som', 'ms-itm', 'ms-arpu'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            document.getElementById('ms-capture').value = 5;
+            localStorage.removeItem('marketSizing');
+            updateMarketViz();
+        }
+
+        // Load saved market sizing on page load
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('marketSizing');
+            if (saved) {
+                const data = JSON.parse(saved);
+                if (data.tam) document.getElementById('ms-tam').value = data.tam;
+                if (data.sam) document.getElementById('ms-sam').value = data.sam;
+                if (data.som) document.getElementById('ms-som').value = data.som;
+                if (data.itm) document.getElementById('ms-itm').value = data.itm;
+                if (data.arpu) document.getElementById('ms-arpu').value = data.arpu;
+                if (data.captureRate) document.getElementById('ms-capture').value = data.captureRate;
+                updateMarketViz();
+            }
+        });
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        document.addEventListener('keydown', (e) => {
+            // Smooth scroll on anchor links
+            if (e.key === 'Enter' && e.target.classList.contains('editable-field')) {
+                e.target.blur();
+            }
+        });
+
+        // ==================== PRINT HANDLER ====================
+        // When printing, reveal all tab panels so nothing is hidden
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.tab-panel').forEach(el => {
+                el.classList.add('is-active');
+                el.style.display = 'block';
+            });
+        });
+
+        window.addEventListener('afterprint', () => {
+            document.querySelectorAll('.tab-panel').forEach(el => {
+                el.style.display = '';
+                if (!el.matches('.tab-set .tab-panel:first-of-type') &&
+                    !el.closest('.tab-set').querySelector('.tab-btn.is-active')?.dataset.tabTarget === el.id) {
+                    el.classList.remove('is-active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

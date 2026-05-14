@@ -1,0 +1,2620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin Dashboard · The Founder's Sprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg:          #F5EDD8;
+    --surface:     #EDE5CE;
+    --card:        #F0E7D0;
+    --card-hi:     #E8DFC6;
+    --gold:        #A37E1E;
+    --gold-light:  #C9A036;
+    --gold-dim:    rgba(163,126,30,0.10);
+    --text:        #1E1B14;
+    --muted:       rgba(30,27,20,0.50);
+    --border:      rgba(163,126,30,0.18);
+    --border-hi:   rgba(163,126,30,0.40);
+
+    /* Bauhaus primary palette */
+    --crimson:  #E63946;
+    --cobalt:   #2D6BE4;
+    --teal:     #0CB4AD;
+    --violet:   #8B5CF6;
+    --orange:   #F05A22;
+    --lime:     #6BBE44;
+    --rose:     #E0437A;
+    --amber:    #E8A020;
+
+    --success:  #0A8F64;
+    --danger:   #DC3545;
+    --warning:  #C47F08;
+
+    --font:     'Space Grotesk', Arial, sans-serif;
+    --mono:     'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font);
+    font-size: 13px;
+    letter-spacing: 0.01em;
+  }
+
+  /* ══ DECORATIVE GEOMETRY ══════════════════════════════════════════════════ */
+  .geo-line {
+    width: 100%; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%);
+    opacity: 0.25;
+  }
+  .geo-diamond::before {
+    content: '◆';
+    color: var(--gold);
+    font-size: 9px;
+    opacity: 0.6;
+    letter-spacing: 0;
+  }
+
+  /* ══ LOGIN ════════════════════════════════════════════════════════════════ */
+  #login-screen {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse 60% 40% at 50% 0%, rgba(163,126,30,0.08) 0%, transparent 70%),
+      repeating-linear-gradient(
+        45deg,
+        transparent,
+        transparent 40px,
+        rgba(163,126,30,0.05) 40px,
+        rgba(163,126,30,0.05) 41px
+      ),
+      var(--bg);
+  }
+  .login-card {
+    background: var(--card);
+    border: 1px solid var(--border-hi);
+    box-shadow: 0 12px 48px rgba(0,0,0,0.08);
+    padding: 52px 44px 44px;
+    width: 380px;
+    position: relative;
+  }
+  /* Art Deco corner brackets */
+  .login-card::before, .login-card::after {
+    content: '';
+    position: absolute;
+    width: 20px; height: 20px;
+  }
+  .login-card::before {
+    top: -1px; left: -1px;
+    border-top: 2px solid var(--gold);
+    border-left: 2px solid var(--gold);
+  }
+  .login-card::after {
+    bottom: -1px; right: -1px;
+    border-bottom: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+  }
+  .login-eyebrow {
+    font-family: var(--mono);
+    font-size: 9px; letter-spacing: 4px; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 4px; opacity: 0.8;
+  }
+  .login-title {
+    font-size: 28px; font-weight: 700; color: var(--text);
+    line-height: 1.1; margin-bottom: 8px;
+  }
+  .login-rule {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 32px; margin-top: 4px;
+  }
+  .login-rule .geo-line { flex: 1; }
+  .login-input {
+    width: 100%; background: rgba(0,0,0,0.03);
+    border: 1px solid var(--border); border-left: 3px solid var(--border-hi);
+    color: var(--text); padding: 12px 14px; font-size: 14px;
+    font-family: var(--font); margin-bottom: 10px; outline: none;
+    transition: border-color 0.2s;
+  }
+  .login-input:focus { border-color: var(--gold); border-left-color: var(--gold); }
+  .login-input::placeholder { color: var(--muted); }
+  .btn-login {
+    width: 100%; background: var(--gold); color: #fff;
+    border: none; padding: 14px; font-size: 11px; font-weight: 700;
+    font-family: var(--font); letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; margin-top: 4px; transition: background 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .btn-login:hover { background: var(--gold-light); }
+  .btn-login::after {
+    content: ''; position: absolute;
+    inset: 0; background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+    transform: translateX(-100%); transition: transform 0.4s;
+  }
+  .btn-login:hover::after { transform: translateX(100%); }
+  .login-error { color: var(--danger); font-size: 12px; margin-top: 10px; min-height: 18px; font-family: var(--mono); }
+
+  /* ══ APP LAYOUT ═══════════════════════════════════════════════════════════ */
+  #app { display: none; min-height: 100vh; }
+
+  /* ── TOPBAR ── */
+  .topbar {
+    background: rgba(245,237,216,0.97);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px; height: 56px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    backdrop-filter: blur(20px);
+  }
+  .topbar::after {
+    content: ''; position: absolute;
+    left: 0; right: 0; bottom: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(163,126,30,0.35) 20%, rgba(163,126,30,0.35) 80%, transparent);
+  }
+  .topbar-left { display: flex; align-items: center; gap: 16px; }
+  .topbar-mark {
+    width: 28px; height: 28px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    flex-shrink: 0;
+  }
+  .topbar-logo {
+    font-family: var(--mono);
+    font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
+    color: var(--gold);
+  }
+  .topbar-sep { width: 1px; height: 20px; background: var(--border-hi); }
+  .topbar-sub { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+  .topbar-right { display: flex; align-items: center; gap: 16px; }
+  .topbar-user { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .btn-signout {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 6px 14px; font-size: 9px;
+    font-family: var(--font); letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-signout:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── TABS ── */
+  .tabs-wrap {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 32px;
+    display: flex; align-items: stretch;
+    gap: 0;
+  }
+  .tab {
+    background: none; border: none; border-bottom: 3px solid transparent;
+    color: var(--muted); cursor: pointer;
+    padding: 16px 24px 13px;
+    font-family: var(--font); font-size: 10px;
+    letter-spacing: 2.5px; text-transform: uppercase; font-weight: 600;
+    transition: all 0.2s; margin-bottom: -1px;
+    position: relative;
+  }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .tab.active::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--gold); opacity: 0.5;
+  }
+
+  /* ── MAIN ── */
+  .main { padding: 32px; max-width: 1500px; margin: 0 auto; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ══ STAT CARDS ═══════════════════════════════════════════════════════════ */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 16px; margin-bottom: 32px;
+  }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--card-accent, var(--gold));
+    padding: 22px 20px 18px;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::after {
+    content: '';
+    position: absolute; top: 0; right: 0;
+    width: 60px; height: 60px;
+    border-bottom: 1px solid var(--border);
+    border-left: 1px solid var(--border);
+    opacity: 0.4;
+  }
+  .stat-card:nth-child(1) { --card-accent: var(--cobalt); }
+  .stat-card:nth-child(2) { --card-accent: var(--gold); }
+  .stat-card:nth-child(3) { --card-accent: var(--orange); }
+  .stat-card:nth-child(4) { --card-accent: var(--teal); }
+  .stat-card:nth-child(5) { --card-accent: var(--lime); }
+  .stat-card:nth-child(6) { --card-accent: var(--crimson); }
+
+  .stat-label {
+    font-size: 9px; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px; font-weight: 600;
+  }
+  .stat-value {
+    font-size: 38px; font-weight: 700; color: var(--text);
+    line-height: 1; font-family: var(--mono); letter-spacing: -1px;
+  }
+  .stat-value.gold   { color: var(--gold); }
+  .stat-value.green  { color: var(--success); }
+  .stat-value.orange { color: var(--warning); }
+  .stat-sub {
+    font-size: 10px; color: var(--muted);
+    margin-top: 8px; letter-spacing: 0.02em;
+  }
+
+  /* ══ SECTION HEADERS ══════════════════════════════════════════════════════ */
+  .section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 18px;
+  }
+  .section-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 700; color: var(--gold);
+  }
+  .section-title::before {
+    content: '';
+    display: inline-block;
+    width: 16px; height: 2px;
+    background: var(--gold);
+  }
+
+  /* ══ FILTER ROW ═══════════════════════════════════════════════════════════ */
+  .filter-row {
+    display: flex; gap: 10px; margin-bottom: 18px;
+    flex-wrap: wrap; align-items: center;
+  }
+  .filter-select {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 3px solid var(--border-hi);
+    color: var(--text); padding: 8px 12px; font-size: 12px;
+    font-family: var(--font); cursor: pointer; outline: none;
+  }
+  .filter-select:focus { border-color: var(--gold); }
+  .filter-input {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 3px solid var(--border-hi);
+    color: var(--text); padding: 8px 12px; font-size: 12px;
+    font-family: var(--font); outline: none; min-width: 220px;
+  }
+  .filter-input:focus { border-color: var(--gold); border-left-color: var(--gold); }
+  .filter-input::placeholder { color: var(--muted); }
+
+  /* ══ TABLE ════════════════════════════════════════════════════════════════ */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th {
+    background: var(--bg); color: var(--muted); padding: 11px 14px;
+    text-align: left; font-size: 9px; letter-spacing: 2px;
+    text-transform: uppercase; font-weight: 700; font-family: var(--font);
+    border-bottom: 1px solid var(--border); white-space: nowrap;
+  }
+  th:first-child { border-left: 3px solid var(--gold); padding-left: 16px; }
+  td { padding: 12px 14px; border-bottom: 1px solid rgba(163,126,30,0.08); vertical-align: middle; }
+  td:first-child { padding-left: 16px; }
+  tr:hover td { background: rgba(163,126,30,0.05); }
+  tr.forfeited td { opacity: 0.35; }
+
+  /* badges */
+  .badge {
+    display: inline-block; padding: 3px 9px;
+    font-size: 9px; letter-spacing: 1.5px;
+    text-transform: uppercase; font-weight: 700; font-family: var(--font);
+  }
+  .badge-paid     { background: rgba(16,185,129,0.12); color: var(--success); border: 1px solid rgba(16,185,129,0.3); }
+  .badge-unpaid   { background: rgba(239,68,68,0.1);  color: var(--danger);  border: 1px solid rgba(239,68,68,0.25); }
+  .badge-partial  { background: rgba(245,158,11,0.12); color: var(--warning); border: 1px solid rgba(245,158,11,0.3); }
+  .badge-group    { background: rgba(45,107,228,0.10); color: #1D5BD6; border: 1px solid rgba(45,107,228,0.25); }
+  .badge-oneonone { background: rgba(163,126,30,0.10); color: var(--gold);   border: 1px solid rgba(163,126,30,0.3); }
+  .badge-vip      { background: rgba(230,57,70,0.10);  color: #C62D3A;      border: 1px solid rgba(230,57,70,0.25); }
+  .badge-forfeited{ background: rgba(100,100,100,0.08); color: #888;         border: 1px solid rgba(100,100,100,0.18); }
+
+  /* action buttons */
+  .action-btn {
+    background: transparent; border: 1px solid var(--border);
+    color: var(--muted); padding: 4px 10px; font-size: 9px;
+    font-family: var(--font); letter-spacing: 1px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.15s; white-space: nowrap;
+  }
+  .action-btn:hover  { border-color: var(--gold); color: var(--gold); }
+  .action-btn.success{ border-color: rgba(16,185,129,0.4); color: var(--success); }
+  .action-btn.danger { border-color: rgba(239,68,68,0.4);  color: var(--danger); }
+  .action-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+  /* ══ CHARTS ═══════════════════════════════════════════════════════════════ */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  @media (max-width: 900px) { .charts-grid { grid-template-columns: 1fr; } }
+
+  .chart-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 28px 24px 24px;
+    position: relative;
+  }
+  /* Art Deco top stripe */
+  .chart-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg,
+      var(--chart-stripe-a, var(--cobalt)) 0%,
+      var(--chart-stripe-b, var(--gold)) 100%
+    );
+  }
+  .chart-card:nth-child(1) { --chart-stripe-a: var(--cobalt); --chart-stripe-b: var(--teal); }
+  .chart-card:nth-child(2) { --chart-stripe-a: var(--rose);   --chart-stripe-b: var(--violet); }
+
+  /* Art Deco corner marks */
+  .chart-card::after {
+    content: '';
+    position: absolute; bottom: 0; right: 0;
+    width: 32px; height: 32px;
+    border-top: 1px solid var(--border-hi);
+    border-left: 1px solid var(--border-hi);
+  }
+
+  .chart-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .chart-title {
+    font-size: 9px; letter-spacing: 3px; text-transform: uppercase;
+    font-weight: 700; color: var(--muted);
+  }
+  .chart-title-accent {
+    width: 24px; height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    margin-top: 4px;
+  }
+  .chart-container { position: relative; height: 270px; }
+
+  /* wide revenue chart */
+  .chart-card-wide { margin-bottom: 28px; }
+  .chart-card-wide::before { --chart-stripe-a: var(--gold); --chart-stripe-b: var(--amber); }
+
+  /* ══ REVENUE ══════════════════════════════════════════════════════════════ */
+  .revenue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+  @media (max-width: 900px) { .revenue-grid { grid-template-columns: 1fr; } }
+
+  .rev-table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  .rev-table th {
+    background: var(--bg); color: var(--muted); padding: 10px 14px;
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase; font-weight: 700;
+    border-bottom: 1px solid var(--border); text-align: left;
+  }
+  .rev-table td { padding: 11px 14px; border-bottom: 1px solid rgba(163,126,30,0.08); }
+  .rev-table tr:last-child td {
+    border-bottom: none; font-weight: 700;
+    color: var(--gold); border-top: 1px solid var(--border-hi);
+  }
+  .rev-table tr:hover td { background: rgba(163,126,30,0.05); }
+
+  /* ══ DOCUMENTS ════════════════════════════════════════════════════════════ */
+  .doc-upload-area {
+    border: 1px dashed rgba(163,126,30,0.35);
+    border-left: 4px solid rgba(163,126,30,0.4);
+    padding: 36px; text-align: center; margin-bottom: 24px;
+    transition: all 0.2s; cursor: pointer;
+    position: relative; background: var(--card);
+  }
+  .doc-upload-area:hover, .doc-upload-area.drag-over {
+    border-color: var(--gold);
+    background: rgba(163,126,30,0.06);
+  }
+  .doc-upload-area p { color: var(--muted); font-size: 13px; margin-top: 8px; }
+  .doc-upload-area .upload-icon { font-size: 30px; }
+  #doc-file-input { display: none; }
+
+  .doc-form {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .doc-form input, .doc-form select {
+    flex: 1; min-width: 160px; background: var(--card);
+    border: 1px solid var(--border); border-left: 3px solid var(--border-hi);
+    color: var(--text); padding: 9px 12px; font-size: 13px;
+    font-family: var(--font); outline: none;
+  }
+  .doc-form input:focus, .doc-form select:focus { border-color: var(--gold); }
+
+  .btn-upload {
+    background: var(--gold); color: #fff;
+    border: none; padding: 9px 22px; font-size: 9px; font-weight: 700;
+    font-family: var(--font); letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; white-space: nowrap; transition: background 0.2s;
+  }
+  .btn-upload:hover { background: var(--gold-light); }
+  .btn-upload:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .doc-list { display: flex; flex-direction: column; gap: 10px; }
+  .doc-item {
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 4px solid var(--teal);
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 14px;
+    transition: border-color 0.2s;
+  }
+  .doc-item:hover { border-color: var(--gold); border-left-color: var(--gold); }
+  .doc-icon { font-size: 22px; flex-shrink: 0; }
+  .doc-info { flex: 1; min-width: 0; }
+  .doc-name { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .doc-meta { font-size: 10px; color: var(--muted); margin-top: 4px; letter-spacing: 0.02em; }
+  .doc-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+  /* ══ QUICK NAV HUB ════════════════════════════════════════════════════════ */
+  .quicknav {
+    display: flex; gap: 10px; margin-bottom: 28px; flex-wrap: wrap;
+  }
+  .quicknav-drop {
+    position: relative;
+  }
+  .quicknav-trigger {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    font-family: var(--font); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.03em; color: var(--text);
+    cursor: pointer; transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .quicknav-trigger:hover {
+    background: var(--card-hi); border-color: var(--border-hi);
+  }
+  .quicknav-trigger .qn-arrow {
+    font-size: 8px; color: var(--muted); transition: transform 0.2s;
+  }
+  .quicknav-drop.open .qn-arrow { transform: rotate(180deg); }
+  .quicknav-trigger .qn-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .quicknav-menu {
+    display: none;
+    position: absolute; top: calc(100% + 4px); left: 0;
+    min-width: 260px; z-index: 100;
+    background: var(--card); border: 1px solid var(--border-hi);
+    box-shadow: 0 8px 24px rgba(30,27,20,0.12);
+    padding: 6px 0;
+  }
+  .quicknav-drop.open .quicknav-menu { display: block; }
+  .quicknav-link {
+    display: flex; align-items: center; gap: 10px;
+    padding: 9px 16px;
+    text-decoration: none; color: var(--text);
+    font-size: 12px; transition: background 0.1s;
+  }
+  .quicknav-link:hover { background: var(--gold-dim); }
+  .quicknav-link .ql-icon {
+    width: 22px; text-align: center; flex-shrink: 0;
+    font-size: 12px; color: var(--gold); font-weight: 700;
+    font-family: var(--mono);
+  }
+  .quicknav-link .ql-label { font-weight: 500; }
+  .quicknav-link .ql-sub {
+    font-size: 10px; color: var(--muted); margin-left: auto; padding-left: 12px;
+    white-space: nowrap;
+  }
+  .quicknav-sep {
+    height: 1px; background: var(--border); margin: 4px 12px;
+  }
+
+  /* ══ MEETING INVITE ══════════════════════════════════════════════════════ */
+  .invite-card {
+    background: var(--card);
+    border: 1px solid var(--border-hi);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .invite-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--amber), var(--gold));
+  }
+  .invite-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .invite-title {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .invite-title .invite-icon {
+    width: 28px; height: 28px; background: var(--gold-dim);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; color: var(--gold); flex-shrink: 0;
+  }
+  .invite-meta {
+    font-size: 11px; color: var(--muted); letter-spacing: 0.04em;
+    font-family: var(--mono);
+  }
+  .invite-recipients {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .invite-recipient {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 8px 14px; font-size: 12px;
+    transition: border-color 0.2s;
+  }
+  .invite-recipient .ir-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--muted); flex-shrink: 0;
+  }
+  .invite-recipient .ir-name { font-weight: 500; }
+  .invite-recipient .ir-email { color: var(--muted); font-size: 11px; font-family: var(--mono); }
+  .invite-recipient.sent { border-color: var(--success); }
+  .invite-recipient.sent .ir-dot { background: var(--success); }
+  .invite-recipient.failed { border-color: var(--danger); }
+  .invite-recipient.failed .ir-dot { background: var(--danger); }
+  .invite-actions {
+    display: flex; align-items: center; gap: 16px;
+  }
+  .invite-btn {
+    background: #2C2417; color: var(--gold); border: none;
+    font-family: var(--font); font-size: 11px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 12px 32px; cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .invite-btn:hover { background: #3D3226; }
+  .invite-btn:active { transform: scale(0.98); }
+  .invite-btn:disabled {
+    opacity: 0.5; cursor: not-allowed; transform: none;
+  }
+  .invite-btn.sending {
+    background: var(--gold); color: #2C2417;
+  }
+  .invite-status {
+    font-size: 12px; color: var(--muted);
+  }
+  .invite-status.success { color: var(--success); font-weight: 500; }
+  .invite-status.error { color: var(--danger); font-weight: 500; }
+
+  /* ══ DIRECTORY ADMIN ══════════════════════════════════════════════════════ */
+  .dir-subtabs {
+    display: flex; gap: 0; margin-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .dir-subtab {
+    font-family: var(--font); font-size: 12px; font-weight: 500;
+    letter-spacing: 0.04em; padding: 10px 18px;
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .dir-subtab:hover { color: var(--text); }
+  .dir-subtab.active { color: var(--gold); border-bottom-color: var(--gold); }
+  .dir-subtab .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    background: var(--crimson); color: #fff;
+    padding: 1px 6px; border-radius: 8px; margin-left: 6px;
+    min-width: 18px; text-align: center;
+  }
+  .dir-panel { display: none; }
+  .dir-panel.active { display: block; }
+
+  .dir-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px; margin-bottom: 24px;
+  }
+  .dir-listing-card {
+    background: var(--card); border: 1px solid var(--border);
+    padding: 20px; position: relative; transition: border-color 0.2s;
+  }
+  .dir-listing-card:hover { border-color: var(--border-hi); }
+  .dir-listing-card .dir-cat-label {
+    font-size: 9px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 8px;
+  }
+  .dir-listing-card h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+  .dir-listing-card .dir-meta { font-size: 11px; color: var(--muted); margin-bottom: 12px; line-height: 1.5; }
+  .dir-listing-card .dir-tier-badge {
+    display: inline-block; font-size: 9px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    padding: 3px 8px; margin-right: 6px;
+  }
+  .dir-tier-badge.annual { background: rgba(163,126,30,0.15); color: var(--gold); }
+  .dir-tier-badge.cohort { background: rgba(45,107,228,0.1); color: var(--cobalt); }
+  .dir-listing-card .dir-expiry {
+    font-size: 10px; color: var(--muted); font-family: var(--mono);
+  }
+  .dir-listing-card .dir-expiry.expiring { color: var(--warning); font-weight: 600; }
+  .dir-listing-card .dir-expiry.expired { color: var(--danger); font-weight: 600; }
+  .dir-card-actions { display: flex; gap: 8px; margin-top: 12px; }
+  .dir-card-actions button {
+    font-size: 10px; font-weight: 600; letter-spacing: 0.04em;
+    padding: 5px 10px; cursor: pointer; border: 1px solid var(--border);
+    background: var(--card-hi); color: var(--text); transition: all 0.15s;
+  }
+  .dir-card-actions button:hover { border-color: var(--gold); color: var(--gold); }
+  .dir-card-actions .btn-remove { color: var(--danger); }
+  .dir-card-actions .btn-remove:hover { border-color: var(--danger); background: rgba(220,53,69,0.05); }
+
+  .dir-form-wrap {
+    max-width: 640px;
+    background: var(--card); border: 1px solid var(--border);
+    padding: 28px; margin-bottom: 24px;
+  }
+  .dir-form-row { margin-bottom: 16px; }
+  .dir-form-row label {
+    display: block; font-size: 10px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .dir-form-row input, .dir-form-row select, .dir-form-row textarea {
+    width: 100%; font-family: var(--font); font-size: 13px;
+    padding: 8px 10px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--text); outline: none;
+    transition: border-color 0.2s;
+  }
+  .dir-form-row input:focus, .dir-form-row select:focus, .dir-form-row textarea:focus {
+    border-color: var(--gold);
+  }
+  .dir-form-row.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .dir-stats {
+    font-size: 11px; color: var(--muted); padding: 12px 0;
+    border-top: 1px solid var(--border); margin-top: 16px;
+  }
+
+  /* ══ MODAL ════════════════════════════════════════════════════════════════ */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+    display: flex; align-items: center; justify-content: center;
+    z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s;
+  }
+  .modal-backdrop.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--card); border: 1px solid var(--border-hi);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+    padding: 36px; width: 440px; max-width: 95vw;
+    transform: translateY(14px); transition: transform 0.25s;
+    position: relative;
+  }
+  .modal::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--amber));
+  }
+  .modal-backdrop.open .modal { transform: translateY(0); }
+  .modal-title {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    margin-bottom: 24px; padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--mono);
+  }
+  .modal-field { margin-bottom: 14px; }
+  .modal-label {
+    font-size: 9px; letter-spacing: 2px; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px; display: block; font-weight: 700;
+  }
+  .modal-input {
+    width: 100%; background: rgba(0,0,0,0.03);
+    border: 1px solid var(--border); border-left: 3px solid var(--border-hi);
+    color: var(--text); padding: 10px 12px; font-size: 13px;
+    font-family: var(--font); outline: none;
+  }
+  .modal-input:focus { border-color: var(--gold); border-left-color: var(--gold); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 28px; }
+  .btn-confirm {
+    flex: 1; background: var(--gold); color: #fff;
+    border: none; padding: 12px; font-size: 10px; font-weight: 700;
+    font-family: var(--font); letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: background 0.2s;
+  }
+  .btn-confirm:hover { background: var(--gold-light); }
+  .btn-cancel {
+    flex: 1; background: transparent; color: var(--muted);
+    border: 1px solid var(--border); padding: 12px; font-size: 10px;
+    font-family: var(--font); letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .btn-cancel:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ══ TOAST ════════════════════════════════════════════════════════════════ */
+  #toast {
+    position: fixed; bottom: 28px; right: 28px;
+    background: var(--card); border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    color: var(--text); padding: 14px 20px;
+    font-size: 13px; font-family: var(--font);
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.25s, transform 0.25s;
+    transform: translateY(8px);
+    z-index: 999; max-width: 320px;
+  }
+  #toast.show { opacity: 1; transform: translateY(0); }
+  #toast.success { border-left-color: var(--success); }
+  #toast.error   { border-left-color: var(--danger); }
+
+  /* ══ MISC ═════════════════════════════════════════════════════════════════ */
+  .empty   { text-align: center; color: var(--muted); padding: 48px 0; font-size: 13px; letter-spacing: 0.05em; }
+  .loading { text-align: center; color: var(--muted); padding: 48px 0; font-family: var(--mono); font-size: 11px; letter-spacing: 2px; }
+  .text-gold  { color: var(--gold); }
+  .text-green { color: var(--success); }
+  .text-red   { color: var(--danger); }
+  .note-field {
+    font-size: 11px; color: var(--muted); font-style: italic;
+    max-width: 180px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════════════════════════ -->
+<div id="login-screen">
+  <div class="login-card">
+    <p class="login-eyebrow">The Founder's Sprint</p>
+    <h1 class="login-title">Command<br>Centre</h1>
+    <div class="login-rule">
+      <div class="geo-line"></div>
+      <span class="geo-diamond"></span>
+      <div class="geo-line"></div>
+    </div>
+    <input class="login-input" type="email" id="login-email" placeholder="Email address" autocomplete="email">
+    <input class="login-input" type="password" id="login-password" placeholder="Password" autocomplete="current-password">
+    <button class="btn-login" onclick="signIn()">Enter</button>
+    <p class="login-error" id="login-error"></p>
+  </div>
+</div>
+
+<!-- ══ APP ════════════════════════════════════════════════════════════════════ -->
+<div id="app">
+
+  <div class="topbar">
+    <div class="topbar-left">
+      <div class="topbar-mark"></div>
+      <span class="topbar-logo">Founder's Sprint</span>
+      <div class="topbar-sep"></div>
+      <span class="topbar-sub">Admin</span>
+    </div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="user-email"></span>
+      <button class="btn-signout" onclick="showChangePassword()" style="margin-right:4px;background:var(--card);color:var(--text);border:1px solid var(--border)">Change Password</button>
+      <button class="btn-signout" onclick="signOut()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="tabs-wrap">
+    <button class="tab active" onclick="switchTab('overview')">Overview</button>
+    <button class="tab" onclick="switchTab('registrations')">Registrations</button>
+    <button class="tab" onclick="switchTab('revenue')">Revenue</button>
+    <button class="tab" onclick="switchTab('documents')">Documents</button>
+    <button class="tab" onclick="switchTab('directory')">Directory</button>
+    <button class="tab" onclick="switchTab('coaches')">Coaches <span class="badge" id="coach-app-count-badge" style="display:none">0</span></button>
+  </div>
+
+  <div class="main">
+
+    <!-- ── OVERVIEW ─────────────────────────────────────────────────── -->
+    <div class="tab-panel active" id="panel-overview">
+
+      <!-- ── QUICK NAVIGATION (collapsed dropdowns) ──────────────── -->
+      <div class="quicknav">
+
+        <!-- Admin & Management -->
+        <div class="quicknav-drop" id="qn-admin">
+          <button class="quicknav-trigger" onclick="toggleQN('qn-admin')">
+            <span class="qn-dot" style="background:var(--lime)"></span>
+            Admin &amp; Infra
+            <span class="qn-arrow">&#9660;</span>
+          </button>
+          <div class="quicknav-menu">
+            <a class="quicknav-link" href="https://supabase.com/dashboard" target="_blank">
+              <span class="ql-icon">&#9656;</span>
+              <span class="ql-label">Supabase</span>
+              <span class="ql-sub">DB &amp; Auth</span>
+            </a>
+            <a class="quicknav-link" href="https://vercel.com/dashboard" target="_blank">
+              <span class="ql-icon">&#9650;</span>
+              <span class="ql-label">Vercel</span>
+              <span class="ql-sub">Deployments</span>
+            </a>
+            <div class="quicknav-sep"></div>
+            <a class="quicknav-link" href="https://tmsruge.com" target="_blank">
+              <span class="ql-icon">&#9670;</span>
+              <span class="ql-label">Main Site</span>
+              <span class="ql-sub">tmsruge.com</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Curriculum Portal -->
+        <div class="quicknav-drop" id="qn-curriculum">
+          <button class="quicknav-trigger" onclick="toggleQN('qn-curriculum')">
+            <span class="qn-dot" style="background:var(--violet)"></span>
+            Curriculum
+            <span class="qn-arrow">&#9660;</span>
+          </button>
+          <div class="quicknav-menu">
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/login" target="_blank">
+              <span class="ql-icon">&#9733;</span>
+              <span class="ql-label">Login Page</span>
+              <span class="ql-sub">Entry point</span>
+            </a>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn" target="_blank">
+              <span class="ql-icon">&#9654;</span>
+              <span class="ql-label">Dashboard</span>
+              <span class="ql-sub">Week overview</span>
+            </a>
+            <div class="quicknav-sep"></div>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-1" target="_blank">
+              <span class="ql-icon">01</span>
+              <span class="ql-label">Week 1</span>
+              <span class="ql-sub">Mindset</span>
+            </a>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-2" target="_blank">
+              <span class="ql-icon">02</span>
+              <span class="ql-label">Week 2</span>
+              <span class="ql-sub">Discovery</span>
+            </a>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-3" target="_blank">
+              <span class="ql-icon">03</span>
+              <span class="ql-label">Week 3</span>
+              <span class="ql-sub">GTM</span>
+            </a>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-4" target="_blank">
+              <span class="ql-icon">04</span>
+              <span class="ql-label">Week 4</span>
+              <span class="ql-sub">Branding</span>
+            </a>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-5" target="_blank">
+              <span class="ql-icon">05</span>
+              <span class="ql-label">Week 5</span>
+              <span class="ql-sub">Pitch</span>
+            </a>
+            <div class="quicknav-sep"></div>
+            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/resources" target="_blank">
+              <span class="ql-icon">&#9830;</span>
+              <span class="ql-label">Founder's Toolkit</span>
+              <span class="ql-sub">Resources</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Teaching Materials -->
+        <div class="quicknav-drop" id="qn-materials">
+          <button class="quicknav-trigger" onclick="toggleQN('qn-materials')">
+            <span class="qn-dot" style="background:var(--gold)"></span>
+            Teaching Materials
+            <span class="qn-arrow">&#9660;</span>
+          </button>
+          <div class="quicknav-menu">
+            <a class="quicknav-link" href="https://tmsruge.com/materials/index.html" target="_blank">
+              <span class="ql-icon">&#9733;</span>
+              <span class="ql-label">Course Hub</span>
+              <span class="ql-sub">All weeks</span>
+            </a>
+            <div class="quicknav-sep"></div>
+            <a class="quicknav-link" href="https://tmsruge.com/materials/week-1.html" target="_blank">
+              <span class="ql-icon">01</span>
+              <span class="ql-label">Week 1</span>
+              <span class="ql-sub">Idea Clarity</span>
+            </a>
+            <a class="quicknav-link" href="https://tmsruge.com/materials/week-2.html" target="_blank">
+              <span class="ql-icon">02</span>
+              <span class="ql-label">Week 2</span>
+              <span class="ql-sub">Discovery</span>
+            </a>
+            <a class="quicknav-link" href="https://tmsruge.com/materials/week-3.html" target="_blank">
+              <span class="ql-icon">03</span>
+              <span class="ql-label">Week 3</span>
+              <span class="ql-sub">GTM & Economics</span>
+            </a>
+            <a class="quicknav-link" href="https://tmsruge.com/materials/week-4.html" target="_blank">
+              <span class="ql-icon">04</span>
+              <span class="ql-label">Week 4</span>
+              <span class="ql-sub">Brand & Pricing</span>
+            </a>
+            <a class="quicknav-link" href="https://tmsruge.com/materials/week-5.html" target="_blank">
+              <span class="ql-icon">05</span>
+              <span class="ql-label">Week 5</span>
+              <span class="ql-sub">Pitch & Launch</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Public Pages -->
+        <div class="quicknav-drop" id="qn-public">
+          <button class="quicknav-trigger" onclick="toggleQN('qn-public')">
+            <span class="qn-dot" style="background:var(--crimson)"></span>
+            Public Pages
+            <span class="qn-arrow">&#9660;</span>
+          </button>
+          <div class="quicknav-menu">
+            <a class="quicknav-link" href="https://tmsruge.com/curriculum/apply-directory.html" target="_blank">
+              <span class="ql-icon">&#9998;</span>
+              <span class="ql-label">Provider Directory</span>
+              <span class="ql-sub">Application form</span>
+            </a>
+            <a class="quicknav-link" href="https://tmsruge.com/#contact" target="_blank">
+              <span class="ql-icon">&#9993;</span>
+              <span class="ql-label">Contact Form</span>
+              <span class="ql-sub">Enquiries</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Registrations</div>
+          <div class="stat-value" id="stat-total">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Revenue Collected</div>
+          <div class="stat-value gold" id="stat-collected">—</div>
+          <div class="stat-sub" id="stat-collected-sub"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Pending Balances</div>
+          <div class="stat-value orange" id="stat-pending">—</div>
+          <div class="stat-sub" id="stat-pending-sub"></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Cohorts</div>
+          <div class="stat-value" id="stat-cohorts">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Fully Paid</div>
+          <div class="stat-value green" id="stat-fullypaid">—</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Deposit Only</div>
+          <div class="stat-value orange" id="stat-depositonly">—</div>
+        </div>
+      </div>
+
+      <!-- ── MEETING INVITE ────────────────────────────────────────── -->
+      <div class="invite-card" id="invite-card">
+        <div class="invite-header">
+          <div class="invite-title">
+            <span class="invite-icon">&#9993;</span>
+            Founding Team Meeting Invite
+          </div>
+          <div class="invite-meta">THU 8 MAY 2026 &middot; 6:00 PM EAT &middot; ZOOM</div>
+        </div>
+        <div class="invite-recipients" id="invite-recipients">
+          <!-- Populated dynamically from coaches table -->
+        </div>
+        <div class="invite-actions">
+          <button class="invite-btn" id="invite-send-btn" onclick="sendFoundingInvite()" disabled>
+            Loading…
+          </button>
+          <span class="invite-status" id="invite-status"></span>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Registrations by Track</div>
+              <div class="chart-title-accent"></div>
+            </div>
+          </div>
+          <div class="chart-container"><canvas id="chart-track"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <div>
+              <div class="chart-title">Business Sectors</div>
+              <div class="chart-title-accent"></div>
+            </div>
+          </div>
+          <div class="chart-container"><canvas id="chart-sector"></canvas></div>
+        </div>
+      </div>
+
+      <div class="chart-card chart-card-wide">
+        <div class="chart-header">
+          <div>
+            <div class="chart-title">Revenue per Cohort</div>
+            <div class="chart-title-accent"></div>
+          </div>
+        </div>
+        <div class="chart-container" style="height:200px"><canvas id="chart-revenue"></canvas></div>
+      </div>
+
+    </div>
+
+    <!-- ── REGISTRATIONS ─────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-registrations">
+      <div class="filter-row">
+        <select class="filter-select" id="filter-cohort" onchange="renderRegistrations()">
+          <option value="">All Cohorts</option>
+        </select>
+        <select class="filter-select" id="filter-track" onchange="renderRegistrations()">
+          <option value="">All Tracks</option>
+          <option value="group">Group</option>
+          <option value="oneOnOne">1-on-1</option>
+          <option value="vip">VIP</option>
+        </select>
+        <select class="filter-select" id="filter-payment" onchange="renderRegistrations()">
+          <option value="">All Statuses</option>
+          <option value="fully_paid">Fully Paid</option>
+          <option value="deposit_only">Deposit Only</option>
+          <option value="unpaid">No Payment</option>
+          <option value="forfeited">Forfeited</option>
+        </select>
+        <input class="filter-input" type="text" id="filter-search" placeholder="Search name or email…" oninput="renderRegistrations()">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>Name</th><th>Email</th><th>Cohort</th>
+              <th>Track</th><th>Sector</th><th>Deposit</th><th>Balance</th>
+              <th>Full Fee</th><th>Status</th><th>Registered</th><th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="reg-tbody">
+            <tr><td colspan="12" class="loading">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── REVENUE ────────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-revenue">
+      <div class="stats-grid" style="margin-bottom:32px">
+        <div class="stat-card"><div class="stat-label">Cumulative Revenue</div><div class="stat-value gold" id="rev-total">—</div></div>
+        <div class="stat-card"><div class="stat-label">Collected (Deposits + Balances)</div><div class="stat-value green" id="rev-collected">—</div></div>
+        <div class="stat-card"><div class="stat-label">Outstanding Balances</div><div class="stat-value orange" id="rev-outstanding">—</div></div>
+      </div>
+      <div class="revenue-grid">
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">Revenue by Track</div><div class="chart-title-accent"></div></div></div>
+          <table class="rev-table" id="rev-by-track">
+            <thead><tr><th>Track</th><th>Registrations</th><th>Collected</th><th>Outstanding</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><div><div class="chart-title">Revenue by Cohort</div><div class="chart-title-accent"></div></div></div>
+          <table class="rev-table" id="rev-by-cohort">
+            <thead><tr><th>Cohort</th><th>Founders</th><th>Collected</th><th>Outstanding</th></tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── DOCUMENTS ─────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-documents">
+      <div class="doc-upload-area" id="drop-zone" onclick="document.getElementById('doc-file-input').click()">
+        <div class="upload-icon">📎</div>
+        <p>Click or drag &amp; drop a file to upload</p>
+        <p style="font-size:10px;margin-top:6px;letter-spacing:0.05em">PDF, DOCX, XLSX, PPTX, PNG, JPG — max 50MB</p>
+      </div>
+      <input type="file" id="doc-file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.png,.jpg,.jpeg,.zip">
+
+      <div class="doc-form" id="doc-form" style="display:none">
+        <input type="text" id="doc-name" placeholder="Document name…">
+        <input type="text" id="doc-desc" placeholder="Short description (optional)">
+        <select id="doc-category">
+          <option value="general">General</option>
+          <option value="curriculum">Curriculum</option>
+          <option value="templates">Templates &amp; Tools</option>
+          <option value="recordings">Recordings</option>
+          <option value="admin">Admin Only</option>
+        </select>
+        <select id="doc-cohort">
+          <option value="">All Cohorts</option>
+        </select>
+        <button class="btn-upload" id="btn-do-upload" onclick="uploadDocument()">Upload</button>
+        <button class="btn-cancel" onclick="cancelDocUpload()">Cancel</button>
+      </div>
+
+      <div id="doc-list-wrap">
+        <div class="section-head" style="margin-bottom:16px">
+          <span class="section-title">Uploaded Documents</span>
+          <select class="filter-select" id="doc-filter-cat" onchange="renderDocuments()">
+            <option value="">All Categories</option>
+            <option value="curriculum">Curriculum</option>
+            <option value="templates">Templates &amp; Tools</option>
+            <option value="recordings">Recordings</option>
+            <option value="admin">Admin Only</option>
+            <option value="general">General</option>
+          </select>
+        </div>
+        <div class="doc-list" id="doc-list"><div class="loading">Loading…</div></div>
+      </div>
+    </div>
+
+    <!-- ── DIRECTORY ──────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-directory">
+
+      <!-- Sub-tabs: Applications / Active Listings / Add Provider -->
+      <div class="dir-subtabs">
+        <button class="dir-subtab active" onclick="switchDirTab('applications')">Applications <span class="badge" id="app-count-badge">0</span></button>
+        <button class="dir-subtab" onclick="switchDirTab('listings')">Active Listings</button>
+        <button class="dir-subtab" onclick="switchDirTab('add')">+ Add Provider</button>
+      </div>
+
+      <!-- Applications sub-panel -->
+      <div class="dir-panel active" id="dir-applications">
+        <div class="section-head" style="margin-bottom:16px">
+          <span class="section-title">Provider Applications</span>
+          <select class="filter-select" id="app-status-filter" onchange="renderApplications()">
+            <option value="pending">Pending</option>
+            <option value="approved">Approved</option>
+            <option value="rejected">Rejected</option>
+            <option value="">All</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Company</th>
+                <th>Category</th>
+                <th>Contact</th>
+                <th>Tier</th>
+                <th>Applied</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="app-table-body">
+              <tr><td colspan="7" class="loading">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Active Listings sub-panel -->
+      <div class="dir-panel" id="dir-listings">
+        <div class="section-head" style="margin-bottom:16px">
+          <span class="section-title">Active Directory Listings</span>
+          <select class="filter-select" id="listing-cat-filter" onchange="renderListings()">
+            <option value="">All Categories</option>
+            <option value="legal">Legal &amp; Corporate</option>
+            <option value="accounting">Accounting &amp; Audit</option>
+            <option value="design">Graphic Design</option>
+            <option value="unbs">UNBS &amp; Standards</option>
+            <option value="banking">Banking &amp; Finance</option>
+            <option value="insurance">Insurance</option>
+            <option value="ip">IP &amp; Trademark</option>
+            <option value="digital">Digital &amp; Web</option>
+          </select>
+        </div>
+        <div class="dir-grid" id="listings-grid">
+          <div class="loading">Loading…</div>
+        </div>
+        <div class="dir-stats" id="dir-stats"></div>
+      </div>
+
+      <!-- Add Provider sub-panel -->
+      <div class="dir-panel" id="dir-add">
+        <div class="section-head" style="margin-bottom:16px">
+          <span class="section-title">Add Provider Manually</span>
+        </div>
+        <div class="dir-form-wrap">
+          <div class="dir-form-row">
+            <label>Company Name *</label>
+            <input type="text" id="prov-name" placeholder="Company name">
+          </div>
+          <div class="dir-form-row">
+            <label>Category *</label>
+            <select id="prov-category">
+              <option value="legal">Legal &amp; Corporate</option>
+              <option value="accounting">Accounting &amp; Audit</option>
+              <option value="design">Graphic Design &amp; Branding</option>
+              <option value="unbs">UNBS &amp; Standards</option>
+              <option value="banking">Banking &amp; Finance</option>
+              <option value="insurance">Insurance</option>
+              <option value="ip">IP &amp; Trademark</option>
+              <option value="digital">Digital &amp; Web Development</option>
+            </select>
+          </div>
+          <div class="dir-form-row">
+            <label>Description</label>
+            <textarea id="prov-desc" rows="3" placeholder="Brief description of services"></textarea>
+          </div>
+          <div class="dir-form-row">
+            <label>Contact Name</label>
+            <input type="text" id="prov-contact" placeholder="Primary contact person">
+          </div>
+          <div class="dir-form-row two-col">
+            <div>
+              <label>Email</label>
+              <input type="email" id="prov-email" placeholder="email@company.com">
+            </div>
+            <div>
+              <label>Phone</label>
+              <input type="tel" id="prov-phone" placeholder="+256 7XX XXX XXX">
+            </div>
+          </div>
+          <div class="dir-form-row">
+            <label>Website</label>
+            <input type="url" id="prov-website" placeholder="https://...">
+          </div>
+          <div class="dir-form-row two-col">
+            <div>
+              <label>Tier *</label>
+              <select id="prov-tier" onchange="updateProvPrice()">
+                <option value="cohort">Per Cohort — UGX 500,000</option>
+                <option value="annual">Annual — UGX 1,500,000</option>
+              </select>
+            </div>
+            <div>
+              <label>Slot Position *</label>
+              <select id="prov-position">
+                <option value="1">Slot 1</option>
+                <option value="2">Slot 2</option>
+                <option value="3">Slot 3</option>
+              </select>
+            </div>
+          </div>
+          <div class="dir-form-row two-col">
+            <div>
+              <label>Start Date</label>
+              <input type="date" id="prov-start">
+            </div>
+            <div>
+              <label>Expiry Date</label>
+              <input type="date" id="prov-expiry">
+            </div>
+          </div>
+          <div style="margin-top:20px;display:flex;gap:12px">
+            <button class="btn-confirm" onclick="addProvider()">Add Provider</button>
+            <button class="btn-cancel" onclick="clearProviderForm()">Clear</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── COACHES ────────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-coaches">
+      <div class="section-head" style="margin-bottom:16px">
+        <span class="section-title">Coach Applications</span>
+        <select class="filter-select" id="coach-status-filter" onchange="renderCoachApplications()">
+          <option value="pending">Pending</option>
+          <option value="approved">Approved</option>
+          <option value="rejected">Rejected</option>
+          <option value="">All</option>
+        </select>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Discipline</th>
+              <th>Headline</th>
+              <th>Votes</th>
+              <th>Applied</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="coach-app-table-body">
+            <tr><td colspan="7" class="loading">Loading...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ── CHANGE PASSWORD MODAL ─────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="password-modal" style="display:none">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-title">Change Password</div>
+    <div class="modal-field">
+      <label class="modal-label">New Password</label>
+      <input class="modal-input" type="password" id="new-password" placeholder="Minimum 8 characters" autocomplete="new-password">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Confirm Password</label>
+      <input class="modal-input" type="password" id="confirm-password" placeholder="Re-enter new password" autocomplete="new-password">
+    </div>
+    <p id="password-error" style="color:var(--danger);font-size:12px;min-height:18px;font-family:var(--mono)"></p>
+    <div class="modal-actions">
+      <button class="modal-btn modal-cancel" onclick="closePasswordModal()">Cancel</button>
+      <button class="modal-btn modal-confirm" onclick="changePassword()">Update Password</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── PAYMENT MODAL ───────────────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="payment-modal">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Confirm Payment</div>
+    <div class="modal-field">
+      <label class="modal-label">Payment Method</label>
+      <select class="modal-input" id="modal-method">
+        <option value="Airtel Money">Airtel Money</option>
+        <option value="MTN Mobile Money">MTN Mobile Money</option>
+        <option value="Bank Transfer">Bank Transfer</option>
+        <option value="Cash">Cash</option>
+      </select>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Transaction Reference (optional)</label>
+      <input class="modal-input" type="text" id="modal-ref" placeholder="e.g. AIRTL123456">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Note (optional)</label>
+      <input class="modal-input" type="text" id="modal-note" placeholder="Any internal note…">
+    </div>
+    <div class="modal-actions">
+      <button class="btn-confirm" onclick="submitPayment()">Confirm Payment</button>
+      <button class="btn-cancel" onclick="closePaymentModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── CONFIG ────────────────────────────────────────────────────────────────────
+const SUPABASE_URL    = 'https://ivedeivyotwevjxvcuoe.supabase.co';
+const SUPABASE_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2ZWRlaXZ5b3R3ZXZqeHZjdW9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxOTk1OTIsImV4cCI6MjA5MDc3NTU5Mn0.qMqjTMDRcvuuSy0yXLPH-yZpWFZdUv63enAsEWxzsss';
+const API_BASE        = 'https://founders-sprint-api.vercel.app';
+const STORAGE_BUCKET  = 'course-materials';
+
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+let allRegs    = [];
+let allCohorts = [];
+let allDocs    = [];
+let allPayReqs = [];
+let pendingPayment = null;
+let pendingFile    = null;
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+async function signIn() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  const errEl    = document.getElementById('login-error');
+  errEl.textContent = '';
+  const { error } = await sb.auth.signInWithPassword({ email, password });
+  if (error) { errEl.textContent = error.message; return; }
+  bootApp();
+}
+
+async function signOut() {
+  await sb.auth.signOut();
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+function showChangePassword() {
+  document.getElementById('password-modal').style.display = 'flex';
+  document.getElementById('new-password').value = '';
+  document.getElementById('confirm-password').value = '';
+  document.getElementById('password-error').textContent = '';
+}
+
+function closePasswordModal() {
+  document.getElementById('password-modal').style.display = 'none';
+}
+
+async function changePassword() {
+  const pw   = document.getElementById('new-password').value;
+  const conf = document.getElementById('confirm-password').value;
+  const err  = document.getElementById('password-error');
+  err.textContent = '';
+
+  if (pw.length < 8) { err.textContent = 'Password must be at least 8 characters'; return; }
+  if (pw !== conf) { err.textContent = 'Passwords do not match'; return; }
+
+  const { error } = await sb.auth.updateUser({ password: pw });
+  if (error) { err.textContent = error.message; return; }
+
+  closePasswordModal();
+  showToast('Password updated successfully', 'success');
+}
+
+sb.auth.onAuthStateChange((event, session) => {
+  if (session) bootApp();
+});
+
+async function bootApp() {
+  const { data: { user } } = await sb.auth.getUser();
+  if (!user) return;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('user-email').textContent = user.email;
+  await loadAllData();
+}
+
+// ── DATA LOADING ──────────────────────────────────────────────────────────────
+async function loadAllData() {
+  const [{ data: regs }, { data: cohorts }, { data: docs }, { data: payReqs }] = await Promise.all([
+    sb.from('registrations').select('*').order('created_at', { ascending: false }),
+    sb.from('cohorts').select('*').order('id'),
+    sb.from('documents').select('*').order('created_at', { ascending: false }),
+    sb.from('payment_requests').select('*').eq('status', 'success'),
+  ]);
+
+  allRegs    = regs    || [];
+  allCohorts = cohorts || [];
+  allDocs    = docs    || [];
+  allPayReqs = payReqs || [];
+
+  populateCohortFilters();
+  renderOverview();
+  renderRegistrations();
+  renderRevenue();
+  renderDocuments();
+  loadCoachesForInvite();
+}
+
+function cohortName(id) {
+  const c = allCohorts.find(c => c.id === id);
+  return c ? c.name : `Cohort ${id}`;
+}
+
+function iotecPayment(regId, paymentType) {
+  return allPayReqs.find(p => p.registration_id === regId && p.payment_type === paymentType) || null;
+}
+
+async function sendIotecRequest(regId, paymentType) {
+  const r = allRegs.find(r => r.id === regId);
+  if (!r || !r.phone) { showToast('No phone number on file for this registration.', 'error'); return; }
+  const phone = prompt(`Send ${paymentType} request to phone:\n(pre-filled from registration)`, r.phone);
+  if (!phone) return;
+  try {
+    const res = await fetch(`${API_BASE}/api/payment-request`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ registrationId: regId, paymentType, phone }),
+    });
+    const data = await res.json();
+    if (!res.ok && !data.pending) throw new Error(data.error || 'Failed');
+    showToast(data.message || 'Payment prompt sent!', 'success');
+  } catch (err) {
+    showToast('ioTec error: ' + err.message, 'error');
+  }
+}
+
+function fmtUGX(n) {
+  if (!n) return '—';
+  if (n >= 1000000) return 'UGX ' + (n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1) + 'M';
+  if (n >= 1000)    return 'UGX ' + (n / 1000).toFixed(0) + 'K';
+  return 'UGX ' + n.toLocaleString();
+}
+
+function fmtDate(ts) {
+  if (!ts) return '—';
+  return new Date(ts).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+// ── OVERVIEW ─────────────────────────────────────────────────────────────────
+function renderOverview() {
+  const active     = allRegs.filter(r => !r.forfeited);
+  const fullyPaid  = active.filter(r => r.deposit_paid && r.balance_paid);
+  const depositOnly= active.filter(r => r.deposit_paid && !r.balance_paid);
+  const collected  = active.reduce((s, r) => s + (r.deposit_paid ? r.deposit_amount : 0) + (r.balance_paid ? r.balance_amount : 0), 0);
+  const pending    = depositOnly.reduce((s, r) => s + r.balance_amount, 0);
+  const openCohorts= allCohorts.filter(c => c.status !== 'full').length;
+
+  document.getElementById('stat-total').textContent       = active.length;
+  document.getElementById('stat-collected').textContent   = fmtUGX(collected);
+  document.getElementById('stat-collected-sub').textContent = 'deposits + balances received';
+  document.getElementById('stat-pending').textContent     = fmtUGX(pending);
+  document.getElementById('stat-pending-sub').textContent = `${depositOnly.length} founder${depositOnly.length !== 1 ? 's' : ''} awaiting balance`;
+  document.getElementById('stat-cohorts').textContent     = openCohorts;
+  document.getElementById('stat-fullypaid').textContent   = fullyPaid.length;
+  document.getElementById('stat-depositonly').textContent = depositOnly.length;
+
+  renderTrackChart(active);
+  renderSectorChart(active);
+  renderRevenueChart();
+}
+
+// ── Vibrant Bauhaus palette ──────────────────────────────────────────────────
+const PALETTE = [
+  '#E63946',  // Crimson
+  '#2D6BE4',  // Cobalt
+  '#0CB4AD',  // Teal
+  '#8B5CF6',  // Violet
+  '#F05A22',  // Burnt Orange
+  '#6BBE44',  // Lime
+  '#E0437A',  // Rose
+  '#E8A020',  // Amber
+  '#06B6D4',  // Cyan
+  '#A16207',  // Ochre
+];
+
+let chartTrack, chartSector, chartRevenue;
+
+const CHART_DEFAULTS = {
+  plugins: {
+    legend: {
+      labels: {
+        color: 'rgba(30,27,20,0.70)',
+        font: { family: 'Space Grotesk', size: 11 },
+        boxWidth: 10, boxHeight: 10,
+        padding: 16,
+      }
+    },
+    tooltip: {
+      backgroundColor: '#F0E7D0',
+      borderColor: 'rgba(163,126,30,0.35)',
+      borderWidth: 1,
+      titleColor: '#A37E1E',
+      bodyColor: '#1E1B14',
+      titleFont: { family: 'Space Mono', size: 11 },
+      bodyFont: { family: 'Space Grotesk', size: 12 },
+      padding: 12,
+    }
+  }
+};
+
+function renderTrackChart(regs) {
+  const group    = regs.filter(r => r.track === 'group').length;
+  const oneOnOne = regs.filter(r => r.track === 'oneOnOne').length;
+  const vip      = regs.filter(r => r.track === 'vip').length;
+
+  if (chartTrack) chartTrack.destroy();
+  chartTrack = new Chart(document.getElementById('chart-track'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Group', '1-on-1', 'VIP'],
+      datasets: [{
+        data: [group, oneOnOne, vip],
+        backgroundColor: ['#2D6BE4', '#C9A036', '#E63946'],
+        hoverBackgroundColor: ['#4A85FF', '#E8C160', '#FF5766'],
+        borderWidth: 0,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      cutout: '68%',
+      maintainAspectRatio: false,
+    }
+  });
+}
+
+function renderSectorChart(regs) {
+  const counts = {};
+  regs.forEach(r => {
+    const s = r.sector || 'Not specified';
+    counts[s] = (counts[s] || 0) + 1;
+  });
+  const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 8);
+
+  if (chartSector) chartSector.destroy();
+  chartSector = new Chart(document.getElementById('chart-sector'), {
+    type: 'doughnut',
+    data: {
+      labels: sorted.map(([k]) => k),
+      datasets: [{
+        data: sorted.map(([, v]) => v),
+        backgroundColor: PALETTE.slice(0, sorted.length),
+        hoverBackgroundColor: PALETTE.slice(0, sorted.length).map(c => c + 'DD'),
+        borderWidth: 0,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      cutout: '62%',
+      maintainAspectRatio: false,
+    }
+  });
+}
+
+function renderRevenueChart() {
+  const byC = {};
+  allCohorts.forEach(c => { byC[c.id] = { name: c.name, collected: 0 }; });
+  allRegs.filter(r => !r.forfeited).forEach(r => {
+    if (!byC[r.cohort_id]) byC[r.cohort_id] = { name: cohortName(r.cohort_id), collected: 0 };
+    if (r.deposit_paid) byC[r.cohort_id].collected += r.deposit_amount;
+    if (r.balance_paid) byC[r.cohort_id].collected += r.balance_amount;
+  });
+
+  const labels = Object.values(byC).map(c => c.name);
+  const data   = Object.values(byC).map(c => c.collected);
+
+  // Bar colors cycle through the Bauhaus palette
+  const barColors = labels.map((_, i) => PALETTE[i % PALETTE.length]);
+
+  if (chartRevenue) chartRevenue.destroy();
+  chartRevenue = new Chart(document.getElementById('chart-revenue'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Collected (UGX)',
+        data,
+        backgroundColor: barColors,
+        hoverBackgroundColor: barColors.map(c => c + 'CC'),
+        borderRadius: 0,
+        borderWidth: 0,
+      }]
+    },
+    options: {
+      ...CHART_DEFAULTS,
+      plugins: {
+        ...CHART_DEFAULTS.plugins,
+        legend: { display: false },
+      },
+      scales: {
+        x: {
+          ticks: { color: 'rgba(30,27,20,0.55)', font: { family: 'Space Grotesk', size: 11 } },
+          grid: { color: 'rgba(163,126,30,0.08)' },
+          border: { color: 'rgba(163,126,30,0.2)' },
+        },
+        y: {
+          ticks: {
+            color: 'rgba(30,27,20,0.55)',
+            font: { family: 'Space Mono', size: 10 },
+            callback: v => fmtUGX(v),
+          },
+          grid: { color: 'rgba(163,126,30,0.08)' },
+          border: { color: 'rgba(163,126,30,0.2)' },
+        }
+      },
+      maintainAspectRatio: false,
+    }
+  });
+}
+
+// ── REGISTRATIONS ─────────────────────────────────────────────────────────────
+function populateCohortFilters() {
+  ['filter-cohort', 'doc-cohort'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const first = el.options[0];
+    el.innerHTML = '';
+    el.appendChild(first);
+    allCohorts.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.name;
+      el.appendChild(opt);
+    });
+  });
+}
+
+function paymentStatus(r) {
+  if (r.forfeited)                      return { label: 'Forfeited',   cls: 'badge-forfeited' };
+  if (r.deposit_paid && r.balance_paid) return { label: 'Fully Paid',  cls: 'badge-paid' };
+  if (r.deposit_paid)                   return { label: 'Deposit Only', cls: 'badge-partial' };
+  return                                       { label: 'No Payment',  cls: 'badge-unpaid' };
+}
+
+function trackBadge(t) {
+  if (t === 'group')    return '<span class="badge badge-group">Group</span>';
+  if (t === 'oneOnOne') return '<span class="badge badge-oneonone">1-on-1</span>';
+  if (t === 'vip')      return '<span class="badge badge-vip">VIP</span>';
+  return t;
+}
+
+function renderRegistrations() {
+  const cohortF = document.getElementById('filter-cohort').value;
+  const trackF  = document.getElementById('filter-track').value;
+  const payF    = document.getElementById('filter-payment').value;
+  const searchF = document.getElementById('filter-search').value.toLowerCase();
+
+  let rows = allRegs.filter(r => {
+    if (cohortF && String(r.cohort_id) !== cohortF) return false;
+    if (trackF  && r.track !== trackF)              return false;
+    if (payF === 'fully_paid'   && !(r.deposit_paid && r.balance_paid)) return false;
+    if (payF === 'deposit_only' && !(r.deposit_paid && !r.balance_paid)) return false;
+    if (payF === 'unpaid'       && (r.deposit_paid || r.forfeited))      return false;
+    if (payF === 'forfeited'    && !r.forfeited)                          return false;
+    if (searchF) {
+      const name = `${r.first_name} ${r.last_name}`.toLowerCase();
+      if (!name.includes(searchF) && !r.email.toLowerCase().includes(searchF)) return false;
+    }
+    return true;
+  });
+
+  const tbody = document.getElementById('reg-tbody');
+  if (rows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="12" class="empty">No registrations match this filter.</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(r => {
+    const { label, cls } = paymentStatus(r);
+    const depositDone = r.deposit_paid;
+    const balanceDone = r.balance_paid;
+    const forfeited   = r.forfeited;
+    const depIotec    = iotecPayment(r.id, 'deposit');
+    const balIotec    = iotecPayment(r.id, 'balance');
+    const iotecBadge  = `<span style="font-size:9px;background:rgba(12,180,173,0.15);color:#0A918B;padding:2px 7px;border:1px solid rgba(12,180,173,0.3);letter-spacing:1px">📱 IOTEC</span>`;
+    return `<tr class="${forfeited ? 'forfeited' : ''}">
+      <td style="color:var(--muted);font-family:var(--mono)">#${r.id}</td>
+      <td><strong>${r.first_name} ${r.last_name}</strong>${r.company ? `<br><span style="color:var(--muted);font-size:10px">${r.company}</span>` : ''}</td>
+      <td style="color:var(--muted)">${r.email}</td>
+      <td>${cohortName(r.cohort_id)}</td>
+      <td>${trackBadge(r.track)}</td>
+      <td style="color:var(--muted);font-size:11px">${r.sector || '—'}</td>
+      <td class="${depositDone ? 'text-green' : 'text-red'}" style="font-family:var(--mono)">${fmtUGX(r.deposit_amount)}${depIotec ? ' ' + iotecBadge : ''}</td>
+      <td class="${balanceDone ? 'text-green' : ''}" style="font-family:var(--mono)">${fmtUGX(r.balance_amount)}${balIotec ? ' ' + iotecBadge : ''}</td>
+      <td style="font-family:var(--mono)">${fmtUGX(r.full_fee)}</td>
+      <td><span class="badge ${cls}">${label}</span></td>
+      <td style="color:var(--muted);font-size:11px">${fmtDate(r.created_at)}</td>
+      <td>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          ${!depositDone && !forfeited ? `<button class="action-btn" style="border-color:rgba(12,180,173,0.4);color:#0A918B" onclick="sendIotecRequest(${r.id},'deposit')" title="Send mobile money prompt">📱 Send</button>` : ''}
+          ${!depositDone && !forfeited ? `<button class="action-btn success" onclick="openPaymentModal(${r.id},'deposit')">✓ Manual</button>` : ''}
+          ${depositDone && !balanceDone && !forfeited ? `<button class="action-btn" style="border-color:rgba(12,180,173,0.4);color:#0A918B" onclick="sendIotecRequest(${r.id},'balance')" title="Send mobile money prompt">📱 Send</button>` : ''}
+          ${depositDone && !balanceDone && !forfeited ? `<button class="action-btn success" onclick="openPaymentModal(${r.id},'balance')">✓ Manual</button>` : ''}
+          ${r.admin_note ? `<span class="note-field" title="${r.admin_note}">📝 ${r.admin_note}</span>` : ''}
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+// ── PAYMENT MODAL ─────────────────────────────────────────────────────────────
+function openPaymentModal(registrationId, paymentType) {
+  pendingPayment = { registrationId, paymentType };
+  const r = allRegs.find(r => r.id === registrationId);
+  const amount = paymentType === 'deposit' ? r.deposit_amount : r.balance_amount;
+  document.getElementById('modal-title').textContent =
+    `Confirm ${paymentType === 'deposit' ? 'Deposit' : 'Balance'} — ${fmtUGX(amount)} for ${r.first_name} ${r.last_name}`;
+  document.getElementById('modal-ref').value  = '';
+  document.getElementById('modal-note').value = '';
+  document.getElementById('payment-modal').classList.add('open');
+}
+
+function closePaymentModal() {
+  document.getElementById('payment-modal').classList.remove('open');
+  pendingPayment = null;
+}
+
+async function submitPayment() {
+  if (!pendingPayment) return;
+  const { registrationId, paymentType } = pendingPayment;
+  const method    = document.getElementById('modal-method').value;
+  const reference = document.getElementById('modal-ref').value.trim();
+  const note      = document.getElementById('modal-note').value.trim();
+
+  try {
+    const res = await fetch(`${API_BASE}/api/confirm-payment`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ registrationId, paymentType, method, reference, note }),
+    });
+    const json = await res.json();
+    if (!res.ok) throw new Error(json.error || 'Unknown error');
+    showToast(`Payment confirmed ✓`, 'success');
+    closePaymentModal();
+    await loadAllData();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+// ── REVENUE ───────────────────────────────────────────────────────────────────
+function renderRevenue() {
+  const active = allRegs.filter(r => !r.forfeited);
+  const totalFees   = active.reduce((s, r) => s + r.full_fee, 0);
+  const collected   = active.reduce((s, r) => s + (r.deposit_paid ? r.deposit_amount : 0) + (r.balance_paid ? r.balance_amount : 0), 0);
+  const outstanding = active.filter(r => r.deposit_paid && !r.balance_paid).reduce((s, r) => s + r.balance_amount, 0);
+
+  document.getElementById('rev-total').textContent       = fmtUGX(totalFees);
+  document.getElementById('rev-collected').textContent   = fmtUGX(collected);
+  document.getElementById('rev-outstanding').textContent = fmtUGX(outstanding);
+
+  const tracks = [
+    { key: 'group',    label: 'Group' },
+    { key: 'oneOnOne', label: '1-on-1' },
+    { key: 'vip',      label: 'VIP' },
+  ];
+  const tbodyTrack = document.querySelector('#rev-by-track tbody');
+  let totalTrackCollected = 0, totalTrackOutstanding = 0;
+  tbodyTrack.innerHTML = tracks.map(({ key, label }) => {
+    const regs = active.filter(r => r.track === key);
+    const col  = regs.reduce((s, r) => s + (r.deposit_paid ? r.deposit_amount : 0) + (r.balance_paid ? r.balance_amount : 0), 0);
+    const out  = regs.filter(r => r.deposit_paid && !r.balance_paid).reduce((s, r) => s + r.balance_amount, 0);
+    totalTrackCollected += col; totalTrackOutstanding += out;
+    return `<tr><td>${label}</td><td>${regs.length}</td><td class="text-gold" style="font-family:var(--mono)">${fmtUGX(col)}</td><td class="${out > 0 ? 'text-red' : ''}" style="font-family:var(--mono)">${fmtUGX(out)}</td></tr>`;
+  }).join('') + `<tr><td>Total</td><td>${active.length}</td><td style="font-family:var(--mono)">${fmtUGX(totalTrackCollected)}</td><td style="font-family:var(--mono)">${fmtUGX(totalTrackOutstanding)}</td></tr>`;
+
+  const tbodyCohort = document.querySelector('#rev-by-cohort tbody');
+  let totalCCol = 0, totalCOut = 0;
+  tbodyCohort.innerHTML = allCohorts.map(c => {
+    const regs = active.filter(r => r.cohort_id === c.id);
+    const col  = regs.reduce((s, r) => s + (r.deposit_paid ? r.deposit_amount : 0) + (r.balance_paid ? r.balance_amount : 0), 0);
+    const out  = regs.filter(r => r.deposit_paid && !r.balance_paid).reduce((s, r) => s + r.balance_amount, 0);
+    totalCCol += col; totalCOut += out;
+    return `<tr><td>${c.name}</td><td>${regs.length}</td><td class="text-gold" style="font-family:var(--mono)">${fmtUGX(col)}</td><td class="${out > 0 ? 'text-red' : ''}" style="font-family:var(--mono)">${fmtUGX(out)}</td></tr>`;
+  }).join('') + `<tr><td>Total</td><td>${active.length}</td><td style="font-family:var(--mono)">${fmtUGX(totalCCol)}</td><td style="font-family:var(--mono)">${fmtUGX(totalCOut)}</td></tr>`;
+}
+
+// ── DOCUMENTS ─────────────────────────────────────────────────────────────────
+let selectedFile = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const fileInput = document.getElementById('doc-file-input');
+  const dropZone  = document.getElementById('drop-zone');
+
+  fileInput.addEventListener('change', e => {
+    if (e.target.files[0]) selectFile(e.target.files[0]);
+  });
+
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag-over'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag-over'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.classList.remove('drag-over');
+    if (e.dataTransfer.files[0]) selectFile(e.dataTransfer.files[0]);
+  });
+
+  ['login-email','login-password'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => { if (e.key === 'Enter') signIn(); });
+  });
+});
+
+function selectFile(file) {
+  selectedFile = file;
+  document.getElementById('doc-name').value = file.name.replace(/\.[^.]+$/, '');
+  document.getElementById('doc-form').style.display = 'flex';
+  document.getElementById('drop-zone').querySelector('p').textContent = `Selected: ${file.name} (${(file.size/1024/1024).toFixed(1)} MB)`;
+}
+
+function cancelDocUpload() {
+  selectedFile = null;
+  document.getElementById('doc-form').style.display = 'none';
+  document.getElementById('doc-file-input').value = '';
+  document.getElementById('drop-zone').querySelector('p').textContent = 'Click or drag & drop a file to upload';
+}
+
+async function uploadDocument() {
+  if (!selectedFile) return;
+  const name     = document.getElementById('doc-name').value.trim() || selectedFile.name;
+  const desc     = document.getElementById('doc-desc').value.trim();
+  const category = document.getElementById('doc-category').value;
+  const cohortId = document.getElementById('doc-cohort').value || null;
+
+  const btn = document.getElementById('btn-do-upload');
+  btn.disabled = true; btn.textContent = 'Uploading…';
+
+  try {
+    const ext      = selectedFile.name.split('.').pop();
+    const safeName = name.replace(/[^a-z0-9_-]/gi, '_').toLowerCase();
+    const path     = `${category}/${Date.now()}_${safeName}.${ext}`;
+
+    const { error: uploadErr } = await sb.storage.from(STORAGE_BUCKET).upload(path, selectedFile, { upsert: false });
+    if (uploadErr) throw uploadErr;
+
+    const { error: dbErr } = await sb.from('documents').insert({
+      name, description: desc || null, category,
+      cohort_id: cohortId ? parseInt(cohortId) : null,
+      storage_path: path, file_size: selectedFile.size, mime_type: selectedFile.type,
+    });
+    if (dbErr) throw dbErr;
+
+    showToast('Document uploaded ✓', 'success');
+    cancelDocUpload();
+    const { data } = await sb.from('documents').select('*').order('created_at', { ascending: false });
+    allDocs = data || [];
+    renderDocuments();
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false; btn.textContent = 'Upload';
+  }
+}
+
+function fileIcon(mime) {
+  if (!mime) return '📄';
+  if (mime.includes('pdf'))        return '📕';
+  if (mime.includes('word'))       return '📘';
+  if (mime.includes('sheet') || mime.includes('excel')) return '📗';
+  if (mime.includes('presentation') || mime.includes('powerpoint')) return '📙';
+  if (mime.includes('image'))      return '🖼️';
+  if (mime.includes('video'))      return '🎬';
+  if (mime.includes('zip'))        return '🗜️';
+  return '📄';
+}
+
+async function openDoc(path) {
+  const { data } = await sb.storage.from(STORAGE_BUCKET).createSignedUrl(path, 3600);
+  if (data?.signedUrl) window.open(data.signedUrl, '_blank');
+  else showToast('Could not generate download link', 'error');
+}
+
+async function deleteDoc(id, path) {
+  if (!confirm('Delete this document? This cannot be undone.')) return;
+  await sb.storage.from(STORAGE_BUCKET).remove([path]);
+  await sb.from('documents').delete().eq('id', id);
+  allDocs = allDocs.filter(d => d.id !== id);
+  renderDocuments();
+  showToast('Document deleted', 'success');
+}
+
+function renderDocuments() {
+  const catF = document.getElementById('doc-filter-cat').value;
+  const docs = catF ? allDocs.filter(d => d.category === catF) : allDocs;
+  const el   = document.getElementById('doc-list');
+
+  if (docs.length === 0) { el.innerHTML = '<div class="empty">No documents uploaded yet.</div>'; return; }
+
+  el.innerHTML = docs.map(d => `
+    <div class="doc-item">
+      <div class="doc-icon">${fileIcon(d.mime_type)}</div>
+      <div class="doc-info">
+        <div class="doc-name">${d.name}</div>
+        <div class="doc-meta">
+          ${d.category} · ${d.cohort_id ? cohortName(d.cohort_id) : 'All cohorts'} · ${d.file_size ? (d.file_size/1024/1024).toFixed(1)+'MB' : ''} · ${fmtDate(d.created_at)}
+          ${d.description ? ' · ' + d.description : ''}
+        </div>
+      </div>
+      <div class="doc-actions">
+        <button class="action-btn" onclick="openDoc('${d.storage_path}')">⬇ Open</button>
+        <button class="action-btn danger" onclick="deleteDoc(${d.id},'${d.storage_path}')">✕</button>
+      </div>
+    </div>`).join('');
+}
+
+// ── TABS ─────────────────────────────────────────────────────────────────────
+// ── QUICK NAV DROPDOWNS ──────────────────────────────────────────────────────
+function toggleQN(id) {
+  var el = document.getElementById(id);
+  var wasOpen = el.classList.contains('open');
+  // Close all dropdowns first
+  document.querySelectorAll('.quicknav-drop').forEach(function(d) { d.classList.remove('open'); });
+  if (!wasOpen) el.classList.add('open');
+}
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(e) {
+  if (!e.target.closest('.quicknav-drop')) {
+    document.querySelectorAll('.quicknav-drop').forEach(function(d) { d.classList.remove('open'); });
+  }
+});
+
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t, i) => {
+    const panels = ['overview','registrations','revenue','documents','directory','coaches'];
+    t.classList.toggle('active', panels[i] === name);
+  });
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`panel-${name}`).classList.add('active');
+  if (name === 'directory' && !directoryLoaded) loadDirectoryData();
+  if (name === 'coaches' && !coachAppsLoaded) loadCoachApplications();
+}
+
+// ── MEETING INVITE ──────────────────────────────────────────────────────────
+let inviteCoaches = [];
+
+async function loadCoachesForInvite() {
+  const container = document.getElementById('invite-recipients');
+  const btn       = document.getElementById('invite-send-btn');
+  try {
+    // Pull coaches directly from Supabase (role=coach, active)
+    const { data, error } = await sb
+      .from('coaches')
+      .select('id, first_name, last_name, email, sector_l1, founderssprint_email')
+      .eq('role', 'coach')
+      .eq('status', 'active')
+      .order('id');
+
+    if (error) throw new Error(error.message);
+    inviteCoaches = data || [];
+
+    container.innerHTML = inviteCoaches.map(c => `
+      <div class="invite-recipient" data-email="${c.founderssprint_email || c.email}">
+        <span class="ir-dot"></span>
+        <span class="ir-name">${c.first_name}</span>
+        <span class="ir-email">${c.founderssprint_email || c.email}</span>
+      </div>`).join('');
+
+    if (inviteCoaches.length) {
+      btn.textContent = `Send Invite to All ${inviteCoaches.length}`;
+      btn.disabled = false;
+    } else {
+      btn.textContent = 'No Coaches Found';
+    }
+  } catch (err) {
+    container.innerHTML = '<div style="color:var(--danger);font-size:12px">Failed to load coaches</div>';
+    console.error('loadCoachesForInvite:', err);
+  }
+}
+
+async function sendFoundingInvite() {
+  const btn    = document.getElementById('invite-send-btn');
+  const status = document.getElementById('invite-status');
+  const count  = inviteCoaches.length;
+
+  if (!count) return;
+  if (!confirm(`Send the founding team meeting invite to all ${count} coaches?`)) return;
+
+  btn.disabled = true;
+  btn.classList.add('sending');
+  btn.textContent = 'Sending…';
+  status.className = 'invite-status';
+  status.textContent = '';
+
+  // Reset recipient dots
+  document.querySelectorAll('.invite-recipient').forEach(r => {
+    r.classList.remove('sent', 'failed');
+  });
+
+  try {
+    const session = await sb.auth.getSession();
+    const token = session?.data?.session?.access_token || '';
+
+    const res = await fetch(`${API_BASE}/api/admin/send-founding-invite`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Server error');
+
+    // Update each recipient card
+    if (data.results) {
+      data.results.forEach(r => {
+        const el = document.querySelector(`.invite-recipient[data-email="${r.email}"]`);
+        if (el) el.classList.add(r.ok ? 'sent' : 'failed');
+      });
+    }
+
+    if (data.ok) {
+      status.className = 'invite-status success';
+      status.textContent = `All ${data.sent} invites sent successfully`;
+      btn.textContent = 'Sent ✓';
+      showToast('Meeting invites sent to all coaches!', 'success');
+    } else {
+      status.className = 'invite-status error';
+      status.textContent = `${data.sent}/${data.total} sent — check results`;
+      btn.textContent = 'Retry Send';
+      btn.disabled = false;
+      btn.classList.remove('sending');
+    }
+  } catch (err) {
+    status.className = 'invite-status error';
+    status.textContent = 'Error: ' + err.message;
+    btn.textContent = 'Retry Send';
+    btn.disabled = false;
+    btn.classList.remove('sending');
+    showToast('Failed to send invites: ' + err.message, 'error');
+  }
+}
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function showToast(msg, type = 'info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.className = '', 3500);
+}
+
+// ── DIRECTORY MANAGEMENT ─────────────────────────────────────────────────────
+let directoryLoaded = false;
+let allProviders = [];
+let allApplications = [];
+
+const CATEGORY_LABELS = {
+  legal: 'Legal & Corporate',
+  accounting: 'Accounting & Audit',
+  design: 'Graphic Design & Branding',
+  unbs: 'UNBS & Standards',
+  banking: 'Banking & Finance',
+  insurance: 'Insurance',
+  ip: 'IP & Trademark',
+  digital: 'Digital & Web Development'
+};
+
+async function loadDirectoryData() {
+  const [{ data: provs }, { data: apps }] = await Promise.all([
+    sb.from('directory_providers').select('*').order('category').order('position'),
+    sb.from('directory_applications').select('*').order('created_at', { ascending: false }),
+  ]);
+  allProviders = provs || [];
+  allApplications = apps || [];
+  directoryLoaded = true;
+
+  const pending = allApplications.filter(a => a.status === 'pending').length;
+  document.getElementById('app-count-badge').textContent = pending;
+  document.getElementById('app-count-badge').style.display = pending > 0 ? 'inline-block' : 'none';
+
+  renderApplications();
+  renderListings();
+
+  // Set default dates on add form
+  const today = new Date().toISOString().split('T')[0];
+  const threeMonths = new Date(Date.now() + 90 * 86400000).toISOString().split('T')[0];
+  document.getElementById('prov-start').value = today;
+  document.getElementById('prov-expiry').value = threeMonths;
+}
+
+function switchDirTab(name) {
+  document.querySelectorAll('.dir-subtab').forEach((t, i) => {
+    const tabs = ['applications','listings','add'];
+    t.classList.toggle('active', tabs[i] === name);
+  });
+  document.querySelectorAll('.dir-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById(`dir-${name}`).classList.add('active');
+}
+
+function renderApplications() {
+  const filter = document.getElementById('app-status-filter').value;
+  const filtered = filter ? allApplications.filter(a => a.status === filter) : allApplications;
+  const tbody = document.getElementById('app-table-body');
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px">No applications found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(a => `
+    <tr>
+      <td><strong>${esc(a.company_name)}</strong><br><span style="font-size:10px;color:var(--muted)">${esc(a.email)}</span></td>
+      <td>${CATEGORY_LABELS[a.category] || a.category}</td>
+      <td>${esc(a.contact_name)}${a.phone ? '<br><span style="font-size:10px;color:var(--muted)">' + esc(a.phone) + '</span>' : ''}</td>
+      <td><span class="dir-tier-badge ${a.preferred_tier}">${a.preferred_tier === 'annual' ? 'Annual' : 'Cohort'}</span></td>
+      <td style="font-size:11px;font-family:var(--mono)">${new Date(a.created_at).toLocaleDateString()}</td>
+      <td>${statusBadge(a.status)}</td>
+      <td>
+        ${a.status === 'pending' ? `
+          <button class="btn-confirm" style="font-size:10px;padding:4px 10px" onclick="approveApplication('${a.id}')">Approve</button>
+          <button class="btn-cancel" style="font-size:10px;padding:4px 10px" onclick="rejectApplication('${a.id}')">Reject</button>
+        ` : `<span style="font-size:10px;color:var(--muted)">${a.reviewed_at ? new Date(a.reviewed_at).toLocaleDateString() : '—'}</span>`}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function statusBadge(status) {
+  const colors = { pending: 'var(--warning)', approved: 'var(--success)', rejected: 'var(--danger)', active: 'var(--success)', expired: 'var(--danger)', paused: 'var(--muted)' };
+  return `<span style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:${colors[status] || 'var(--muted)'}">${status}</span>`;
+}
+
+function esc(str) { return str ? String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;') : ''; }
+
+async function approveApplication(id) {
+  const app = allApplications.find(a => a.id === id);
+  if (!app) return;
+
+  const { error } = await sb.from('directory_applications')
+    .update({ status: 'approved', reviewed_at: new Date().toISOString() })
+    .eq('id', id);
+
+  if (error) { showToast('Failed to approve: ' + error.message, 'error'); return; }
+
+  // Pre-fill the add-provider form with application data
+  document.getElementById('prov-name').value = app.company_name || '';
+  document.getElementById('prov-category').value = app.category || 'legal';
+  document.getElementById('prov-contact').value = app.contact_name || '';
+  document.getElementById('prov-email').value = app.email || '';
+  document.getElementById('prov-phone').value = app.phone || '';
+  document.getElementById('prov-website').value = app.website || '';
+  document.getElementById('prov-tier').value = app.preferred_tier || 'cohort';
+  updateProvPrice();
+
+  showToast('Application approved. Add them as a provider →', 'success');
+  switchDirTab('add');
+  await loadDirectoryData();
+}
+
+async function rejectApplication(id) {
+  if (!confirm('Reject this application?')) return;
+  const { error } = await sb.from('directory_applications')
+    .update({ status: 'rejected', reviewed_at: new Date().toISOString() })
+    .eq('id', id);
+  if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+  showToast('Application rejected.', 'info');
+  await loadDirectoryData();
+}
+
+function renderListings() {
+  const filter = document.getElementById('listing-cat-filter').value;
+  const filtered = filter ? allProviders.filter(p => p.category === filter) : allProviders;
+  const grid = document.getElementById('listings-grid');
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div style="text-align:center;color:var(--muted);padding:32px;grid-column:1/-1">No listings found</div>';
+    renderDirStats();
+    return;
+  }
+
+  grid.innerHTML = filtered.map(p => {
+    const now = new Date();
+    const exp = new Date(p.expires_at);
+    const daysLeft = Math.ceil((exp - now) / 86400000);
+    let expiryClass = '';
+    if (daysLeft < 0) expiryClass = 'expired';
+    else if (daysLeft < 14) expiryClass = 'expiring';
+
+    return `
+      <div class="dir-listing-card">
+        <div class="dir-cat-label">${CATEGORY_LABELS[p.category] || p.category} · Slot ${p.position}</div>
+        <h4>${esc(p.company_name)} ${p.featured ? '⭐' : ''}</h4>
+        <div class="dir-meta">${esc(p.description || '—')}<br>${esc(p.contact_name || '')} · ${esc(p.email || '')}</div>
+        <span class="dir-tier-badge ${p.tier}">${p.tier === 'annual' ? 'Annual' : 'Per Cohort'}</span>
+        <span class="dir-expiry ${expiryClass}">
+          ${daysLeft < 0 ? 'Expired ' + Math.abs(daysLeft) + 'd ago' : daysLeft + 'd remaining'}
+        </span>
+        <div class="dir-card-actions">
+          <button onclick="toggleProviderStatus('${p.id}', '${p.status === 'active' ? 'paused' : 'active'}')">${p.status === 'active' ? 'Pause' : 'Activate'}</button>
+          <button class="btn-remove" onclick="removeProvider('${p.id}')">Remove</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  renderDirStats();
+}
+
+function renderDirStats() {
+  const active = allProviders.filter(p => p.status === 'active');
+  const annual = active.filter(p => p.tier === 'annual');
+  const cohort = active.filter(p => p.tier === 'cohort');
+  const totalSlots = 8 * 3;
+  const revenue = annual.length * 1500000 + cohort.length * 500000;
+
+  document.getElementById('dir-stats').innerHTML =
+    `<strong>${active.length}</strong> of ${totalSlots} slots filled · ` +
+    `<strong>${annual.length}</strong> annual · <strong>${cohort.length}</strong> per-cohort · ` +
+    `Est. revenue: <strong>UGX ${revenue.toLocaleString()}</strong>`;
+}
+
+function updateProvPrice() {
+  const tier = document.getElementById('prov-tier').value;
+  const start = document.getElementById('prov-start').value;
+  if (start) {
+    const d = new Date(start);
+    d.setMonth(d.getMonth() + (tier === 'annual' ? 12 : 3));
+    document.getElementById('prov-expiry').value = d.toISOString().split('T')[0];
+  }
+}
+
+async function addProvider() {
+  const name = document.getElementById('prov-name').value.trim();
+  const category = document.getElementById('prov-category').value;
+  const tier = document.getElementById('prov-tier').value;
+  const position = parseInt(document.getElementById('prov-position').value);
+  const startDate = document.getElementById('prov-start').value;
+  const expiryDate = document.getElementById('prov-expiry').value;
+
+  if (!name) { showToast('Company name is required', 'error'); return; }
+  if (!startDate || !expiryDate) { showToast('Start and expiry dates are required', 'error'); return; }
+
+  const { error } = await sb.from('directory_providers').insert({
+    company_name: name,
+    category,
+    description: document.getElementById('prov-desc').value.trim() || null,
+    contact_name: document.getElementById('prov-contact').value.trim() || null,
+    email: document.getElementById('prov-email').value.trim() || null,
+    phone: document.getElementById('prov-phone').value.trim() || null,
+    website: document.getElementById('prov-website').value.trim() || null,
+    tier,
+    price_ugx: tier === 'annual' ? 1500000 : 500000,
+    position,
+    featured: tier === 'annual',
+    status: 'active',
+    starts_at: new Date(startDate).toISOString(),
+    expires_at: new Date(expiryDate).toISOString(),
+  });
+
+  if (error) {
+    if (error.message.includes('unique') || error.message.includes('duplicate')) {
+      showToast(`Slot ${position} in ${CATEGORY_LABELS[category]} is already taken by an active provider`, 'error');
+    } else {
+      showToast('Failed: ' + error.message, 'error');
+    }
+    return;
+  }
+
+  showToast('Provider added successfully!', 'success');
+  clearProviderForm();
+  switchDirTab('listings');
+  await loadDirectoryData();
+}
+
+function clearProviderForm() {
+  ['prov-name','prov-desc','prov-contact','prov-email','prov-phone','prov-website'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('prov-category').value = 'legal';
+  document.getElementById('prov-tier').value = 'cohort';
+  document.getElementById('prov-position').value = '1';
+  updateProvPrice();
+}
+
+async function toggleProviderStatus(id, newStatus) {
+  const { error } = await sb.from('directory_providers').update({ status: newStatus }).eq('id', id);
+  if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+  showToast(`Provider ${newStatus === 'active' ? 'activated' : 'paused'}`, 'success');
+  await loadDirectoryData();
+}
+
+async function removeProvider(id) {
+  if (!confirm('Remove this provider? This cannot be undone.')) return;
+  const { error } = await sb.from('directory_providers').delete().eq('id', id);
+  if (error) { showToast('Failed: ' + error.message, 'error'); return; }
+  showToast('Provider removed', 'info');
+  await loadDirectoryData();
+}
+
+// ── COACH APPLICATIONS (multi-coach peer approval) ──────────────────────────
+let coachAppsLoaded = false;
+let allCoachApps = [];
+let currentReviewerEmail = '';
+
+const L1_LABELS = {
+  marketing_branding:   'Marketing & Branding',
+  financial_modelling:  'Financial Modelling & Business Finance',
+  strategy_team:        'Strategy & Team Building',
+  investment_readiness: 'Investment Readiness & Fundraising',
+  product_development:  'Product Development & Pricing',
+};
+
+async function getAuthHeaders() {
+  const session = await sb.auth.getSession();
+  const token = session?.data?.session?.access_token || '';
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  };
+}
+
+async function loadCoachApplications() {
+  try {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${API_BASE}/api/admin/coach-applications`, { headers });
+    if (!res.ok) throw new Error('Failed to load coach applications');
+    const data = await res.json();
+    allCoachApps = data.applications || data;  // support both response shapes
+    currentReviewerEmail = data.reviewerEmail || '';
+    coachAppsLoaded = true;
+
+    const pending = allCoachApps.filter(a => a.status === 'pending').length;
+    const badge = document.getElementById('coach-app-count-badge');
+    badge.textContent = pending;
+    badge.style.display = pending > 0 ? 'inline-block' : 'none';
+
+    renderCoachApplications();
+  } catch (err) {
+    console.error('[Coach Apps]', err);
+    showToast('Failed to load coach applications: ' + err.message, 'error');
+  }
+}
+
+function renderCoachApplications() {
+  const filter = document.getElementById('coach-status-filter').value;
+  const filtered = filter ? allCoachApps.filter(a => a.status === filter) : allCoachApps;
+  const tbody = document.getElementById('coach-app-table-body');
+
+  if (!filtered.length) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:32px">No coach applications found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(a => {
+    const name = esc((a.first_name || '') + ' ' + (a.last_name || '')).trim() || 'Unnamed';
+    const discipline = L1_LABELS[a.taxonomy_l1] || a.taxonomy_l1 || '—';
+    const headline = esc(a.headline || '—');
+    const applied = a.created_at ? new Date(a.created_at).toLocaleDateString() : '—';
+    const votes = a.votes || [];
+    const approvals = votes.filter(v => v.vote === 'approve').length;
+    const rejections = votes.filter(v => v.vote === 'reject').length;
+    const required = a.required_approvals || 4;
+    const progressHTML = a.status === 'pending'
+      ? `<span style="font-family:var(--mono);font-size:11px;color:${approvals >= required ? 'var(--success)' : 'var(--muted)'}">${approvals}/${required}</span>`
+      : '—';
+
+    return `
+      <tr style="cursor:pointer" onclick="toggleCoachDetail('${a.id}')">
+        <td><strong>${name}</strong></td>
+        <td><span style="font-size:11px">${esc(a.email || '—')}</span></td>
+        <td>${discipline}</td>
+        <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${headline}</td>
+        <td style="text-align:center">${progressHTML}</td>
+        <td style="font-size:11px;font-family:var(--mono)">${applied}</td>
+        <td>${statusBadge(a.status)}</td>
+      </tr>
+      <tr id="coach-detail-${a.id}" style="display:none">
+        <td colspan="7" style="padding:0">
+          <div style="padding:16px 20px;background:var(--card);border-top:1px solid var(--border)">
+            ${buildCoachDetailHTML(a)}
+          </div>
+        </td>
+      </tr>`;
+  }).join('');
+}
+
+function buildCoachDetailHTML(a) {
+  const l2 = (a.taxonomy_l2 || []).join(', ') || '—';
+  const l3 = (a.taxonomy_l3 || []).join(', ') || '—';
+  const sessionTypes = (a.session_types || []).join(', ') || '—';
+  const timeSlots = (a.time_slots || []).map(s => esc(s)).join(', ') || '—';
+  const socialLinks = [
+    a.linkedin_url  ? `<a href="${esc(a.linkedin_url)}" target="_blank" style="color:var(--gold)">LinkedIn</a>` : null,
+    a.twitter_url   ? `<a href="${esc(a.twitter_url)}" target="_blank" style="color:var(--gold)">Twitter</a>` : null,
+    a.instagram_url ? `<a href="${esc(a.instagram_url)}" target="_blank" style="color:var(--gold)">Instagram</a>` : null,
+    a.website_url   ? `<a href="${esc(a.website_url)}" target="_blank" style="color:var(--gold)">Website</a>` : null,
+  ].filter(Boolean).join(' &middot; ') || '—';
+
+  let html = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px 32px;font-size:12px;margin-bottom:16px">
+      <div><strong>Phone:</strong> ${esc((a.country_code || '') + ' ' + (a.phone || '—'))}</div>
+      <div><strong>Current role:</strong> ${esc(a.current_role || '—')}</div>
+      <div><strong>Geographies:</strong> ${esc(a.geographies || '—')}</div>
+      <div><strong>Assigned day:</strong> ${esc(a.assigned_day || '—')}</div>
+      <div><strong>L2 sub-categories:</strong> ${esc(l2)}</div>
+      <div><strong>L3 specialties:</strong> ${esc(l3)}</div>
+      <div><strong>Session types:</strong> ${esc(sessionTypes)}</div>
+      <div><strong>Time slots:</strong> ${timeSlots}</div>
+      <div><strong>Social:</strong> ${socialLinks}</div>
+      <div><strong>Has existing materials:</strong> ${a.has_existing_materials || '—'}</div>
+    </div>`;
+
+  if (a.bio) {
+    html += `<div style="margin-bottom:12px"><strong>Bio:</strong><br><span style="font-size:12px;color:var(--text);white-space:pre-line">${esc(a.bio)}</span></div>`;
+  }
+  if (a.experience) {
+    html += `<div style="margin-bottom:12px"><strong>Experience:</strong><br><span style="font-size:12px;color:var(--text);white-space:pre-line">${esc(a.experience)}</span></div>`;
+  }
+  if (a.notable_clients) {
+    html += `<div style="margin-bottom:12px"><strong>Notable clients:</strong><br><span style="font-size:12px">${esc(a.notable_clients)}</span></div>`;
+  }
+  if (a.coaching_philosophy) {
+    html += `<div style="margin-bottom:12px"><strong>Coaching philosophy:</strong><br><span style="font-size:12px;white-space:pre-line">${esc(a.coaching_philosophy)}</span></div>`;
+  }
+
+  // ── Approval progress ────────────────────────────────────────────────────
+  const votes = a.votes || [];
+  const approvals = votes.filter(v => v.vote === 'approve');
+  const rejections = votes.filter(v => v.vote === 'reject');
+  const required = a.required_approvals || 4;
+  const myVote = votes.find(v => v.reviewer_email === currentReviewerEmail);
+  const isMyApplication = currentReviewerEmail && a.email && currentReviewerEmail.toLowerCase() === a.email.toLowerCase();
+
+  if (votes.length > 0 || a.status === 'pending') {
+    html += `<div style="margin:16px 0 12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:6px">`;
+    html += `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:10px">Peer Review — ${approvals.length} of ${required} approvals</div>`;
+
+    // Progress bar
+    const pct = Math.round((approvals.length / required) * 100);
+    html += `<div style="height:6px;background:var(--border);border-radius:3px;margin-bottom:12px;overflow:hidden">
+      <div style="height:100%;width:${pct}%;background:${rejections.length ? 'var(--danger)' : approvals.length >= required ? 'var(--success)' : 'var(--gold)'};border-radius:3px;transition:width 0.3s"></div>
+    </div>`;
+
+    // Individual votes
+    if (votes.length > 0) {
+      html += `<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:8px">`;
+      votes.forEach(v => {
+        const isApprove = v.vote === 'approve';
+        const color = isApprove ? 'var(--success)' : 'var(--danger)';
+        const icon = isApprove ? '&#10003;' : '&#10007;';
+        const label = esc(v.reviewer_name || v.reviewer_email);
+        const time = v.created_at ? new Date(v.created_at).toLocaleDateString() : '';
+        html += `<span style="display:inline-flex;align-items:center;gap:5px;padding:4px 10px;background:${isApprove ? 'rgba(10,143,100,0.08)' : 'rgba(220,53,69,0.08)'};border:1px solid ${color};border-radius:4px;font-size:11px">
+          <span style="color:${color};font-weight:700">${icon}</span>
+          <span>${label}</span>
+          <span style="color:var(--muted);font-size:10px">${time}</span>
+        </span>`;
+        if (v.vote === 'reject' && v.rejection_reason) {
+          html += `<div style="width:100%;font-size:11px;color:var(--danger);padding-left:8px;margin-top:-4px">Reason: ${esc(v.rejection_reason)}</div>`;
+        }
+      });
+      html += `</div>`;
+    }
+
+    html += `</div>`;
+  }
+
+  // Admin notes / rejection reason
+  if (a.admin_notes) {
+    html += `<div style="margin-bottom:12px;padding:8px 12px;background:var(--gold-dim);border-radius:6px"><strong>Admin notes:</strong> ${esc(a.admin_notes)}</div>`;
+  }
+  if (a.status === 'rejected' && a.rejection_reason) {
+    html += `<div style="margin-bottom:12px;padding:8px 12px;background:rgba(220,53,69,0.08);border-radius:6px"><strong>Rejection reason:</strong> ${esc(a.rejection_reason)}</div>`;
+  }
+
+  // ── Vote buttons for pending applications ────────────────────────────────
+  if (a.status === 'pending') {
+    if (isMyApplication) {
+      html += `<div style="margin-top:12px;padding:10px 16px;background:var(--gold-dim);border-radius:6px;font-size:12px;color:var(--muted)">This is your application — waiting for peer reviews.</div>`;
+    } else if (myVote) {
+      html += `<div style="margin-top:12px;padding:10px 16px;background:${myVote.vote === 'approve' ? 'rgba(10,143,100,0.08)' : 'rgba(220,53,69,0.08)'};border-radius:6px;font-size:12px">
+        You voted to <strong>${myVote.vote}</strong> this application on ${new Date(myVote.created_at).toLocaleDateString()}.
+      </div>`;
+    } else {
+      html += `
+        <div id="coach-actions-${a.id}" style="display:flex;gap:12px;align-items:flex-start;margin-top:12px">
+          <button class="btn-confirm" onclick="event.stopPropagation(); castVote('${a.id}', 'approve')">&#10003; Approve</button>
+          <button class="btn-cancel" onclick="event.stopPropagation(); showRejectForm('${a.id}')">&#10007; Reject</button>
+        </div>
+        <div id="coach-reject-form-${a.id}" style="display:none;margin-top:12px">
+          <label style="font-size:11px;font-weight:600;display:block;margin-bottom:4px">Rejection reason (sent to applicant if application is rejected):</label>
+          <textarea id="coach-reject-reason-${a.id}" rows="3" style="width:100%;max-width:500px;padding:8px;border:1px solid var(--border);border-radius:6px;font-family:var(--font);font-size:12px;background:var(--surface);resize:vertical" placeholder="Explain why you think this application should not be accepted..."></textarea>
+          <div style="margin-top:8px;display:flex;gap:12px">
+            <button class="btn-cancel" onclick="event.stopPropagation(); castVote('${a.id}', 'reject')" style="background:var(--danger);color:#fff">Confirm Rejection Vote</button>
+            <button class="btn-cancel" onclick="event.stopPropagation(); hideRejectForm('${a.id}')">Cancel</button>
+          </div>
+        </div>`;
+    }
+  }
+
+  return html;
+}
+
+function toggleCoachDetail(id) {
+  const row = document.getElementById('coach-detail-' + id);
+  if (!row) return;
+  row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+}
+
+function showRejectForm(id) {
+  document.getElementById('coach-actions-' + id).style.display = 'none';
+  document.getElementById('coach-reject-form-' + id).style.display = 'block';
+}
+
+function hideRejectForm(id) {
+  document.getElementById('coach-reject-form-' + id).style.display = 'none';
+  document.getElementById('coach-actions-' + id).style.display = 'flex';
+}
+
+async function castVote(id, vote) {
+  const app = allCoachApps.find(a => a.id === id);
+  const name = app ? `${app.first_name} ${app.last_name}` : 'this applicant';
+
+  if (vote === 'approve') {
+    if (!confirm(`Cast your APPROVE vote for ${name}?\n\nThe application needs ${app?.required_approvals || 4} total approvals from the team.`)) return;
+  }
+
+  let reason = null;
+  if (vote === 'reject') {
+    reason = document.getElementById('coach-reject-reason-' + id)?.value?.trim();
+    if (!reason) {
+      showToast('Please provide a reason for your rejection vote', 'warning');
+      return;
+    }
+    if (!confirm(`Cast your REJECT vote for ${name}? This will immediately reject the application.`)) return;
+  }
+
+  try {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${API_BASE}/api/admin/coach-applications/${id}/vote`, {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({ vote, reason }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Vote failed');
+
+    if (data.status === 'approved') {
+      showToast(`All ${data.required} approvals received — ${name} is approved! Welcome email sent.`, 'success');
+    } else if (data.status === 'rejected') {
+      showToast(`Application rejected — notification email sent to ${name}.`, 'info');
+    } else {
+      showToast(`Vote recorded (${data.approvals}/${data.required} approvals so far)`, 'success');
+    }
+
+    coachAppsLoaded = false;
+    await loadCoachApplications();
+  } catch (err) {
+    showToast('Vote failed: ' + err.message, 'error');
+  }
+}
+</script>
+</body>
+</html>

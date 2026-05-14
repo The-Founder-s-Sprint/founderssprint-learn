@@ -1,0 +1,1582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: Idea Clarity & Founder Mindset — The Founder's Sprint</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,600&family=Cormorant:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==================== CSS CUSTOM PROPERTIES — "CALM" PALETTE ==================== */
+        :root {
+            /* Backgrounds — charcoal & bush greens */
+            --ink: #1A201E;
+            --green-deep: #152B1F;
+            --green-dark: #213A2D;
+            --green: #2D6A4F;
+            --green-mid: #40916C;
+
+            /* Primary accent — Sienna (replaces gold) */
+            --gold: #B85A2E;
+            --gold-light: #D4845A;
+            --gold-pale: #F0E4CC;
+
+            /* Warm neutrals — Cashmere & Ivory */
+            --cream: #EADFC6;
+            --ivory: #F5EBD6;
+            --white: #FFFFFF;
+
+            /* New Calm-palette aliases (preferred for new code) */
+            --bush-deep: #152B1F;
+            --bush: #213A2D;
+            --bush-mid: #2D6A4F;
+            --sienna: #B85A2E;
+            --sienna-deep: #8F4420;
+            --sienna-light: #D4845A;
+            --oak: #B89674;
+            --oak-light: #D4BC9E;
+            --cashmere: #D5C3A1;
+            --cashmere-pale: #EADFC6;
+
+            /* Greys */
+            --gray-300: #C8C5BB;
+            --gray-500: #8C8880;
+            --gray-700: #3D3B35;
+        }
+
+        /* ==================== RESET & BASE STYLES ==================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--gray-700);
+            background: var(--ivory);
+            line-height: 1.7;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        /* ==================== TYPOGRAPHY ==================== */
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 600;
+            color: var(--green-dark);
+        }
+
+        .eyebrow {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .display-title {
+            font-family: 'Cormorant', serif;
+            font-size: clamp(48px, 8vw, 76px);
+            font-weight: 300;
+            line-height: 1.1;
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .display-title em {
+            font-style: italic;
+            color: var(--gold-light);
+            font-weight: 400;
+        }
+
+        .subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            font-style: italic;
+            line-height: 1.7;
+            color: rgba(255, 255, 255, 0.55);
+            max-width: 700px;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(36px, 6vw, 56px);
+            font-weight: 600;
+            line-height: 1.1;
+            color: var(--green-dark);
+            margin-bottom: 24px;
+            position: relative;
+            padding-top: 32px;
+        }
+
+        .section-title.light {
+            color: var(--white);
+        }
+
+        .section-title::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 80px;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
+        }
+
+        .section-title::after {
+            content: '◆';
+            display: block;
+            position: absolute;
+            top: -12px;
+            left: 35px;
+            color: var(--gold);
+            font-size: 14px;
+        }
+
+        p {
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+
+        /* ==================== UTILITY CLASSES ==================== */
+        .container {
+            max-width: 1120px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+        }
+
+        .gold-diamond {
+            color: var(--gold);
+            margin-right: 8px;
+        }
+
+        .btn-gold {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            padding: 16px 32px;
+            background: var(--gold);
+            color: var(--ink);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* ==================== CROSSHATCH PATTERN ==================== */
+        .crosshatch {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .crosshatch::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 10px,
+                rgba(184, 90, 46, 0.03) 10px,
+                rgba(184, 90, 46, 0.03) 20px
+            );
+            pointer-events: none;
+        }
+
+        /* ==================== MODULE NAV ==================== */
+        .module-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(26, 32, 30, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(201, 160, 54, 0.2);
+            padding: 0 24px;
+        }
+        .module-nav-inner {
+            max-width: 1120px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 52px;
+        }
+        .module-nav-brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: #C9A036;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .module-nav-brand:hover { opacity: 0.8; }
+        .module-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            list-style: none;
+        }
+        .module-nav-link {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.4);
+            text-decoration: none;
+            padding: 8px 14px;
+            transition: color 0.2s, background 0.2s;
+        }
+        .module-nav-link:hover {
+            color: #C9A036;
+            background: rgba(201, 160, 54, 0.08);
+        }
+        .module-nav-link.is-current {
+            color: #C9A036;
+            border-bottom: 2px solid #C9A036;
+        }
+        .module-nav-link.is-locked {
+            color: rgba(255, 255, 255, 0.15);
+            pointer-events: none;
+            cursor: default;
+        }
+        .module-nav-sep {
+            width: 1px;
+            height: 16px;
+            background: rgba(201, 160, 54, 0.15);
+            flex-shrink: 0;
+        }
+        @media (max-width: 600px) {
+            .module-nav-link { padding: 8px 8px; font-size: 8px; letter-spacing: 0.1em; }
+            .module-nav-brand { font-size: 9px; letter-spacing: 0.15em; }
+        }
+
+        /* ==================== PROGRESS BAR ==================== */
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: var(--gold);
+            z-index: 1000;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* ==================== SECTIONS ==================== */
+        section {
+            padding: 80px 0;
+            position: relative;
+        }
+
+        section.hero {
+            background: var(--ink);
+            color: var(--white);
+            padding: 140px 0 80px;
+            display: flex;
+            align-items: flex-end;
+            min-height: 70vh;
+        }
+
+        /* ── DUOTONE HERO BACKGROUND (matches index.html) ── */
+        .hero-bg-photo {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            filter: grayscale(1) contrast(1.05) brightness(0.9);
+        }
+        .hero-duotone-shadow {
+            position: absolute; inset: 0;
+            background: var(--ink);
+            mix-blend-mode: multiply;
+            opacity: 0.72;
+            pointer-events: none;
+        }
+        .hero-duotone-highlight {
+            position: absolute; inset: 0;
+            background: #7a5a18;
+            mix-blend-mode: screen;
+            opacity: 0.18;
+            pointer-events: none;
+        }
+        .hero-duotone-gradient {
+            position: absolute; inset: 0;
+            background:
+                linear-gradient(to right, rgba(11,24,16,0.92) 0%, rgba(11,24,16,0.55) 55%, rgba(11,24,16,0.15) 100%),
+                linear-gradient(to top,   rgba(11,24,16,0.80) 0%, transparent 45%);
+            pointer-events: none;
+        }
+        .hero .container { position: relative; z-index: 2; }
+
+        section.light {
+            background: var(--ivory);
+        }
+
+        section.dark {
+            background: var(--ink);
+            color: var(--white);
+        }
+
+        section.dark h2,
+        section.dark h3 {
+            color: var(--white);
+        }
+
+        /* ==================== HERO SECTION ==================== */
+        .hero-content {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .session-info {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-top: 24px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(184, 90, 46, 0.3);
+            display: inline-block;
+        }
+
+        /* ==================== FRAMEWORK CARDS ==================== */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        .framework-card {
+            padding: 32px;
+            background: var(--cream);
+            border-left: 4px solid var(--gold);
+            display: grid;
+            grid-template-columns: 80px 1fr;
+            gap: 24px;
+            align-items: start;
+            transition: background 0.25s ease;
+        }
+
+        .framework-card:hover {
+            background: var(--gold-pale);
+        }
+
+        .framework-card-icon {
+            font-size: 80px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 80px;
+            height: 80px;
+        }
+
+        .framework-card-body h4 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: var(--green-dark);
+        }
+
+        .framework-card-body p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .framework-card-body p + p {
+            margin-top: 8px;
+        }
+
+        /* ==================== CASE STUDY GRID ==================== */
+        .case-studies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            margin: 48px 0;
+        }
+
+        .case-study {
+            padding: 32px;
+            background: var(--cream);
+            border-left: 4px solid var(--gold);
+        }
+
+        .case-study h4 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: var(--green-dark);
+        }
+
+        .case-study-flow {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 12px 0;
+            font-size: 15px;
+        }
+
+        .case-study-flow strong {
+            color: var(--green-dark);
+            font-weight: 600;
+        }
+
+        .case-study-flow::before {
+            content: '◆';
+            color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        /* ==================== PILLAR CARDS ==================== */
+        .pillar-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+            margin: 48px 0;
+        }
+
+        .pillar-card {
+            display: grid;
+            grid-template-columns: 112px 1fr;
+            gap: 28px;
+            align-items: start;
+            padding: 32px;
+            background: rgba(184, 90, 46, 0.06);
+            border-left: 4px solid var(--gold);
+            cursor: pointer;
+            transition: background 0.25s ease;
+            position: relative;
+        }
+
+        .pillar-card:hover {
+            background: rgba(184, 90, 46, 0.12);
+        }
+
+        .pillar-card-icon {
+            font-size: 112px;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 112px;
+            height: 112px;
+        }
+
+        .pillar-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .pillar-card h3 {
+            font-size: 20px;
+            margin: 0;
+            color: var(--white);
+            text-transform: uppercase;
+            font-family: 'Josefin Sans', sans-serif;
+            letter-spacing: 0.1em;
+        }
+
+        .pillar-card-expand-hint {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 9px;
+            letter-spacing: 0.1em;
+            color: var(--gold);
+            opacity: 0.6;
+            text-transform: uppercase;
+            transition: opacity 0.2s;
+        }
+
+        .pillar-card:hover .pillar-card-expand-hint {
+            opacity: 1;
+        }
+
+        .pillar-card-summary {
+            font-size: 16px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.65);
+            margin-bottom: 0;
+        }
+
+        .pillar-card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .pillar-card-content.expanded {
+            max-height: 600px;
+        }
+
+        .pillar-card-section {
+            margin-bottom: 16px;
+        }
+
+        .pillar-card-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .pillar-card-text {
+            font-size: 15px;
+            line-height: 1.75;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* ==================== LEARNING LOOP DIAGRAM ==================== */
+        .learning-loop {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 48px 0 24px;
+        }
+
+        .learning-loop svg {
+            max-width: 680px;
+            width: 100%;
+            height: auto;
+        }
+
+        @media (max-width: 768px) {
+            .learning-loop svg {
+                max-width: 100%;
+            }
+        }
+
+        /* ==================== COMPARISON CARDS ==================== */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+            margin: 48px 0;
+        }
+
+        @media (max-width: 768px) {
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .comparison-card {
+            padding: 40px;
+            border-radius: 0;
+        }
+
+        .comparison-false {
+            background: rgba(220, 100, 100, 0.08);
+            border-left: 4px solid #cc5555;
+        }
+
+        .comparison-true {
+            background: rgba(70, 150, 100, 0.08);
+            border-left: 4px solid #469664;
+        }
+
+        .comparison-card h4 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: var(--green-dark);
+        }
+
+        .comparison-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .comparison-item-icon {
+            flex-shrink: 0;
+            font-size: 18px;
+            margin-top: 2px;
+        }
+
+        /* ==================== PROBLEM STATEMENT FORM ==================== */
+        .problem-statement-box {
+            background: rgba(184, 90, 46, 0.08);
+            border: 2px solid var(--gold);
+            padding: 48px;
+            margin: 48px 0;
+        }
+
+        .problem-statement-field {
+            margin-bottom: 24px;
+        }
+
+        .problem-statement-label {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .problem-template {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .editable-field {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 18px;
+            background: transparent;
+            border: none;
+            border-bottom: 2px dotted var(--gold);
+            color: var(--gold-light);
+            padding: 4px 8px;
+            min-width: 200px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .editable-field:focus {
+            border-bottom-color: var(--gold-light);
+            background: rgba(184, 90, 46, 0.1);
+        }
+
+        .editable-field::placeholder {
+            color: rgba(184, 90, 46, 0.5);
+        }
+
+        /* ==================== TASK TABLE ==================== */
+        .task-table {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0;
+            margin: 32px 0;
+            border-top: 2px solid var(--gold);
+        }
+
+        .task-row {
+            display: grid;
+            grid-template-columns: 56px 1fr;
+            gap: 24px;
+            padding: 24px 0;
+            border-bottom: 1px solid rgba(184, 90, 46, 0.25);
+            align-items: baseline;
+        }
+
+        .task-row:last-child {
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .task-num {
+            font-family: 'Cormorant', serif;
+            font-weight: 300;
+            font-size: 28px;
+            color: var(--gold);
+            line-height: 1;
+            padding-top: 2px;
+        }
+
+        .task-body h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--green-dark);
+            margin: 0 0 6px 0;
+        }
+
+        .task-body p {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 17px;
+            line-height: 1.75;
+            color: var(--gray-700);
+            margin: 0;
+        }
+
+        .secondary-table .task-num {
+            color: var(--green-mid);
+        }
+
+        .secondary-table .task-row {
+            border-bottom-color: rgba(45, 106, 79, 0.15);
+        }
+
+        .secondary-table .task-row:last-child {
+            border-bottom: 2px solid var(--green-mid);
+        }
+
+        .secondary-table {
+            border-top-color: var(--green-mid);
+        }
+
+        /* ==================== NEXT WEEK PREVIEW ==================== */
+        .preview-card {
+            background: var(--green-dark);
+            border: 2px solid var(--gold);
+            padding: 48px;
+            margin: 48px 0;
+            text-align: center;
+        }
+
+        .preview-card h3 {
+            font-size: 28px;
+            color: var(--gold-light);
+            margin-bottom: 16px;
+        }
+
+        .preview-card p {
+            font-size: 17px;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+
+        /* ==================== FOOTER ==================== */
+        footer {
+            background: var(--ink);
+            color: rgba(255, 255, 255, 0.55);
+            padding: 48px 0;
+            text-align: center;
+            font-size: 14px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        footer .brand {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--white);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* ==================== SCROLL ANIMATIONS ==================== */
+        .fade-up {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-up.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==================== PRINT STYLES ==================== */
+        @media print {
+            .progress-bar {
+                display: none;
+            }
+
+            section {
+                padding: 40px 0;
+                page-break-inside: avoid;
+            }
+
+            .btn-gold {
+                background: var(--gold);
+                color: var(--ink);
+            }
+
+            body {
+                font-size: 16px;
+            }
+        }
+
+        /* ==================== RESPONSIVE ==================== */
+        @media (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+
+            section.hero {
+                padding: 80px 0;
+                min-height: auto;
+            }
+
+            .display-title {
+                font-size: 36px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .framework-grid,
+            .case-studies,
+            .pillar-grid {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .problem-statement-box {
+                padding: 32px 24px;
+            }
+
+            .editable-field {
+                min-width: 100px;
+            }
+        }
+        /* ==================== TIER-SPECIFIC CONTENT ==================== */
+        .tier-section { display: none; margin: 0; }
+        .tier-section.tier-visible { display: block; }
+        .tier-block {
+            background: var(--green-deep);
+            padding: 56px clamp(24px, 5vw, 80px);
+            color: var(--cream);
+        }
+        .tier-block .eyebrow { color: var(--gold); margin-bottom: 12px; }
+        .tier-block h2 { color: var(--white); font-size: clamp(28px, 4vw, 36px); margin-bottom: 24px; font-weight: 300; }
+        .tier-block p { color: rgba(234, 223, 198, 0.8); margin-bottom: 16px; line-height: 1.75; }
+        .tier-block .tier-card {
+            background: rgba(255,255,255,0.06);
+            border-left: 3px solid var(--gold);
+            padding: 24px 28px;
+            margin: 20px 0;
+        }
+        .tier-block .tier-card h4 {
+            font-family: 'Josefin Sans', sans-serif;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 8px;
+        }
+        .tier-block .tier-card p { color: rgba(234,223,198,0.7); font-size: 16px; margin-bottom: 0; }
+        .tier-divider {
+            height: 3px;
+            background: linear-gradient(to right, var(--gold), transparent);
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Progress Bar -->
+    <div class="progress-bar"></div>
+
+    <!-- Module Navigation -->
+    <nav class="module-nav">
+      <div class="module-nav-inner">
+        <a href="/learn" target="_parent" class="module-nav-brand">The Founder's Sprint</a>
+        <ul class="module-nav-links">
+          <li><a href="/learn/week-1" target="_parent" class="module-nav-link is-current">Week 1</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-2" target="_parent" class="module-nav-link">Week 2</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-3" target="_parent" class="module-nav-link">Week 3</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-4" target="_parent" class="module-nav-link">Week 4</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/week-5" target="_parent" class="module-nav-link">Week 5</a></li>
+          <li class="module-nav-sep"></li>
+          <li><a href="/learn/resources" target="_parent" class="module-nav-link">Resources</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero crosshatch">
+        <img src="images/week-1-hero.jpg" alt="" class="hero-bg-photo">
+        <div class="hero-duotone-shadow"></div>
+        <div class="hero-duotone-highlight"></div>
+        <div class="hero-duotone-gradient"></div>
+        <div class="container">
+            <div class="hero-content">
+                <span class="eyebrow">The Founder's Sprint · Week 1</span>
+                <h1 class="display-title">Idea <em>Clarity</em><br>&amp; Founder Mindset</h1>
+                <p class="subtitle">Move from vague idea to a clearly articulated problem worth solving.</p>
+                <div class="session-info">2 Hours · Max 10 Founders · Deliverable: Problem Statement</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 1: The Clarity Problem -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Foundation</span>
+            <h2 class="section-title">The Clarity Problem</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Most founders fail not because their idea is bad, but because they haven't clearly defined <em>what problem they're solving</em>. This section establishes the framework that separates vague hunches from real problems.</p>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--green-dark);">The Problem → Idea → Solution Framework</h3>
+
+            <div class="framework-grid">
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">🎯</span>
+                    <div class="framework-card-body">
+                        <h4>Problem</h4>
+                        <p>A concrete pain point that a specific group of people experiences. This is what your customer feels — not what you think they need.</p>
+                        <p style="font-size: 15px; color: var(--gray-500);"><em>Example:</em> "Taxi riders cannot safely hail transport at night."</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">💡</span>
+                    <div class="framework-card-body">
+                        <h4>Idea</h4>
+                        <p>Your initial hypothesis for how to solve that problem. This is a guess — treat it as one.</p>
+                        <p style="font-size: 15px; color: var(--gray-500);"><em>Example:</em> "Build an app where riders can book safe taxis."</p>
+                    </div>
+                </div>
+
+                <div class="framework-card fade-up">
+                    <span class="framework-card-icon">🚀</span>
+                    <div class="framework-card-body">
+                        <h4>Solution</h4>
+                        <p>The actual product or service you build <em>after</em> testing your idea against reality. Often different from where you started.</p>
+                        <p style="font-size: 15px; color: var(--gray-500);"><em>Example:</em> "A radio dispatch system that drivers trust."</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--green-dark); margin-top: 48px;">Real Problems from Uganda</h3>
+
+            <div class="case-studies">
+                <div class="case-study fade-up">
+                    <h4>Safe Transport at Night</h4>
+                    <div class="case-study-flow"><strong>Problem:</strong> Riders can't hail safe transport at night</div>
+                    <div class="case-study-flow"><strong>Initial Idea:</strong> Build a ride-hailing app</div>
+                    <div class="case-study-flow"><strong>Real Solution:</strong> Radio dispatch system with trusted driver vetting</div>
+                    <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gold); font-size: 15px; color: var(--gray-500);"><em>Key insight:</em> The problem wasn't "no app exists"—it was "people don't trust unknown drivers at night."</em></p>
+                </div>
+
+                <div class="case-study fade-up">
+                    <h4>Agricultural Input Quality</h4>
+                    <div class="case-study-flow"><strong>Problem:</strong> Farmers buy expired inputs from middlemen</div>
+                    <div class="case-study-flow"><strong>Initial Idea:</strong> Create a marketplace for fresh inputs</div>
+                    <div class="case-study-flow"><strong>Real Solution:</strong> Supply training program + quality guarantees</div>
+                    <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gold); font-size: 15px; color: var(--gray-500);"><em>Key insight:</em> The problem wasn't "no fresh inputs exist"—it was "farmers don't know how to verify quality."</em></p>
+                </div>
+
+                <div class="case-study fade-up">
+                    <h4>Water Access in Rural Areas</h4>
+                    <div class="case-study-flow"><strong>Problem:</strong> Women spend 4+ hours daily fetching water</div>
+                    <div class="case-study-flow"><strong>Initial Idea:</strong> Drill new wells in villages</div>
+                    <div class="case-study-flow"><strong>Real Solution:</strong> Solar-powered borehole maintenance model + local tech training</div>
+                    <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--gold); font-size: 15px; color: var(--gray-500);"><em>Key insight:</em> The problem wasn't "no wells exist"—it was "wells break down & no one can fix them."</em></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: Founder Mindset -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Mindset</span>
+            <h2 class="section-title light">The Founder Mindset</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">Before you build anything, you need three things: the willingness to act despite uncertainty, the ability to learn from what the market tells you, and the resilience to embrace not knowing.</p>
+
+            <div class="pillar-grid">
+                <div class="pillar-card fade-up" onclick="togglePillar(this)" tabindex="0" role="button" aria-expanded="false">
+                    <span class="pillar-card-icon">⚡</span>
+                    <div>
+                        <div class="pillar-card-header">
+                            <h3>Bias Toward Action</h3>
+                            <span class="pillar-card-expand-hint">Tap to expand</span>
+                        </div>
+                        <p class="pillar-card-summary">Move forward without perfect information. Ship 80% instead of planning 100%.</p>
+                        <div class="pillar-card-content">
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">What It Is</span>
+                                <p class="pillar-card-text">The willingness to move forward without perfect information. Perfect analysis is the enemy of progress.</p>
+                            </div>
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">What It Looks Like</span>
+                                <p class="pillar-card-text">You talk to 3 customers this week instead of waiting for a perfect research plan. You test your assumption with a napkin prototype. You build the MVP instead of planning the perfect product.</p>
+                            </div>
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">Common Trap</span>
+                                <p class="pillar-card-text">Over-planning and endless strategizing. Waiting for the "right time" to start.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pillar-card fade-up" onclick="togglePillar(this)" tabindex="0" role="button" aria-expanded="false">
+                    <span class="pillar-card-icon">🔄</span>
+                    <div>
+                        <div class="pillar-card-header">
+                            <h3>Learning Loops</h3>
+                            <span class="pillar-card-expand-hint">Tap to expand</span>
+                        </div>
+                        <p class="pillar-card-summary">Rapid cycles of Hypothesis → Test → Learn → Iterate. Days, not months.</p>
+                        <div class="pillar-card-content">
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">What It Is</span>
+                                <p class="pillar-card-text">Rapid cycles of Hypothesis → Test → Learn → Iterate. Each loop should take days or weeks, not months.</p>
+                            </div>
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">What It Looks Like</span>
+                                <p class="pillar-card-text">You form a hypothesis about your customer's need. You test it with interviews or a prototype. You learn what's true and what's false. You adjust your hypothesis and repeat.</p>
+                            </div>
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">Common Trap</span>
+                                <p class="pillar-card-text">Testing only confirms what you already believe. Running loops so slowly that you never gain momentum.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pillar-card fade-up" onclick="togglePillar(this)" tabindex="0" role="button" aria-expanded="false">
+                    <span class="pillar-card-icon">🌊</span>
+                    <div>
+                        <div class="pillar-card-header">
+                            <h3>Embrace Uncertainty</h3>
+                            <span class="pillar-card-expand-hint">Tap to expand</span>
+                        </div>
+                        <p class="pillar-card-summary">Accept that you can't know everything. Ambiguity is your operating environment, not a bug.</p>
+                        <div class="pillar-card-content">
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">What It Is</span>
+                                <p class="pillar-card-text">Acceptance that you don't and can't know everything. This is the default state of building something new.</p>
+                            </div>
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">What It Looks Like</span>
+                                <p class="pillar-card-text">You say "I don't know, let's find out" instead of pretending you have answers. You're comfortable being proven wrong. You see ambiguity as information, not failure.</p>
+                            </div>
+                            <div class="pillar-card-section">
+                                <span class="pillar-card-label">Common Trap</span>
+                                <p class="pillar-card-text">Freezing when faced with unknowns. Interpreting criticism as personal failure rather than market feedback.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 24px; margin-bottom: 32px; color: var(--white); text-transform: uppercase; font-family: 'Josefin Sans', sans-serif; letter-spacing: 0.1em; margin-top: 64px;">The Learning Loop in Action</h3>
+
+            <div class="learning-loop fade-up">
+                <svg viewBox="0 0 680 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Learning Loop: Hypothesis, Test, Learn, Iterate">
+                  <defs>
+                    <!-- Bauhaus crosshatch background texture -->
+                    <pattern id="bauhaus-hatch" patternUnits="userSpaceOnUse" width="20" height="20" patternTransform="rotate(45)">
+                      <line x1="0" y1="0" x2="0" y2="20" stroke="#B85A2E" stroke-width="0.5" opacity="0.08"/>
+                    </pattern>
+                    <!-- Arrow marker — large filled chevron -->
+                    <marker id="loop-arrow" markerWidth="18" markerHeight="14" refX="16" refY="7" orient="auto" markerUnits="userSpaceOnUse">
+                      <path d="M0,0 L18,7 L0,14 Z" fill="#B85A2E"/>
+                    </marker>
+                    <!-- Glow for gold elements -->
+                    <filter id="gold-glow">
+                      <feGaussianBlur stdDeviation="3" result="blur"/>
+                      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                    </filter>
+                  </defs>
+
+                  <!-- Background: large Bauhaus circle -->
+                  <circle cx="340" cy="220" r="200" fill="none" stroke="#B85A2E" stroke-width="1" opacity="0.12"/>
+                  <circle cx="340" cy="220" r="160" fill="none" stroke="#B85A2E" stroke-width="0.5" opacity="0.08"/>
+                  <rect x="140" y="20" width="400" height="400" fill="url(#bauhaus-hatch)" rx="0"/>
+
+                  <!-- Connecting flow arrows (clockwise: H→T→L→I→H) -->
+                  <!-- Top to Right -->
+                  <path d="M 420,100 C 500,100 540,160 540,220" fill="none" stroke="#B85A2E" stroke-width="3" marker-end="url(#loop-arrow)"/>
+                  <!-- Right to Bottom -->
+                  <path d="M 540,260 C 540,320 480,360 420,370" fill="none" stroke="#B85A2E" stroke-width="3" marker-end="url(#loop-arrow)"/>
+                  <!-- Bottom to Left -->
+                  <path d="M 260,370 C 200,360 140,320 140,260" fill="none" stroke="#B85A2E" stroke-width="3" marker-end="url(#loop-arrow)"/>
+                  <!-- Left to Top -->
+                  <path d="M 140,180 C 140,120 200,80 260,78" fill="none" stroke="#B85A2E" stroke-width="3" marker-end="url(#loop-arrow)"/>
+
+                  <!-- NODE 1: HYPOTHESISE — top, wide rectangle (Bauhaus block) -->
+                  <rect x="230" y="46" width="220" height="68" fill="#B85A2E" rx="0"/>
+                  <!-- Inner Deco border -->
+                  <rect x="235" y="51" width="210" height="58" fill="none" stroke="#1A201E" stroke-width="0.75" opacity="0.3"/>
+                  <!-- Step number -->
+                  <text x="250" y="72" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#1A201E" opacity="0.5">01</text>
+                  <!-- Label -->
+                  <text x="340" y="75" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#1A201E">HYPOTHESISE</text>
+                  <!-- Subtitle -->
+                  <text x="340" y="98" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#1A201E" opacity="0.7">What do you believe is true?</text>
+
+                  <!-- NODE 2: TEST — right, tall rectangle -->
+                  <rect x="506" y="186" width="148" height="68" fill="#213A2D" rx="0"/>
+                  <rect x="511" y="191" width="138" height="58" fill="none" stroke="#B85A2E" stroke-width="0.75" opacity="0.3"/>
+                  <text x="524" y="212" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#B85A2E" opacity="0.5">02</text>
+                  <text x="580" y="215" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#FFFFFF">TEST</text>
+                  <text x="580" y="238" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">Run the experiment</text>
+
+                  <!-- NODE 3: LEARN — bottom, wide rectangle -->
+                  <rect x="230" y="336" width="220" height="68" fill="#B85A2E" rx="0"/>
+                  <rect x="235" y="341" width="210" height="58" fill="none" stroke="#1A201E" stroke-width="0.75" opacity="0.3"/>
+                  <text x="250" y="362" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#1A201E" opacity="0.5">03</text>
+                  <text x="340" y="365" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#1A201E">LEARN</text>
+                  <text x="340" y="388" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="#1A201E" opacity="0.7">What did the data tell you?</text>
+
+                  <!-- NODE 4: ITERATE — left, tall rectangle -->
+                  <rect x="26" y="186" width="148" height="68" fill="#213A2D" rx="0"/>
+                  <rect x="31" y="191" width="138" height="58" fill="none" stroke="#B85A2E" stroke-width="0.75" opacity="0.3"/>
+                  <text x="44" y="212" font-family="'Cormorant', serif" font-weight="300" font-size="16" fill="#B85A2E" opacity="0.5">04</text>
+                  <text x="100" y="215" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="700" font-size="13" letter-spacing="3" fill="#FFFFFF">ITERATE</text>
+                  <text x="100" y="238" text-anchor="middle" font-family="'Cormorant Garamond', serif" font-size="12" fill="rgba(255,255,255,0.7)">Refine &amp; repeat</text>
+
+                  <!-- Centre label -->
+                  <text x="340" y="215" text-anchor="middle" font-family="'Cormorant', serif" font-weight="300" font-size="28" fill="#B85A2E" opacity="0.3" letter-spacing="2">LOOP</text>
+                  <text x="340" y="234" text-anchor="middle" font-family="'Josefin Sans', sans-serif" font-weight="600" font-size="8" letter-spacing="4" fill="#B85A2E" opacity="0.25">3 – 7  D A Y S</text>
+
+                  <!-- Decorative: Bauhaus corner accents -->
+                  <!-- Top-left -->
+                  <line x1="30" y1="20" x2="80" y2="20" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="20" x2="30" y2="70" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <!-- Top-right -->
+                  <line x1="600" y1="20" x2="650" y2="20" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="650" y1="20" x2="650" y2="70" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <!-- Bottom-left -->
+                  <line x1="30" y1="420" x2="80" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="30" y1="370" x2="30" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <!-- Bottom-right -->
+                  <line x1="600" y1="420" x2="650" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+                  <line x1="650" y1="370" x2="650" y2="420" stroke="#B85A2E" stroke-width="1" opacity="0.2"/>
+
+                  <!-- Decorative: small gold diamonds -->
+                  <rect x="337" y="30" width="6" height="6" fill="#B85A2E" transform="rotate(45,340,33)" opacity="0.4"/>
+                  <rect x="337" y="411" width="6" height="6" fill="#B85A2E" transform="rotate(45,340,414)" opacity="0.4"/>
+                </svg>
+            </div>
+
+            <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 16px; max-width: 700px; margin: 0 auto; line-height: 1.7;">Each loop represents 3–7 days of work. The faster you cycle through these loops, the faster you'll converge on a real problem and a viable solution.</p>
+        </div>
+    </section>
+
+    <!-- Section 3: Problem Validation -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Validation</span>
+            <h2 class="section-title">Problem Validation: False Signals vs. Real Signals</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px;">Founders often mistake enthusiasm for validation. Here's how to spot the difference.</p>
+
+            <div class="comparison-grid">
+                <div class="comparison-card comparison-false fade-up">
+                    <h4 style="color: var(--green-dark);">False Signals (Don't Rely on These)</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>"I had this problem once."</strong> Their past problem may not reflect current reality, and they may have already solved it another way.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>"People on Twitter talk about it."</strong> Online noise ≠ real demand. Vocal minorities are easy to find.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>"I see it all the time."</strong> You notice what you're looking for. This is confirmation bias.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>"Everyone I ask says it's a good idea."</strong> People are nice. They're unlikely to crush your dreams to your face.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">❌</div>
+                        <div><strong>"My friends would use this."</strong> Friends are biased toward you. Market demand is measured in strangers willing to pay.</div>
+                    </div>
+                </div>
+
+                <div class="comparison-card comparison-true fade-up">
+                    <h4 style="color: var(--green-dark);">Real Signals (These Matter)</h4>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>People spend money trying to solve it.</strong> They buy products, hire consultants, or waste time with workarounds. Money = real pain.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>They'd pay for a better solution.</strong> When you describe your idea, people ask "How much?" or "When's it available?" Not "That's cool."</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>The problem is urgent or frequent.</strong> They face it daily or weekly, not once a year. Urgency creates willingness to try new things.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>Multiple independent people mention it unprompted.</strong> You didn't lead them toward the answer. They independently surfaced the same pain.</div>
+                    </div>
+
+                    <div class="comparison-item">
+                        <div class="comparison-item-icon">✅</div>
+                        <div><strong>Customers have already built workarounds.</strong> Workarounds are proof. If people are spending effort to solve it themselves, the problem is real.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Your Problem Statement -->
+    <section class="dark crosshatch">
+        <div class="container">
+            <span class="eyebrow">Exercise</span>
+            <h2 class="section-title light">Your Problem Statement</h2>
+
+            <p style="margin-bottom: 48px; font-size: 18px; max-width: 800px; color: rgba(255,255,255,0.8);">Write your problem statement using this template. Be specific. Avoid vague language like "easier" or "better." Focus on the concrete outcome your customer wants.</p>
+
+            <div class="problem-statement-box">
+                <p class="problem-template">
+                    For <input type="text" class="editable-field" placeholder="[target customer]" maxlength="80">,<br>
+                    <br>
+                    the problem of <input type="text" class="editable-field" placeholder="[problem description]" maxlength="150"><br>
+                    <br>
+                    results in <input type="text" class="editable-field" placeholder="[negative outcome]" maxlength="150">.<br>
+                    <br>
+                    Currently, they <input type="text" class="editable-field" placeholder="[current workaround]" maxlength="150">,<br>
+                    <br>
+                    which costs them <input type="text" class="editable-field" placeholder="[time/money/effort]" maxlength="100">.
+                </p>
+
+                <div style="margin-top: 40px; display: flex; gap: 16px; flex-wrap: wrap;">
+                    <button class="btn-gold" onclick="saveProblemStatement()">Save Problem Statement</button>
+                    <button class="btn-gold" style="background: transparent; color: var(--gold); border: 1px solid var(--gold);" onclick="clearProblemStatement()">Clear</button>
+                </div>
+            </div>
+
+            <p style="margin-top: 32px; font-size: 15px; color: rgba(255,255,255,0.6); max-width: 700px;">💾 <strong>Pro tip:</strong> Your browser will save this. Print this page or screenshot it before you leave—this is your deliverable for this week.</p>
+        </div>
+    </section>
+
+    <!-- Section 5: Homework & Next Steps -->
+    <section class="light">
+        <div class="container">
+            <span class="eyebrow">Action</span>
+            <h2 class="section-title">Your Homework This Week</h2>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark);">Conduct 5–10 Customer Discovery Interviews</h3>
+            <p style="margin-bottom: 32px; font-family: 'Cormorant Garamond', serif; font-size: 18px; line-height: 1.8; color: var(--gray-700);">The only way to validate your problem statement is to hear directly from people who experience it. Aim for 5–10 conversations this week. Each should take 20–30 minutes.</p>
+
+            <div class="task-table">
+                <div class="task-row">
+                    <span class="task-num">01</span>
+                    <div class="task-body">
+                        <h4>Identify 10 People</h4>
+                        <p>Find people who fit your target customer profile. They don't need to be perfect — they just need to experience (or have experienced) the problem.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">02</span>
+                    <div class="task-body">
+                        <h4>Ask About the Problem</h4>
+                        <p>Not your idea. Say: "Tell me about a time you faced this problem." Listen. Don't pitch.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">03</span>
+                    <div class="task-body">
+                        <h4>Dig Into the Workaround</h4>
+                        <p>How do they currently solve it? What's the cost? Why haven't they fixed it?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">04</span>
+                    <div class="task-body">
+                        <h4>Ask About Alternatives</h4>
+                        <p>Have they tried other solutions? Why did they stick with their workaround?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">05</span>
+                    <div class="task-body">
+                        <h4>Measure the Signal</h4>
+                        <p>Would they pay for a better solution? How much? Would they help you find other customers?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">06</span>
+                    <div class="task-body">
+                        <h4>Record What You Learn</h4>
+                        <p>Keep notes. Patterns emerge after 5–7 interviews, not after one or two.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">07</span>
+                    <div class="task-body">
+                        <h4>Refine Your Problem Statement</h4>
+                        <p>After each interview, update your statement. You'll learn things you didn't expect.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-family: 'Josefin Sans', sans-serif; font-size: 20px; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 8px; color: var(--green-dark); margin-top: 48px;">Secondary Tasks</h3>
+
+            <div class="task-table secondary-table">
+                <div class="task-row">
+                    <span class="task-num">A</span>
+                    <div class="task-body">
+                        <h4>Read: The Mom Test</h4>
+                        <p>Rob Fitzpatrick, chapters 1–3. Why you should talk to customers, not validate your idea.</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">B</span>
+                    <div class="task-body">
+                        <h4>Map Your Customer Journey</h4>
+                        <p>Draw a simple flowchart: What does a typical day look like for your customer? Where does the problem show up?</p>
+                    </div>
+                </div>
+                <div class="task-row">
+                    <span class="task-num">C</span>
+                    <div class="task-body">
+                        <h4>Prepare for Week 2</h4>
+                        <p>Bring your 5–10 interview notes. We'll extract patterns and size the market together.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="preview-card fade-up">
+                <h3>Week 2: Customer Discovery & Market Sizing</h3>
+                <p>You'll take the interviews you conduct this week and extract patterns from them. We'll teach you how to spot red flags (fake demand) and green flags (real problems worth solving). Then we'll estimate the size of your market and see if it's big enough to build a business around.</p>
+                <p style="margin-top: 16px;"><em>Deliverable: Market Sizing Worksheet</em></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tier-specific content -->
+    <div class="tier-divider tier-section" data-min-tier="group"></div>
+    <section class="tier-block tier-section" data-min-tier="group">
+        <div class="container">
+            <span class="eyebrow">Group Session</span>
+            <h2>Live Cohort Discussion</h2>
+            <p>This week's group session focuses on pressure-testing your problem statement with peers. You'll present your canvas, receive structured feedback, and refine your thinking in real time.</p>
+            <div class="tier-card">
+                <h4>What to bring</h4>
+                <p>Your completed Problem Statement Canvas and 2–3 assumptions you're least confident about.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="oneOnOne"></div>
+    <section class="tier-block tier-section" data-min-tier="oneOnOne">
+        <div class="container">
+            <span class="eyebrow">1-on-1 Coaching</span>
+            <h2>Session Prep: Week 1</h2>
+            <p>Your coaching session this week is about ensuring your problem is worth solving before you invest further. Come prepared to go deep on your specific business idea.</p>
+            <div class="tier-card">
+                <h4>Before your session</h4>
+                <p>Draft answers to: Who exactly is your customer? What triggered your interest in this problem? What have you personally observed about how people deal with it today?</p>
+            </div>
+            <div class="tier-card">
+                <h4>Teddy will review</h4>
+                <p>Your Problem Statement Canvas — with specific feedback on whether the problem is narrow enough, the customer segment is reachable, and the pain is acute enough to build around.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="tier-divider tier-section" data-min-tier="vip"></div>
+    <section class="tier-block tier-section" data-min-tier="vip">
+        <div class="container">
+            <span class="eyebrow">VIP Bonus</span>
+            <h2>Founder Mindset Masterclass</h2>
+            <p>An extended deep-dive into the psychology of early-stage founders — imposter syndrome, decision fatigue, and how to build conviction when everyone around you is skeptical. Includes a personal resilience framework worksheet.</p>
+            <div class="tier-card">
+                <h4>Priority async access</h4>
+                <p>As a VIP member, you have priority WhatsApp access to Teddy between sessions. Use it for quick gut-checks on your problem statement before the next session.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <span class="brand">The Founder's Sprint</span>
+        <p>© 2026 TMS Ruge. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // ==================== TIER GATING ====================
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            const tier = params.get('tier') || 'group';
+            const tierLevels = { selfPaced: 0, group: 1, oneOnOne: 2, vip: 3 };
+            const userLevel = tierLevels[tier] ?? 1;
+            document.querySelectorAll('.tier-section').forEach(el => {
+                const minLevel = tierLevels[el.dataset.minTier] ?? 0;
+                if (userLevel >= minLevel) {
+                    el.classList.add('tier-visible');
+                }
+            });
+        })();
+
+        // ==================== PROGRESS BAR ====================
+        function updateProgressBar() {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.querySelector('.progress-bar').style.width = scrolled + '%';
+        }
+
+        window.addEventListener('scroll', updateProgressBar);
+
+        // ==================== SCROLL ANIMATIONS ====================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-up').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ==================== PILLAR CARD TOGGLE ====================
+        function togglePillar(element) {
+            const content = element.querySelector('.pillar-card-content');
+            const isExpanded = content.classList.contains('expanded');
+
+            // Close other cards
+            document.querySelectorAll('.pillar-card-content').forEach(el => {
+                if (el !== content) {
+                    el.classList.remove('expanded');
+                }
+            });
+
+            // Toggle this card
+            if (isExpanded) {
+                content.classList.remove('expanded');
+            } else {
+                content.classList.add('expanded');
+            }
+        }
+
+        // ==================== PROBLEM STATEMENT FORM ====================
+        function saveProblemStatement() {
+            const fields = document.querySelectorAll('.editable-field');
+            const data = {
+                customer: fields[0].value,
+                problem: fields[1].value,
+                outcome: fields[2].value,
+                workaround: fields[3].value,
+                cost: fields[4].value
+            };
+
+            // Save to localStorage
+            localStorage.setItem('problemStatement', JSON.stringify(data));
+
+            // Visual feedback
+            const btn = event.target;
+            const originalText = btn.textContent;
+            btn.textContent = '✓ Saved!';
+            btn.style.background = 'var(--gold-light)';
+            setTimeout(() => {
+                btn.textContent = originalText;
+                btn.style.background = '';
+            }, 2000);
+        }
+
+        function clearProblemStatement() {
+            document.querySelectorAll('.editable-field').forEach(field => {
+                field.value = '';
+            });
+            localStorage.removeItem('problemStatement');
+        }
+
+        // Load saved problem statement on page load
+        window.addEventListener('load', () => {
+            const saved = localStorage.getItem('problemStatement');
+            if (saved) {
+                const data = JSON.parse(saved);
+                const fields = document.querySelectorAll('.editable-field');
+                fields[0].value = data.customer || '';
+                fields[1].value = data.problem || '';
+                fields[2].value = data.outcome || '';
+                fields[3].value = data.workaround || '';
+                fields[4].value = data.cost || '';
+            }
+        });
+
+        // ==================== KEYBOARD NAVIGATION ====================
+        document.addEventListener('keydown', (e) => {
+            // Smooth scroll on anchor links
+            if (e.key === 'Enter' && e.target.classList.contains('editable-field')) {
+                e.target.blur();
+            }
+        });
+
+        // ==================== ACCESSIBILITY ====================
+        // Ensure pillar cards are keyboard accessible
+        document.querySelectorAll('.pillar-card').forEach(card => {
+            card.setAttribute('tabindex', '0');
+            card.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    togglePillar(card);
+                }
+            });
+        });
+
+        // ==================== PRINT HANDLER ====================
+        window.addEventListener('beforeprint', () => {
+            document.querySelectorAll('.pillar-card-content').forEach(el => {
+                el.classList.add('expanded');
+            });
+        });
+    </script>
+</body>
+</html>

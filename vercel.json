@@ -1,0 +1,18 @@
+{
+  "name": "founders-sprint-curriculum",
+  "framework": "nextjs",
+  "devCommand": "next dev",
+  "installCommand": "npm install",
+  "build": {
+    "env": {
+      "NEXT_PUBLIC_SUPABASE_URL": "https://ivedeivyotwevjxvcuoe.supabase.co",
+      "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2ZWRlaXZ5b3R3ZXZqeHZjdW9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxOTk1OTIsImV4cCI6MjA5MDc3NTU5Mn0.qMqjTMDRcvuuSy0yXLPH-yZpWFZdUv63enAsEWxzsss",
+      "NEXT_PUBLIC_API_BASE": "https://founders-sprint-api.vercel.app"
+    }
+  },
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": "https://ivedeivyotwevjxvcuoe.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2ZWRlaXZ5b3R3ZXZqeHZjdW9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxOTk1OTIsImV4cCI6MjA5MDc3NTU5Mn0.qMqjTMDRcvuuSy0yXLPH-yZpWFZdUv63enAsEWxzsss",
+    "NEXT_PUBLIC_API_BASE": "https://founders-sprint-api.vercel.app"
+  }
+}
