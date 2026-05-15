@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
 
   console.log('[auth/confirm] token_hash:', !!token_hash, 'type:', type, 'code:', !!code)
 
-  const redirectTo = new URL('/learn', origin)
+  const redirectTo = new URL('/', origin)
   const response = NextResponse.redirect(redirectTo)
 
   const supabase = createServerClient(

@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
 
   if (code) {
     // Create the redirect response FIRST so we can set cookies on it
-    const redirectUrl = new URL('/learn', origin)
+    const redirectUrl = new URL('/', origin)
     const response = NextResponse.redirect(redirectUrl)
 
     const supabase = createServerClient(
