@@ -2479,39 +2479,41 @@ function buildCoachDetailHTML(a) {
     html += `<div style="margin-bottom:12px"><strong>Coaching philosophy:</strong><br><span style="font-size:12px;white-space:pre-line">${esc(a.coaching_philosophy)}</span></div>`;
   }
 
-  // ── Course Materials ─────────────────────────────────────────────────────
-  html += `
-    <div style="margin:16px 0 12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:6px">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold)">Course Materials</div>
-        <button class="btn-confirm" onclick="event.stopPropagation(); showAddPresentationForm('${a.user_id || a.id}')" style="padding:4px 12px;font-size:10px">+ Link Presentation</button>
-      </div>
-      <div id="coach-presentations-${a.user_id || a.id}" style="font-size:12px;color:var(--muted)">Loading presentations...</div>
-      <div id="add-presentation-form-${a.user_id || a.id}" style="display:none;margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:6px">
-        <div style="font-size:11px;font-weight:600;margin-bottom:8px">Link a new presentation</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-          <input id="pres-title-${a.user_id || a.id}" placeholder="Title (e.g. Understanding Your Market)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
-          <input id="pres-code-${a.user_id || a.id}" placeholder="Session code (e.g. L2-1-1)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
-          <select id="pres-l1-${a.user_id || a.id}" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
-            <option value="">Select discipline...</option>
-            <option value="Marketing & Branding">Marketing & Branding</option>
-            <option value="Financial Modelling & Business Finance">Financial Modelling</option>
-            <option value="Strategy & Team Building">Strategy & Team</option>
-            <option value="Investment Readiness & Fundraising">Investment Readiness</option>
-            <option value="Product Development & Pricing">Product Dev & Pricing</option>
-          </select>
-          <input id="pres-path-${a.user_id || a.id}" placeholder="File path (e.g. /presentations/L2-1-1.html)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+  // ── Course Materials (only for approved coaches with auth accounts) ─────
+  if (a.user_id) {
+    html += `
+      <div style="margin:16px 0 12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:6px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold)">Course Materials</div>
+          <button class="btn-confirm" onclick="event.stopPropagation(); showAddPresentationForm('${a.user_id}')" style="padding:4px 12px;font-size:10px">+ Link Presentation</button>
         </div>
-        <input id="pres-desc-${a.user_id || a.id}" placeholder="Brief description (optional)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface);margin-bottom:8px;box-sizing:border-box">
-        <div style="display:flex;gap:8px">
-          <button class="btn-confirm" onclick="event.stopPropagation(); savePresentationLink('${a.user_id || a.id}')" style="padding:5px 16px;font-size:10px">Save</button>
-          <button class="btn-cancel" onclick="event.stopPropagation(); hideAddPresentationForm('${a.user_id || a.id}')" style="padding:5px 16px;font-size:10px">Cancel</button>
+        <div id="coach-presentations-${a.user_id}" style="font-size:12px;color:var(--muted)">Loading presentations...</div>
+        <div id="add-presentation-form-${a.user_id}" style="display:none;margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:6px">
+          <div style="font-size:11px;font-weight:600;margin-bottom:8px">Link a new presentation</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <input id="pres-title-${a.user_id}" placeholder="Title (e.g. Understanding Your Market)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+            <input id="pres-code-${a.user_id}" placeholder="Session code (e.g. L2-1-1)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+            <select id="pres-l1-${a.user_id}" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+              <option value="">Select discipline...</option>
+              <option value="Marketing & Branding">Marketing & Branding</option>
+              <option value="Financial Modelling & Business Finance">Financial Modelling</option>
+              <option value="Strategy & Team Building">Strategy & Team</option>
+              <option value="Investment Readiness & Fundraising">Investment Readiness</option>
+              <option value="Product Development & Pricing">Product Dev & Pricing</option>
+            </select>
+            <input id="pres-path-${a.user_id}" placeholder="File path (e.g. /presentations/L2-1-1.html)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+          </div>
+          <input id="pres-desc-${a.user_id}" placeholder="Brief description (optional)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface);margin-bottom:8px;box-sizing:border-box">
+          <div style="display:flex;gap:8px">
+            <button class="btn-confirm" onclick="event.stopPropagation(); savePresentationLink('${a.user_id}')" style="padding:5px 16px;font-size:10px">Save</button>
+            <button class="btn-cancel" onclick="event.stopPropagation(); hideAddPresentationForm('${a.user_id}')" style="padding:5px 16px;font-size:10px">Cancel</button>
+          </div>
         </div>
-      </div>
-    </div>`;
+      </div>`;
 
-  // Trigger async load of presentations for this coach
-  setTimeout(() => loadCoachPresentations(a.user_id || a.id), 50);
+    // Trigger async load of presentations for this coach
+    setTimeout(() => loadCoachPresentations(a.user_id), 50);
+  }
 
   // ── Approval progress ────────────────────────────────────────────────────
   const votes = a.votes || [];
