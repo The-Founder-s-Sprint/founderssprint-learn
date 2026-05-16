@@ -2479,6 +2479,40 @@ function buildCoachDetailHTML(a) {
     html += `<div style="margin-bottom:12px"><strong>Coaching philosophy:</strong><br><span style="font-size:12px;white-space:pre-line">${esc(a.coaching_philosophy)}</span></div>`;
   }
 
+  // ── Course Materials ─────────────────────────────────────────────────────
+  html += `
+    <div style="margin:16px 0 12px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:6px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold)">Course Materials</div>
+        <button class="btn-confirm" onclick="event.stopPropagation(); showAddPresentationForm('${a.user_id || a.id}')" style="padding:4px 12px;font-size:10px">+ Link Presentation</button>
+      </div>
+      <div id="coach-presentations-${a.user_id || a.id}" style="font-size:12px;color:var(--muted)">Loading presentations...</div>
+      <div id="add-presentation-form-${a.user_id || a.id}" style="display:none;margin-top:12px;padding:12px;background:var(--card);border:1px solid var(--border);border-radius:6px">
+        <div style="font-size:11px;font-weight:600;margin-bottom:8px">Link a new presentation</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <input id="pres-title-${a.user_id || a.id}" placeholder="Title (e.g. Understanding Your Market)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+          <input id="pres-code-${a.user_id || a.id}" placeholder="Session code (e.g. L2-1-1)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+          <select id="pres-l1-${a.user_id || a.id}" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+            <option value="">Select discipline...</option>
+            <option value="Marketing & Branding">Marketing & Branding</option>
+            <option value="Financial Modelling & Business Finance">Financial Modelling</option>
+            <option value="Strategy & Team Building">Strategy & Team</option>
+            <option value="Investment Readiness & Fundraising">Investment Readiness</option>
+            <option value="Product Development & Pricing">Product Dev & Pricing</option>
+          </select>
+          <input id="pres-path-${a.user_id || a.id}" placeholder="File path (e.g. /presentations/L2-1-1.html)" style="padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface)">
+        </div>
+        <input id="pres-desc-${a.user_id || a.id}" placeholder="Brief description (optional)" style="width:100%;padding:6px 10px;border:1px solid var(--border);border-radius:4px;font-size:12px;font-family:var(--font);background:var(--surface);margin-bottom:8px;box-sizing:border-box">
+        <div style="display:flex;gap:8px">
+          <button class="btn-confirm" onclick="event.stopPropagation(); savePresentationLink('${a.user_id || a.id}')" style="padding:5px 16px;font-size:10px">Save</button>
+          <button class="btn-cancel" onclick="event.stopPropagation(); hideAddPresentationForm('${a.user_id || a.id}')" style="padding:5px 16px;font-size:10px">Cancel</button>
+        </div>
+      </div>
+    </div>`;
+
+  // Trigger async load of presentations for this coach
+  setTimeout(() => loadCoachPresentations(a.user_id || a.id), 50);
+
   // ── Approval progress ────────────────────────────────────────────────────
   const votes = a.votes || [];
   const approvals = votes.filter(v => v.vote === 'approve');
@@ -2613,6 +2647,155 @@ async function castVote(id, vote) {
     await loadCoachApplications();
   } catch (err) {
     showToast('Vote failed: ' + err.message, 'error');
+  }
+}
+
+// ── COACH PRESENTATIONS ─────────────────────────────────────────────────────
+const presentationsCache = {};
+
+async function loadCoachPresentations(coachId) {
+  const container = document.getElementById('coach-presentations-' + coachId);
+  if (!container) return;
+
+  // Check cache first
+  if (presentationsCache[coachId]) {
+    renderPresentations(coachId, presentationsCache[coachId]);
+    return;
+  }
+
+  try {
+    const { data, error } = await sb
+      .from('coach_presentations')
+      .select('*')
+      .eq('coach_id', coachId)
+      .eq('is_active', true)
+      .order('sort_order', { ascending: true })
+      .order('created_at', { ascending: true });
+
+    if (error) throw error;
+    presentationsCache[coachId] = data || [];
+    renderPresentations(coachId, data || []);
+  } catch (err) {
+    console.error('[Presentations] Load error:', err);
+    container.innerHTML = '<span style="color:var(--danger);font-size:11px">Failed to load presentations</span>';
+  }
+}
+
+function renderPresentations(coachId, presentations) {
+  const container = document.getElementById('coach-presentations-' + coachId);
+  if (!container) return;
+
+  if (presentations.length === 0) {
+    container.innerHTML = '<span style="font-size:12px;color:var(--muted)">No presentations linked yet. Use "+ Link Presentation" to add course materials.</span>';
+    return;
+  }
+
+  let html = '<div style="display:flex;flex-direction:column;gap:8px">';
+  presentations.forEach(p => {
+    const codeTag = p.session_code
+      ? `<span style="display:inline-block;padding:2px 6px;background:var(--gold-dim);color:var(--gold);border-radius:3px;font-size:10px;font-family:var(--mono);margin-right:6px">${esc(p.session_code)}</span>`
+      : '';
+    const l1Tag = `<span style="font-size:10px;color:var(--muted)">${esc(p.taxonomy_l1)}</span>`;
+    const dur = p.duration_minutes ? `<span style="font-size:10px;color:var(--muted)">${p.duration_minutes} min</span>` : '';
+
+    html += `
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--card);border:1px solid var(--border);border-radius:6px">
+        <div style="flex:1;min-width:0">
+          <div style="font-size:12px;font-weight:600;margin-bottom:2px">${codeTag}${esc(p.title)}</div>
+          <div style="display:flex;gap:12px;align-items:center">${l1Tag}${dur}</div>
+          ${p.description ? `<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(p.description)}</div>` : ''}
+        </div>
+        <div style="display:flex;gap:6px;margin-left:12px;flex-shrink:0">
+          <button class="btn-confirm" onclick="event.stopPropagation(); launchPresentation('${esc(p.file_path)}', '${esc(p.title)}')" style="padding:4px 12px;font-size:10px">Launch</button>
+          <button class="btn-cancel" onclick="event.stopPropagation(); unlinkPresentation(${p.id}, '${coachId}')" style="padding:4px 10px;font-size:10px;color:var(--danger)">Remove</button>
+        </div>
+      </div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+function launchPresentation(filePath, title) {
+  // Open in the branded presentation viewer
+  const viewerUrl = '/presentation-viewer.html?src=' + encodeURIComponent(filePath) + '&title=' + encodeURIComponent(title);
+  window.open(viewerUrl, '_blank', 'noopener');
+}
+
+function showAddPresentationForm(coachId) {
+  const form = document.getElementById('add-presentation-form-' + coachId);
+  if (form) form.style.display = 'block';
+}
+
+function hideAddPresentationForm(coachId) {
+  const form = document.getElementById('add-presentation-form-' + coachId);
+  if (form) form.style.display = 'none';
+}
+
+async function savePresentationLink(coachId) {
+  const title    = document.getElementById('pres-title-' + coachId)?.value?.trim();
+  const code     = document.getElementById('pres-code-' + coachId)?.value?.trim();
+  const l1       = document.getElementById('pres-l1-' + coachId)?.value;
+  const filePath = document.getElementById('pres-path-' + coachId)?.value?.trim();
+  const desc     = document.getElementById('pres-desc-' + coachId)?.value?.trim();
+
+  if (!title || !l1 || !filePath) {
+    showToast('Title, discipline, and file path are required', 'warning');
+    return;
+  }
+
+  try {
+    const { data, error } = await sb
+      .from('coach_presentations')
+      .insert({
+        coach_id: coachId,
+        title,
+        taxonomy_l1: l1,
+        session_code: code || null,
+        file_path: filePath,
+        description: desc || null,
+        duration_minutes: 120,
+        sort_order: (presentationsCache[coachId]?.length || 0),
+        is_active: true,
+      })
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    showToast(`Presentation "${title}" linked successfully`, 'success');
+
+    // Clear form
+    document.getElementById('pres-title-' + coachId).value = '';
+    document.getElementById('pres-code-' + coachId).value = '';
+    document.getElementById('pres-l1-' + coachId).value = '';
+    document.getElementById('pres-path-' + coachId).value = '';
+    document.getElementById('pres-desc-' + coachId).value = '';
+    hideAddPresentationForm(coachId);
+
+    // Refresh
+    delete presentationsCache[coachId];
+    await loadCoachPresentations(coachId);
+  } catch (err) {
+    showToast('Failed to save: ' + err.message, 'error');
+  }
+}
+
+async function unlinkPresentation(presId, coachId) {
+  if (!confirm('Remove this presentation from the coach profile?')) return;
+
+  try {
+    const { error } = await sb
+      .from('coach_presentations')
+      .update({ is_active: false })
+      .eq('id', presId);
+
+    if (error) throw error;
+
+    showToast('Presentation removed', 'info');
+    delete presentationsCache[coachId];
+    await loadCoachPresentations(coachId);
+  } catch (err) {
+    showToast('Failed to remove: ' + err.message, 'error');
   }
 }
 </script>

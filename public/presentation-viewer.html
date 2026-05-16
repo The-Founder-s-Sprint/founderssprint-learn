@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Founder's Sprint — Presentation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:       #1A1A1A;
+    --ink-soft:  #2A2826;
+    --paper:     #EFE7D8;
+    --terra:     #C8531F;
+    --ochre:     #C9923A;
+    --stone:     #777770;
+    --font:      'Josefin Sans', Inter, system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--font);
+    overflow: hidden;
+  }
+
+  /* ── Top bar ──────────────────────────────────────────────────────────── */
+  .viewer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 48px;
+    padding: 0 20px;
+    background: var(--ink-soft);
+    border-bottom: 1px solid rgba(239,231,216,0.08);
+    flex-shrink: 0;
+    z-index: 10;
+  }
+
+  .viewer-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .viewer-brand .logo-mark {
+    width: 28px;
+    height: 28px;
+  }
+
+  .viewer-brand .brand-text {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--paper);
+    opacity: 0.7;
+  }
+
+  .viewer-title {
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--paper);
+    opacity: 0.9;
+    letter-spacing: 0.01em;
+    max-width: 50%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+
+  .viewer-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .viewer-controls button {
+    background: transparent;
+    border: 1px solid rgba(239,231,216,0.15);
+    border-radius: 4px;
+    color: var(--paper);
+    font-family: var(--font);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    padding: 6px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    opacity: 0.7;
+  }
+
+  .viewer-controls button:hover {
+    opacity: 1;
+    border-color: rgba(239,231,216,0.35);
+    background: rgba(239,231,216,0.05);
+  }
+
+  .viewer-controls button.active {
+    background: var(--terra);
+    border-color: var(--terra);
+    opacity: 1;
+  }
+
+  /* ── Presentation iframe ──────────────────────────────────────────────── */
+  .viewer-content {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ink);
+    overflow: hidden;
+  }
+
+  .viewer-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: var(--ink);
+  }
+
+  /* ── Fullscreen mode ──────────────────────────────────────────────────── */
+  .fullscreen .viewer-bar { display: none; }
+  .fullscreen .viewer-content { height: 100vh; }
+
+  /* ── Loading state ────────────────────────────────────────────────────── */
+  .viewer-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 13px;
+    color: var(--stone);
+    letter-spacing: 0.1em;
+  }
+
+  .viewer-loading .spinner {
+    width: 32px;
+    height: 32px;
+    border: 2px solid rgba(239,231,216,0.1);
+    border-top-color: var(--ochre);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ── Error state ──────────────────────────────────────────────────────── */
+  .viewer-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--terra);
+    text-align: center;
+    padding: 40px;
+  }
+
+  .viewer-error .error-title {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .viewer-error .error-detail {
+    font-size: 12px;
+    color: var(--stone);
+    max-width: 400px;
+    line-height: 1.6;
+  }
+
+  /* ── Layout ───────────────────────────────────────────────────────────── */
+  .viewer-shell {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* ── Mobile ───────────────────────────────────────────────────────────── */
+  @media (max-width: 600px) {
+    .viewer-bar { padding: 0 12px; height: 42px; }
+    .viewer-brand .brand-text { display: none; }
+    .viewer-title { font-size: 12px; max-width: 60%; }
+    .viewer-controls button { padding: 5px 10px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+<div class="viewer-shell" id="viewer-shell">
+  <!-- Top bar -->
+  <div class="viewer-bar">
+    <div class="viewer-brand">
+      <!-- Inline SVG diamond logo mark -->
+      <svg class="logo-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="50,8 92,50 50,92 8,50" fill="none" stroke="#C9923A" stroke-width="2.5"/>
+        <circle cx="50" cy="24" r="4" fill="#C8531F"/>
+        <circle cx="76" cy="50" r="4" fill="#C9923A"/>
+        <circle cx="50" cy="76" r="4" fill="#8AAB5C"/>
+        <circle cx="24" cy="50" r="4" fill="#3D4A2E"/>
+        <circle cx="50" cy="50" r="5" fill="#EFE7D8"/>
+      </svg>
+      <span class="brand-text">The Founder's Sprint</span>
+    </div>
+    <div class="viewer-title" id="viewer-title">Loading...</div>
+    <div class="viewer-controls">
+      <button onclick="toggleFullscreen()" title="Fullscreen (F)" id="btn-fullscreen">Fullscreen</button>
+      <button onclick="window.close()" title="Close">Close</button>
+    </div>
+  </div>
+
+  <!-- Content area -->
+  <div class="viewer-content" id="viewer-content">
+    <div class="viewer-loading" id="viewer-loading">
+      <div class="spinner"></div>
+      <span>Loading presentation...</span>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  const src    = params.get('src');
+  const title  = params.get('title') || 'Presentation';
+
+  // Set title
+  document.getElementById('viewer-title').textContent = title;
+  document.title = `${title} — The Founder's Sprint`;
+
+  if (!src) {
+    showError('No presentation specified', 'This viewer requires a ?src= parameter pointing to the presentation HTML file.');
+    return;
+  }
+
+  // Load the presentation in an iframe
+  const container = document.getElementById('viewer-content');
+  const loading   = document.getElementById('viewer-loading');
+
+  const iframe = document.createElement('iframe');
+  iframe.src = src;
+  iframe.style.display = 'none';
+  iframe.setAttribute('allowfullscreen', '');
+  iframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups');
+
+  iframe.onload = function() {
+    loading.style.display = 'none';
+    iframe.style.display = 'block';
+  };
+
+  iframe.onerror = function() {
+    showError('Failed to load presentation', `Could not load: ${src}`);
+  };
+
+  // Timeout fallback — if iframe takes too long
+  const timeout = setTimeout(() => {
+    if (iframe.style.display === 'none') {
+      // Assume it loaded but onload didn't fire (cross-origin edge case)
+      loading.style.display = 'none';
+      iframe.style.display = 'block';
+    }
+  }, 5000);
+
+  container.appendChild(iframe);
+
+  function showError(title, detail) {
+    loading.style.display = 'none';
+    const err = document.createElement('div');
+    err.className = 'viewer-error';
+    err.innerHTML = `
+      <div class="error-title">${title}</div>
+      <div class="error-detail">${detail}</div>
+    `;
+    container.appendChild(err);
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'f' || e.key === 'F') toggleFullscreen();
+    if (e.key === 'Escape' && document.fullscreenElement) {
+      document.exitFullscreen();
+    }
+  });
+})();
+
+function toggleFullscreen() {
+  const shell = document.getElementById('viewer-shell');
+  if (!document.fullscreenElement) {
+    shell.requestFullscreen().then(() => {
+      shell.classList.add('fullscreen');
+      document.getElementById('btn-fullscreen').textContent = 'Exit Fullscreen';
+    }).catch(() => {
+      // Fallback: just hide the bar
+      shell.classList.toggle('fullscreen');
+    });
+  } else {
+    document.exitFullscreen().then(() => {
+      shell.classList.remove('fullscreen');
+      document.getElementById('btn-fullscreen').textContent = 'Fullscreen';
+    });
+  }
+}
+
+document.addEventListener('fullscreenchange', function() {
+  const shell = document.getElementById('viewer-shell');
+  if (!document.fullscreenElement) {
+    shell.classList.remove('fullscreen');
+    document.getElementById('btn-fullscreen').textContent = 'Fullscreen';
+  }
+});
+</script>
+</body>
+</html>
