@@ -2708,13 +2708,25 @@ function renderPresentations(coachId, presentations) {
           ${p.description ? `<div style="font-size:11px;color:var(--muted);margin-top:2px">${esc(p.description)}</div>` : ''}
         </div>
         <div style="display:flex;gap:6px;margin-left:12px;flex-shrink:0">
-          <button class="btn-confirm" onclick="event.stopPropagation(); launchPresentation('${esc(p.file_path)}', '${esc(p.title)}')" style="padding:4px 12px;font-size:10px">Launch</button>
-          <button class="btn-cancel" onclick="event.stopPropagation(); unlinkPresentation(${p.id}, '${coachId}')" style="padding:4px 10px;font-size:10px;color:var(--danger)">Remove</button>
+          <button class="btn-confirm" data-action="launch" data-path="${esc(p.file_path)}" data-title="${esc(p.title)}" style="padding:4px 12px;font-size:10px">Launch</button>
+          <button class="btn-cancel" data-action="unlink" data-pres-id="${p.id}" data-coach-id="${coachId}" style="padding:4px 10px;font-size:10px;color:var(--danger)">Remove</button>
         </div>
       </div>`;
   });
   html += '</div>';
   container.innerHTML = html;
+
+  // Event delegation — avoids inline JS string escaping issues
+  container.addEventListener('click', function(e) {
+    const btn = e.target.closest('[data-action]');
+    if (!btn) return;
+    e.stopPropagation();
+    if (btn.dataset.action === 'launch') {
+      launchPresentation(btn.dataset.path, btn.dataset.title);
+    } else if (btn.dataset.action === 'unlink') {
+      unlinkPresentation(Number(btn.dataset.presId), btn.dataset.coachId);
+    }
+  });
 }
 
 function launchPresentation(filePath, title) {
