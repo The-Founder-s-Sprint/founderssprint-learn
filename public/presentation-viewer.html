@@ -272,14 +272,18 @@
 
   container.appendChild(iframe);
 
-  function showError(title, detail) {
+  function showError(errTitle, detail) {
     loading.style.display = 'none';
     const err = document.createElement('div');
     err.className = 'viewer-error';
-    err.innerHTML = `
-      <div class="error-title">${title}</div>
-      <div class="error-detail">${detail}</div>
-    `;
+    const h = document.createElement('div');
+    h.className = 'error-title';
+    h.textContent = errTitle;
+    const d = document.createElement('div');
+    d.className = 'error-detail';
+    d.textContent = detail;
+    err.appendChild(h);
+    err.appendChild(d);
     container.appendChild(err);
   }
 

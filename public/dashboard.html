@@ -2186,7 +2186,7 @@ function statusBadge(status) {
   return `<span style="font-size:10px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;color:${colors[status] || 'var(--muted)'}">${status}</span>`;
 }
 
-function esc(str) { return str ? String(str).replace(/</g, '&lt;').replace(/>/g, '&gt;') : ''; }
+function esc(str) { return str ? String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;') : ''; }
 
 async function approveApplication(id) {
   const app = allApplications.find(a => a.id === id);
