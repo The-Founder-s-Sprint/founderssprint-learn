@@ -750,6 +750,8 @@
     <button class="tab" onclick="switchTab('sessions')">Sessions</button>
     <button class="tab" onclick="switchTab('presentations')">Presentations</button>
     <button class="tab" onclick="switchTab('cohorts')">Cohorts</button>
+    <button class="tab" onclick="switchTab('pricing')">Pricing</button>
+    <button class="tab" onclick="switchTab('profiles')">Profiles</button>
   </div>
 
   <div class="main">
@@ -1508,8 +1510,140 @@
       </div>
     </div>
 
+    <!-- ── PRICING ──────────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-pricing">
+      <div class="section-head" style="margin-bottom:16px">
+        <span class="section-title">Track Pricing</span>
+      </div>
+
+      <div style="max-width:800px">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Track</th>
+                <th>Full Fee (UGX)</th>
+                <th>Deposit %</th>
+                <th>Deposit Amount</th>
+                <th>Balance</th>
+                <th>Active</th>
+                <th>Last Updated</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pricing-table-body">
+              <tr><td colspan="8" class="loading">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="margin-top:20px;padding:16px;background:var(--surface);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6">
+          <strong style="color:var(--text)">How pricing works:</strong><br>
+          Deposit is calculated as a percentage of the full fee. Changing prices here updates them for all future registrations — existing registrations keep the price they locked in at signup.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── PROFILES ─────────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-profiles">
+      <div class="section-head" style="margin-bottom:16px">
+        <span class="section-title">Coach Profiles</span>
+        <select class="filter-select" id="profile-filter" onchange="renderProfiles()">
+          <option value="">All Coaches</option>
+        </select>
+      </div>
+
+      <div id="profiles-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:20px">
+        <div class="loading">Loading…</div>
+      </div>
+    </div>
+
   </div><!-- /main -->
 </div><!-- /app -->
+
+<!-- ── EDIT PROFILE MODAL ───────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="profile-modal">
+  <div class="modal" style="max-width:520px;max-height:90vh;overflow-y:auto">
+    <div class="modal-title" id="profile-modal-title">Edit Coach Profile</div>
+    <input type="hidden" id="profile-edit-id">
+    <div class="modal-field">
+      <label class="modal-label">Headline</label>
+      <input class="modal-input" type="text" id="profile-edit-headline" placeholder="e.g. Financial strategist &amp; business coach">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Bio</label>
+      <textarea class="modal-input" id="profile-edit-bio" rows="4" placeholder="Professional bio…" style="resize:vertical"></textarea>
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Credentials</label>
+      <textarea class="modal-input" id="profile-edit-credentials" rows="2" placeholder="CPA, MBA, 15 years in venture capital…" style="resize:vertical"></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="modal-field">
+        <label class="modal-label">LinkedIn URL</label>
+        <input class="modal-input" type="url" id="profile-edit-linkedin" placeholder="https://linkedin.com/in/…">
+      </div>
+      <div class="modal-field">
+        <label class="modal-label">Website URL</label>
+        <input class="modal-input" type="url" id="profile-edit-website" placeholder="https://…">
+      </div>
+    </div>
+
+    <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border)">
+      <div style="font-family:var(--sans);font-weight:600;font-size:13px;margin-bottom:12px;color:var(--text)">Weekly Availability</div>
+      <div id="availability-grid" style="font-size:12px">
+        <div class="loading">Loading…</div>
+      </div>
+      <button class="action-btn" onclick="addAvailabilitySlot()" style="margin-top:10px">+ Add Time Slot</button>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-confirm" onclick="saveProfile()">Save Profile</button>
+      <button class="btn-cancel" onclick="closeProfileModal()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── EDIT PRICING MODAL ───────────────────────────────────────────────── -->
+<div class="modal-backdrop" id="pricing-modal">
+  <div class="modal" style="max-width:420px">
+    <div class="modal-title" id="pricing-modal-title">Edit Track Pricing</div>
+    <input type="hidden" id="pricing-edit-id">
+    <div class="modal-field">
+      <label class="modal-label">Track</label>
+      <input class="modal-input" type="text" id="pricing-edit-label" readonly style="opacity:0.6;cursor:not-allowed">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Full Fee (UGX)</label>
+      <input class="modal-input" type="number" id="pricing-edit-fee" min="0" step="50000" oninput="updatePricingPreview()">
+    </div>
+    <div class="modal-field">
+      <label class="modal-label">Deposit Percentage</label>
+      <input class="modal-input" type="number" id="pricing-edit-pct" min="1" max="100" step="1" oninput="updatePricingPreview()">
+    </div>
+    <div style="margin-top:12px;padding:12px;background:var(--surface);border:1px solid var(--border);font-size:12px">
+      <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+        <span style="color:var(--muted)">Deposit amount:</span>
+        <span style="font-weight:600;font-family:var(--mono)" id="pricing-preview-deposit">—</span>
+      </div>
+      <div style="display:flex;justify-content:space-between">
+        <span style="color:var(--muted)">Balance due:</span>
+        <span style="font-weight:600;font-family:var(--mono)" id="pricing-preview-balance">—</span>
+      </div>
+    </div>
+    <div class="modal-field" style="margin-top:14px">
+      <label class="modal-label">Active</label>
+      <select class="modal-input" id="pricing-edit-active">
+        <option value="true">Yes — available for registration</option>
+        <option value="false">No — hidden from registration</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-confirm" onclick="savePricing()">Save Changes</button>
+      <button class="btn-cancel" onclick="closePricingModal()">Cancel</button>
+    </div>
+  </div>
+</div>
 
 <!-- ── CHANGE PASSWORD MODAL ─────────────────────────────────────────────── -->
 <div class="modal-backdrop" id="password-modal">
@@ -2221,7 +2355,7 @@ document.addEventListener('click', function(e) {
 
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t, i) => {
-    const panels = ['overview','registrations','revenue','documents','directory','coaches','sessions','presentations','cohorts'];
+    const panels = ['overview','registrations','revenue','documents','directory','coaches','sessions','presentations','cohorts','pricing','profiles'];
     t.classList.toggle('active', panels[i] === name);
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -2231,6 +2365,8 @@ function switchTab(name) {
   if (name === 'sessions' && !sessionsLoaded) loadSessions();
   if (name === 'presentations' && !presentationsLoaded) loadPresentations();
   if (name === 'cohorts') renderCohorts();
+  if (name === 'pricing' && !pricingLoaded) loadPricing();
+  if (name === 'profiles' && !profilesLoaded) loadProfiles();
 }
 
 // ── MEETING INVITE ──────────────────────────────────────────────────────────
@@ -2250,6 +2386,368 @@ async function loadCoachesForInvite() {
     inviteCoaches = data || [];
   } catch (err) {
     console.error('loadCoachesForInvite:', err);
+  }
+}
+
+// ── PRICING MANAGEMENT ───────────────────────────────────────────────────────
+let pricingLoaded = false;
+let allPricing = [];
+
+async function loadPricing() {
+  try {
+    const { data, error } = await sb
+      .from('track_pricing')
+      .select('*')
+      .order('sort_order');
+
+    if (error) throw new Error(error.message);
+    allPricing = data || [];
+    pricingLoaded = true;
+    renderPricing();
+  } catch (err) {
+    console.error('[Pricing]', err);
+    showToast('Failed to load pricing: ' + err.message, 'error');
+  }
+}
+
+function renderPricing() {
+  const tbody = document.getElementById('pricing-table-body');
+  if (!allPricing.length) {
+    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:32px">No pricing data found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = allPricing.map(p => {
+    const deposit = Math.round(p.full_fee * p.deposit_pct / 100);
+    const balance = p.full_fee - deposit;
+    const updated = p.updated_at ? new Date(p.updated_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—';
+    return `
+      <tr>
+        <td><strong>${esc(p.label)}</strong><br><span style="font-size:10px;color:var(--muted);font-family:var(--mono)">${esc(p.track_key)}</span></td>
+        <td style="font-family:var(--mono);font-weight:600">${fmtUGX(p.full_fee)}</td>
+        <td style="font-family:var(--mono);text-align:center">${p.deposit_pct}%</td>
+        <td style="font-family:var(--mono)">${fmtUGX(deposit)}</td>
+        <td style="font-family:var(--mono)">${fmtUGX(balance)}</td>
+        <td>${p.is_active
+          ? '<span style="color:var(--success);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">Active</span>'
+          : '<span style="color:var(--muted);font-size:10px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase">Inactive</span>'
+        }</td>
+        <td style="font-size:11px;font-family:var(--mono)">${updated}</td>
+        <td><button class="action-btn" onclick="openPricingModal(${p.id})">Edit</button></td>
+      </tr>`;
+  }).join('');
+}
+
+function openPricingModal(id) {
+  const p = allPricing.find(x => x.id === id);
+  if (!p) return;
+  document.getElementById('pricing-edit-id').value = p.id;
+  document.getElementById('pricing-edit-label').value = p.label;
+  document.getElementById('pricing-edit-fee').value = p.full_fee;
+  document.getElementById('pricing-edit-pct').value = p.deposit_pct;
+  document.getElementById('pricing-edit-active').value = String(p.is_active);
+  document.getElementById('pricing-modal-title').textContent = `Edit — ${p.label}`;
+  updatePricingPreview();
+  document.getElementById('pricing-modal').classList.add('open');
+}
+
+function closePricingModal() {
+  document.getElementById('pricing-modal').classList.remove('open');
+}
+
+function updatePricingPreview() {
+  const fee = Number(document.getElementById('pricing-edit-fee').value) || 0;
+  const pct = Number(document.getElementById('pricing-edit-pct').value) || 0;
+  const deposit = Math.round(fee * pct / 100);
+  const balance = fee - deposit;
+  document.getElementById('pricing-preview-deposit').textContent = fmtUGX(deposit);
+  document.getElementById('pricing-preview-balance').textContent = fmtUGX(balance);
+}
+
+async function savePricing() {
+  const id = Number(document.getElementById('pricing-edit-id').value);
+  const full_fee = Number(document.getElementById('pricing-edit-fee').value);
+  const deposit_pct = Number(document.getElementById('pricing-edit-pct').value);
+  const is_active = document.getElementById('pricing-edit-active').value === 'true';
+
+  if (!full_fee || full_fee < 0) { showToast('Fee must be a positive number', 'error'); return; }
+  if (deposit_pct < 1 || deposit_pct > 100) { showToast('Deposit % must be 1–100', 'error'); return; }
+
+  try {
+    const { error } = await sb
+      .from('track_pricing')
+      .update({ full_fee, deposit_pct, is_active })
+      .eq('id', id);
+
+    if (error) throw new Error(error.message);
+
+    closePricingModal();
+    showToast('Pricing updated successfully', 'success');
+    pricingLoaded = false;
+    await loadPricing();
+  } catch (err) {
+    showToast('Failed to update pricing: ' + err.message, 'error');
+  }
+}
+
+// ── COACH PROFILES & AVAILABILITY ─────────────────────────────────────────────
+let profilesLoaded = false;
+let allProfiles = [];
+let editingProfileSlots = []; // temp slots while modal is open
+
+const DAY_LABELS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const DAY_SHORT  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+const L1_COLOR = {
+  marketing_branding:   'var(--terra)',
+  financial_modelling:  'var(--ochre)',
+  strategy_team:        'var(--moss)',
+  investment_readiness: 'var(--sage)',
+  product_development:  'var(--stone)',
+};
+
+async function loadProfiles() {
+  try {
+    // Fetch coaches with profile fields
+    const { data: coaches, error } = await sb
+      .from('coaches')
+      .select('id, first_name, last_name, email, phone, sector_l1, role, status, headline, credentials, linkedin_url, website_url, profile_photo_url, bio')
+      .eq('status', 'active')
+      .order('id');
+    if (error) throw new Error(error.message);
+
+    // Fetch all active availability slots
+    const { data: slots, error: slotErr } = await sb
+      .from('coach_availability')
+      .select('id, coach_id, day_of_week, start_time, end_time, is_active')
+      .eq('is_active', true)
+      .order('day_of_week')
+      .order('start_time');
+    if (slotErr) throw new Error(slotErr.message);
+
+    // Attach slots to each coach
+    const slotMap = {};
+    (slots || []).forEach(s => {
+      if (!slotMap[s.coach_id]) slotMap[s.coach_id] = [];
+      slotMap[s.coach_id].push(s);
+    });
+    allProfiles = (coaches || []).map(c => ({ ...c, availability: slotMap[c.id] || [] }));
+
+    // Populate filter dropdown
+    const filter = document.getElementById('profile-filter');
+    filter.innerHTML = '<option value="">All Coaches</option>';
+    allProfiles.forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.id;
+      opt.textContent = `${c.first_name} ${c.last_name}`;
+      filter.appendChild(opt);
+    });
+
+    profilesLoaded = true;
+    renderProfiles();
+  } catch (err) {
+    console.error('loadProfiles:', err);
+    document.getElementById('profiles-grid').innerHTML =
+      `<div style="color:var(--danger);padding:20px">Failed to load profiles: ${err.message}</div>`;
+  }
+}
+
+function renderProfiles() {
+  const filterVal = document.getElementById('profile-filter').value;
+  const list = filterVal
+    ? allProfiles.filter(c => String(c.id) === filterVal)
+    : allProfiles;
+
+  const grid = document.getElementById('profiles-grid');
+  if (!list.length) {
+    grid.innerHTML = '<div style="color:var(--muted);padding:20px">No coaches found.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(c => {
+    const discipline = L1_LABELS[c.sector_l1] || c.sector_l1 || 'Coach';
+    const color = L1_COLOR[c.sector_l1] || 'var(--ink-mute)';
+    const initials = (c.first_name?.[0] || '') + (c.last_name?.[0] || '');
+    const bioSnippet = c.bio ? (c.bio.length > 120 ? c.bio.slice(0, 120) + '…' : c.bio) : '<span style="color:var(--muted);font-style:italic">No bio added yet</span>';
+    const headlineHtml = c.headline
+      ? `<div style="font-size:12px;color:var(--ink-mid);margin-top:2px">${esc(c.headline)}</div>`
+      : '';
+
+    // Availability summary — group by day
+    let availHtml = '';
+    if (c.availability.length) {
+      const byDay = {};
+      c.availability.forEach(s => {
+        if (!byDay[s.day_of_week]) byDay[s.day_of_week] = [];
+        byDay[s.day_of_week].push(fmtTime(s.start_time) + '–' + fmtTime(s.end_time));
+      });
+      const parts = Object.entries(byDay).map(([d, times]) =>
+        `<span style="font-weight:500">${DAY_SHORT[d]}</span> ${times.join(', ')}`
+      );
+      availHtml = `<div style="font-size:11px;color:var(--ink-mid);margin-top:8px;line-height:1.6">
+        ${parts.join('<br>')}
+      </div>`;
+    } else {
+      availHtml = '<div style="font-size:11px;color:var(--muted);margin-top:8px;font-style:italic">No availability set</div>';
+    }
+
+    const links = [];
+    if (c.linkedin_url) links.push(`<a href="${esc(c.linkedin_url)}" target="_blank" style="color:var(--terra);font-size:11px">LinkedIn</a>`);
+    if (c.website_url) links.push(`<a href="${esc(c.website_url)}" target="_blank" style="color:var(--terra);font-size:11px">Website</a>`);
+
+    return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;position:relative">
+      <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
+        ${c.profile_photo_url
+          ? `<img src="${esc(c.profile_photo_url)}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ${color}">`
+          : `<div style="width:52px;height:52px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:16px">${initials}</div>`
+        }
+        <div>
+          <div style="font-family:var(--sans);font-weight:700;font-size:14px">${esc(c.first_name)} ${esc(c.last_name)}</div>
+          <div style="font-size:11px;color:${color};font-weight:600">${esc(discipline)}</div>
+          ${headlineHtml}
+        </div>
+      </div>
+      <div style="font-size:12.5px;line-height:1.5;color:var(--ink-soft)">${bioSnippet}</div>
+      ${availHtml}
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
+        <div style="display:flex;gap:12px">${links.join('') || '<span style="font-size:11px;color:var(--muted)">No links</span>'}</div>
+        <button class="action-btn" onclick="openProfileModal(${c.id})">Edit</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function fmtTime(t) {
+  // t is "HH:MM:SS" or "HH:MM" — format as "9:00 AM"
+  const [h, m] = t.split(':').map(Number);
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  const h12 = h === 0 ? 12 : h > 12 ? h - 12 : h;
+  return `${h12}:${String(m).padStart(2,'0')} ${ampm}`;
+}
+
+function openProfileModal(coachId) {
+  const c = allProfiles.find(p => p.id === coachId);
+  if (!c) return;
+
+  document.getElementById('profile-edit-id').value = c.id;
+  document.getElementById('profile-modal-title').textContent = `Edit Profile — ${c.first_name} ${c.last_name}`;
+  document.getElementById('profile-edit-headline').value = c.headline || '';
+  document.getElementById('profile-edit-bio').value = c.bio || '';
+  document.getElementById('profile-edit-credentials').value = c.credentials || '';
+  document.getElementById('profile-edit-linkedin').value = c.linkedin_url || '';
+  document.getElementById('profile-edit-website').value = c.website_url || '';
+
+  // Clone availability for editing
+  editingProfileSlots = (c.availability || []).map(s => ({ ...s }));
+  renderAvailabilityGrid();
+
+  document.getElementById('profile-modal').classList.add('show');
+}
+
+function closeProfileModal() {
+  document.getElementById('profile-modal').classList.remove('show');
+  editingProfileSlots = [];
+}
+
+function renderAvailabilityGrid() {
+  const grid = document.getElementById('availability-grid');
+  if (!editingProfileSlots.length) {
+    grid.innerHTML = '<div style="color:var(--muted);font-style:italic;padding:4px 0">No time slots — click "+ Add Time Slot" below</div>';
+    return;
+  }
+
+  // Sort by day then start_time
+  editingProfileSlots.sort((a, b) => a.day_of_week - b.day_of_week || (a.start_time || '').localeCompare(b.start_time || ''));
+
+  grid.innerHTML = editingProfileSlots.map((s, idx) => `
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;padding:6px 8px;background:var(--surface);border-radius:6px">
+      <select onchange="editingProfileSlots[${idx}].day_of_week=+this.value" style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;background:var(--card)">
+        ${DAY_LABELS.map((d, i) => `<option value="${i}" ${i === s.day_of_week ? 'selected' : ''}>${d}</option>`).join('')}
+      </select>
+      <input type="time" value="${(s.start_time||'09:00').slice(0,5)}" onchange="editingProfileSlots[${idx}].start_time=this.value+':00'" style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;background:var(--card)">
+      <span style="color:var(--muted)">to</span>
+      <input type="time" value="${(s.end_time||'10:00').slice(0,5)}" onchange="editingProfileSlots[${idx}].end_time=this.value+':00'" style="font-size:12px;padding:3px 6px;border:1px solid var(--border);border-radius:4px;background:var(--card)">
+      <button onclick="removeAvailabilitySlot(${idx})" style="background:none;border:none;color:var(--danger);cursor:pointer;font-size:16px;padding:0 4px" title="Remove">×</button>
+    </div>
+  `).join('');
+}
+
+function addAvailabilitySlot() {
+  editingProfileSlots.push({
+    id: null,          // new slot — no DB id yet
+    day_of_week: 1,    // default Monday
+    start_time: '09:00:00',
+    end_time: '10:00:00',
+    is_active: true,
+  });
+  renderAvailabilityGrid();
+}
+
+function removeAvailabilitySlot(idx) {
+  editingProfileSlots.splice(idx, 1);
+  renderAvailabilityGrid();
+}
+
+async function saveProfile() {
+  const coachId = Number(document.getElementById('profile-edit-id').value);
+  const headline    = document.getElementById('profile-edit-headline').value.trim();
+  const bio         = document.getElementById('profile-edit-bio').value.trim();
+  const credentials = document.getElementById('profile-edit-credentials').value.trim();
+  const linkedin    = document.getElementById('profile-edit-linkedin').value.trim();
+  const website     = document.getElementById('profile-edit-website').value.trim();
+
+  try {
+    // 1. Update coach profile fields
+    const { error: profileErr } = await sb
+      .from('coaches')
+      .update({
+        headline:    headline || null,
+        bio:         bio || null,
+        credentials: credentials || null,
+        linkedin_url: linkedin || null,
+        website_url:  website || null,
+      })
+      .eq('id', coachId);
+    if (profileErr) throw new Error(profileErr.message);
+
+    // 2. Sync availability: delete existing, insert current slots
+    const { error: delErr } = await sb
+      .from('coach_availability')
+      .delete()
+      .eq('coach_id', coachId);
+    if (delErr) throw new Error('Failed to clear old availability: ' + delErr.message);
+
+    if (editingProfileSlots.length) {
+      // Validate time ranges
+      for (const s of editingProfileSlots) {
+        if (s.start_time >= s.end_time) {
+          showToast('End time must be after start time for each slot', 'warning');
+          return;
+        }
+      }
+
+      const inserts = editingProfileSlots.map(s => ({
+        coach_id:    coachId,
+        day_of_week: s.day_of_week,
+        start_time:  s.start_time,
+        end_time:    s.end_time,
+        is_active:   true,
+      }));
+
+      const { error: insErr } = await sb
+        .from('coach_availability')
+        .insert(inserts);
+      if (insErr) throw new Error('Failed to save availability: ' + insErr.message);
+    }
+
+    showToast('Profile updated', 'success');
+    closeProfileModal();
+
+    // Reload to reflect changes
+    profilesLoaded = false;
+    await loadProfiles();
+  } catch (err) {
+    showToast('Failed to save profile: ' + err.message, 'error');
   }
 }
 
