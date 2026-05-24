@@ -977,9 +977,10 @@
         </select>
         <select class="filter-select" id="filter-track" onchange="renderRegistrations()">
           <option value="">All Tracks</option>
-          <option value="group">Group</option>
-          <option value="oneOnOne">1-on-1</option>
-          <option value="vip">VIP</option>
+          <option value="single">1-on-1 Session</option>
+          <option value="pick3">Pick 3 Bundle</option>
+          <option value="cohort">Full Cohort</option>
+          <option value="vip1on1">VIP 1-on-1</option>
         </select>
         <select class="filter-select" id="filter-payment" onchange="renderRegistrations()">
           <option value="">All Statuses</option>
@@ -1275,8 +1276,10 @@
           <div>
             <label>Session Type</label>
             <select id="sess-type">
-              <option value="group">Group Sprint</option>
-              <option value="individual">1-on-1 Intensive</option>
+              <option value="single">1-on-1 Session</option>
+              <option value="pick3">Pick 3 Bundle</option>
+              <option value="cohort">Full Cohort</option>
+              <option value="vip1on1">VIP 1-on-1</option>
             </select>
           </div>
         </div>
@@ -1469,18 +1472,22 @@
           </div>
         </div>
         <div style="font-family:var(--sans);font-weight:600;font-size:14px;margin-top:16px;margin-bottom:8px;color:var(--ink)">Capacity Limits</div>
-        <div class="dir-form-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
-          <div>
-            <label>Group Max</label>
-            <input type="number" id="cohort-group-max" value="12" min="1">
-          </div>
+        <div class="dir-form-row" style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
           <div>
             <label>1-on-1 Max</label>
-            <input type="number" id="cohort-1on1-max" value="4" min="1">
+            <input type="number" id="cohort-single-max" value="50" min="1">
+          </div>
+          <div>
+            <label>Pick 3 Max</label>
+            <input type="number" id="cohort-pick3-max" value="30" min="1">
+          </div>
+          <div>
+            <label>Cohort Max</label>
+            <input type="number" id="cohort-cohort-max" value="20" min="1">
           </div>
           <div>
             <label>VIP Max</label>
-            <input type="number" id="cohort-vip-max" value="2" min="1">
+            <input type="number" id="cohort-vip1on1-max" value="5" min="1">
           </div>
         </div>
         <div style="margin-top:16px;display:flex;gap:12px">
@@ -1496,15 +1503,16 @@
               <th>Name</th>
               <th>Quarter</th>
               <th>Dates</th>
-              <th>Group</th>
               <th>1-on-1</th>
+              <th>Pick 3</th>
+              <th>Cohort</th>
               <th>VIP</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody id="cohorts-table-body">
-            <tr><td colspan="8" class="loading">Loading…</td></tr>
+            <tr><td colspan="9" class="loading">Loading…</td></tr>
           </tbody>
         </table>
       </div>
@@ -1936,19 +1944,23 @@ const CHART_DEFAULTS = {
 };
 
 function renderTrackChart(regs) {
-  const group    = regs.filter(r => r.track === 'group').length;
-  const oneOnOne = regs.filter(r => r.track === 'oneOnOne').length;
-  const vip      = regs.filter(r => r.track === 'vip').length;
+  const single  = regs.filter(r => r.track === 'single').length;
+  const pick3   = regs.filter(r => r.track === 'pick3').length;
+  const cohort  = regs.filter(r => r.track === 'cohort').length;
+  const vip1on1 = regs.filter(r => r.track === 'vip1on1').length;
+  // Count legacy tracks too
+  const legacyGroup = regs.filter(r => r.track === 'group').length;
+  const legacyOto   = regs.filter(r => r.track === 'oneOnOne').length;
+  const legacyVip   = regs.filter(r => r.track === 'vip').length;
 
   if (chartTrack) chartTrack.destroy();
   chartTrack = new Chart(document.getElementById('chart-track'), {
     type: 'doughnut',
     data: {
-      labels: ['Group', '1-on-1', 'VIP'],
+      labels: ['1-on-1', 'Pick 3', 'Cohort', 'VIP', ...(legacyGroup+legacyOto+legacyVip > 0 ? ['Legacy'] : [])],
       datasets: [{
-        data: [group, oneOnOne, vip],
-        backgroundColor: ['#C8531F', '#C9923A', '#3D4A2E'],
-        hoverBackgroundColor: ['#4A85FF', '#E8C160', '#FF5766'],
+        data: [single, pick3, cohort, vip1on1, ...(legacyGroup+legacyOto+legacyVip > 0 ? [legacyGroup+legacyOto+legacyVip] : [])],
+        backgroundColor: ['#C8531F', '#C9923A', '#3D4A2E', '#8AAB5C', ...(legacyGroup+legacyOto+legacyVip > 0 ? ['#777770'] : [])],
         borderWidth: 0,
         hoverOffset: 8,
       }]
@@ -2070,9 +2082,14 @@ function paymentStatus(r) {
 }
 
 function trackBadge(t) {
-  if (t === 'group')    return '<span class="badge badge-group">Group</span>';
-  if (t === 'oneOnOne') return '<span class="badge badge-oneonone">1-on-1</span>';
-  if (t === 'vip')      return '<span class="badge badge-vip">VIP</span>';
+  if (t === 'single')   return '<span class="badge badge-group">1-on-1</span>';
+  if (t === 'pick3')    return '<span class="badge badge-oneonone">Pick 3</span>';
+  if (t === 'cohort')   return '<span class="badge badge-vip">Cohort</span>';
+  if (t === 'vip1on1')  return '<span class="badge badge-vip" style="background:var(--sage)">VIP</span>';
+  // Legacy badges
+  if (t === 'group')    return '<span class="badge badge-group" style="opacity:0.6">Group (old)</span>';
+  if (t === 'oneOnOne') return '<span class="badge badge-oneonone" style="opacity:0.6">1-on-1 (old)</span>';
+  if (t === 'vip')      return '<span class="badge badge-vip" style="opacity:0.6">VIP (old)</span>';
   return t;
 }
 
@@ -2187,9 +2204,10 @@ function renderRevenue() {
   document.getElementById('rev-outstanding').textContent = fmtUGX(outstanding);
 
   const tracks = [
-    { key: 'group',    label: 'Group' },
-    { key: 'oneOnOne', label: '1-on-1' },
-    { key: 'vip',      label: 'VIP' },
+    { key: 'single',  label: '1-on-1' },
+    { key: 'pick3',   label: 'Pick 3' },
+    { key: 'cohort',  label: 'Cohort' },
+    { key: 'vip1on1', label: 'VIP' },
   ];
   const tbodyTrack = document.querySelector('#rev-by-track tbody');
   let totalTrackCollected = 0, totalTrackOutstanding = 0;
@@ -2511,7 +2529,7 @@ async function loadProfiles() {
     // Fetch coaches with profile fields
     const { data: coaches, error } = await sb
       .from('coaches')
-      .select('id, first_name, last_name, email, phone, sector_l1, role, status, headline, credentials, linkedin_url, website_url, profile_photo_url, bio')
+      .select('id, first_name, last_name, email, phone, sector_l1, role, status, headline, credentials, linkedin_url, website_url, avatar_url, bio')
       .eq('status', 'active')
       .order('id');
     if (error) throw new Error(error.message);
@@ -2597,8 +2615,8 @@ function renderProfiles() {
 
     return `<div style="background:var(--card);border:1px solid var(--border);border-radius:10px;padding:20px;position:relative">
       <div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">
-        ${c.profile_photo_url
-          ? `<img src="${esc(c.profile_photo_url)}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ${color}">`
+        ${c.avatar_url
+          ? `<img src="${esc(c.avatar_url)}" style="width:52px;height:52px;border-radius:50%;object-fit:cover;border:2px solid ${color}">`
           : `<div style="width:52px;height:52px;border-radius:50%;background:${color};color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-weight:700;font-size:16px">${initials}</div>`
         }
         <div>
@@ -3815,9 +3833,10 @@ function renderCohorts() {
   tbody.innerHTML = sorted.map(c => {
     const statusColors = { open:'var(--success)', closed:'var(--stone)', full:'var(--ochre)', cancelled:'var(--danger)' };
     const statusBadge = `<span style="background:${statusColors[c.status] || 'var(--stone)'};color:#fff;padding:2px 8px;border-radius:6px;font-size:12px">${c.status}</span>`;
-    const groupBar = capacityBar(c.group_taken, c.group_max);
-    const otoBar = capacityBar(c.one_on_one_taken, c.one_on_one_max);
-    const vipBar = capacityBar(c.vip_taken, c.vip_max);
+    const singleBar = capacityBar(c.single_taken || 0, c.single_max || 50);
+    const pick3Bar  = capacityBar(c.pick3_taken  || 0, c.pick3_max  || 30);
+    const cohortBar = capacityBar(c.cohort_taken || 0, c.cohort_max || 20);
+    const vipBar    = capacityBar(c.vip1on1_taken|| 0, c.vip1on1_max|| 5);
     const dateRange = (c.start_date && c.end_date)
       ? `${new Date(c.start_date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})} – ${new Date(c.end_date).toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}`
       : (c.dates || '—');
@@ -3832,8 +3851,9 @@ function renderCohorts() {
       <td>${c.name}</td>
       <td>${c.quarter || '—'}</td>
       <td>${dateRange}</td>
-      <td>${groupBar}</td>
-      <td>${otoBar}</td>
+      <td>${singleBar}</td>
+      <td>${pick3Bar}</td>
+      <td>${cohortBar}</td>
       <td>${vipBar}</td>
       <td>${statusBadge}</td>
       <td>${actions}</td>
@@ -3865,9 +3885,10 @@ async function createCohort() {
       dates: document.getElementById('cohort-dates').value.trim() || null,
       start_date: document.getElementById('cohort-start').value || null,
       end_date: document.getElementById('cohort-end').value || null,
-      group_max: parseInt(document.getElementById('cohort-group-max').value) || 12,
-      one_on_one_max: parseInt(document.getElementById('cohort-1on1-max').value) || 4,
-      vip_max: parseInt(document.getElementById('cohort-vip-max').value) || 2,
+      single_max:  parseInt(document.getElementById('cohort-single-max').value) || 50,
+      pick3_max:   parseInt(document.getElementById('cohort-pick3-max').value) || 30,
+      cohort_max:  parseInt(document.getElementById('cohort-cohort-max').value) || 20,
+      vip1on1_max: parseInt(document.getElementById('cohort-vip1on1-max').value) || 5,
       status: 'open',
     };
 
