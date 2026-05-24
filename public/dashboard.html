@@ -1586,6 +1586,13 @@
       <label class="modal-label">Credentials</label>
       <textarea class="modal-input" id="profile-edit-credentials" rows="2" placeholder="CPA, MBA, 15 years in venture capital…" style="resize:vertical"></textarea>
     </div>
+    <div class="modal-field">
+      <label class="modal-label">Session Fee (UGX)</label>
+      <div style="display:flex;align-items:center;gap:8px">
+        <input class="modal-input" type="number" id="profile-edit-fee" min="500000" step="50000" style="flex:1" placeholder="500000">
+        <span style="font-size:11px;color:var(--muted);white-space:nowrap">min 500K</span>
+      </div>
+    </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
       <div class="modal-field">
         <label class="modal-label">LinkedIn URL</label>
@@ -2529,7 +2536,7 @@ async function loadProfiles() {
     // Fetch coaches with profile fields
     const { data: coaches, error } = await sb
       .from('coaches')
-      .select('id, first_name, last_name, email, phone, sector_l1, role, status, headline, credentials, linkedin_url, website_url, avatar_url, bio')
+      .select('id, first_name, last_name, email, phone, sector_l1, role, status, headline, credentials, linkedin_url, website_url, avatar_url, bio, session_fee')
       .eq('status', 'active')
       .order('id');
     if (error) throw new Error(error.message);
@@ -2626,6 +2633,7 @@ function renderProfiles() {
         </div>
       </div>
       <div style="font-size:12.5px;line-height:1.5;color:var(--ink-soft)">${bioSnippet}</div>
+      <div style="margin-top:8px;font-family:var(--mono);font-size:13px;font-weight:600;color:var(--terra)">UGX ${(c.session_fee || 500000).toLocaleString()}<span style="font-weight:400;font-size:11px;color:var(--muted)"> / session</span></div>
       ${availHtml}
       <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)">
         <div style="display:flex;gap:12px">${links.join('') || '<span style="font-size:11px;color:var(--muted)">No links</span>'}</div>
@@ -2652,6 +2660,7 @@ function openProfileModal(coachId) {
   document.getElementById('profile-edit-headline').value = c.headline || '';
   document.getElementById('profile-edit-bio').value = c.bio || '';
   document.getElementById('profile-edit-credentials').value = c.credentials || '';
+  document.getElementById('profile-edit-fee').value = c.session_fee || 500000;
   document.getElementById('profile-edit-linkedin').value = c.linkedin_url || '';
   document.getElementById('profile-edit-website').value = c.website_url || '';
 
@@ -2659,11 +2668,11 @@ function openProfileModal(coachId) {
   editingProfileSlots = (c.availability || []).map(s => ({ ...s }));
   renderAvailabilityGrid();
 
-  document.getElementById('profile-modal').classList.add('show');
+  document.getElementById('profile-modal').classList.add('open');
 }
 
 function closeProfileModal() {
-  document.getElementById('profile-modal').classList.remove('show');
+  document.getElementById('profile-modal').classList.remove('open');
   editingProfileSlots = [];
 }
 
@@ -2711,8 +2720,14 @@ async function saveProfile() {
   const headline    = document.getElementById('profile-edit-headline').value.trim();
   const bio         = document.getElementById('profile-edit-bio').value.trim();
   const credentials = document.getElementById('profile-edit-credentials').value.trim();
+  const sessionFee  = parseInt(document.getElementById('profile-edit-fee').value) || 500000;
   const linkedin    = document.getElementById('profile-edit-linkedin').value.trim();
   const website     = document.getElementById('profile-edit-website').value.trim();
+
+  if (sessionFee < 500000) {
+    showToast('Session fee cannot be below UGX 500,000 (platform minimum)', 'warning');
+    return;
+  }
 
   try {
     // 1. Update coach profile fields
@@ -2722,6 +2737,7 @@ async function saveProfile() {
         headline:    headline || null,
         bio:         bio || null,
         credentials: credentials || null,
+        session_fee: sessionFee,
         linkedin_url: linkedin || null,
         website_url:  website || null,
       })
