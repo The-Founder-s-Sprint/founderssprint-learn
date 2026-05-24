@@ -70,13 +70,7 @@
     background: linear-gradient(90deg, transparent 0%, var(--gold) 30%, var(--gold) 70%, transparent 100%);
     opacity: 0.25;
   }
-  .geo-diamond::before {
-    content: '◆';
-    color: var(--gold);
-    font-size: 9px;
-    opacity: 0.6;
-    letter-spacing: 0;
-  }
+  .geo-diamond svg { width: 100%; height: 100%; }
 
   /* ══ LOGIN ════════════════════════════════════════════════════════════════ */
   #login-screen {
@@ -176,10 +170,9 @@
   .topbar-left { display: flex; align-items: center; gap: 16px; }
   .topbar-mark {
     width: 28px; height: 28px;
-    background: var(--gold);
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
     flex-shrink: 0;
   }
+  .topbar-mark svg { width: 100%; height: 100%; }
   .topbar-logo {
     font-family: var(--sans);
     font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
@@ -777,7 +770,7 @@
     <h1 class="login-title">Command<br>Centre</h1>
     <div class="login-rule">
       <div class="geo-line"></div>
-      <span class="geo-diamond"></span>
+      <span class="geo-diamond" style="display:inline-block;width:18px;height:18px"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="50,8 57,50 50,92 43,50" fill="#C8531F" opacity="0.85" transform="rotate(0,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#C9923A" opacity="0.80" transform="rotate(72,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#8AAB5C" opacity="0.78" transform="rotate(144,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#3D4A2E" opacity="0.82" transform="rotate(216,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#777770" opacity="0.75" transform="rotate(288,50,50)"/><circle cx="50" cy="50" r="4.5" fill="#1A1A1A"/><circle cx="50" cy="50" r="2" fill="#EFE7D8"/></svg></span>
       <div class="geo-line"></div>
     </div>
     <!-- Sign-in form -->
@@ -809,7 +802,7 @@
 
   <div class="topbar">
     <div class="topbar-left">
-      <div class="topbar-mark"></div>
+      <div class="topbar-mark"><svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><polygon points="50,8 57,50 50,92 43,50" fill="#C8531F" opacity="0.85" transform="rotate(0,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#C9923A" opacity="0.80" transform="rotate(72,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#8AAB5C" opacity="0.78" transform="rotate(144,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#3D4A2E" opacity="0.82" transform="rotate(216,50,50)"/><polygon points="50,8 57,50 50,92 43,50" fill="#777770" opacity="0.75" transform="rotate(288,50,50)"/><circle cx="50" cy="50" r="4.5" fill="#EFE7D8"/><circle cx="50" cy="50" r="2" fill="#1A1A1A"/></svg></div>
       <span class="topbar-logo">Founder's Sprint</span>
       <div class="topbar-sep"></div>
       <span class="topbar-sub">Admin</span>
@@ -1561,9 +1554,11 @@
             <input type="date" id="cohort-end">
           </div>
         </div>
-        <div>
-          <label>Date Description</label>
-          <input type="text" id="cohort-dates" placeholder="e.g. 4 Aug – 5 Sep 2026" style="width:100%">
+        <div class="dir-form-row">
+          <div>
+            <label>Date Description</label>
+            <input type="text" id="cohort-dates" placeholder="e.g. 4 Aug – 5 Sep 2026">
+          </div>
         </div>
         <div style="font-family:var(--sans);font-weight:600;font-size:14px;margin-top:16px;margin-bottom:8px;color:var(--ink)">Capacity Limits</div>
         <div class="dir-form-row" style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px">
@@ -3493,7 +3488,8 @@ function renderCohorts() {
     return;
   }
 
-  tbody.innerHTML = allCohorts.map(c => {
+  const sorted = [...allCohorts].sort((a, b) => b.id - a.id);
+  tbody.innerHTML = sorted.map(c => {
     const statusColors = { open:'var(--success)', closed:'var(--stone)', full:'var(--ochre)', cancelled:'var(--danger)' };
     const statusBadge = `<span style="background:${statusColors[c.status] || 'var(--stone)'};color:#fff;padding:2px 8px;border-radius:6px;font-size:12px">${c.status}</span>`;
     const groupBar = capacityBar(c.group_taken, c.group_max);
