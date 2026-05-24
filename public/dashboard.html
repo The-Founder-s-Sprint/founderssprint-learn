@@ -518,80 +518,6 @@
     height: 1px; background: var(--border); margin: 4px 12px;
   }
 
-  /* ══ MEETING INVITE ══════════════════════════════════════════════════════ */
-  .invite-card {
-    background: var(--card);
-    border: 1px solid var(--border-hi);
-    padding: 24px 28px;
-    margin-bottom: 24px;
-    position: relative;
-    overflow: hidden;
-  }
-  .invite-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 3px;
-    background: linear-gradient(90deg, var(--terra), var(--ochre), var(--terra));
-  }
-  .invite-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .invite-title {
-    font-size: 14px; font-weight: 600; color: var(--text);
-    display: flex; align-items: center; gap: 8px;
-  }
-  .invite-title .invite-icon {
-    width: 28px; height: 28px; background: var(--gold-dim);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 13px; color: var(--gold); flex-shrink: 0;
-  }
-  .invite-meta {
-    font-size: 11px; color: var(--muted); letter-spacing: 0.04em;
-    font-family: var(--body);
-  }
-  .invite-recipients {
-    display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px;
-  }
-  .invite-recipient {
-    display: flex; align-items: center; gap: 8px;
-    background: var(--bg); border: 1px solid var(--border);
-    padding: 8px 14px; font-size: 12px;
-    transition: border-color 0.2s;
-  }
-  .invite-recipient .ir-dot {
-    width: 7px; height: 7px; border-radius: 50%;
-    background: var(--muted); flex-shrink: 0;
-  }
-  .invite-recipient .ir-name { font-weight: 500; }
-  .invite-recipient .ir-email { color: var(--muted); font-size: 11px; font-family: var(--body); }
-  .invite-recipient.sent { border-color: var(--success); }
-  .invite-recipient.sent .ir-dot { background: var(--success); }
-  .invite-recipient.failed { border-color: var(--danger); }
-  .invite-recipient.failed .ir-dot { background: var(--danger); }
-  .invite-actions {
-    display: flex; align-items: center; gap: 16px;
-  }
-  .invite-btn {
-    background: #2C2417; color: var(--gold); border: none;
-    font-family: var(--font); font-size: 11px; font-weight: 700;
-    letter-spacing: 2px; text-transform: uppercase;
-    padding: 12px 32px; cursor: pointer;
-    transition: background 0.2s, transform 0.1s;
-  }
-  .invite-btn:hover { background: #3D3226; }
-  .invite-btn:active { transform: scale(0.98); }
-  .invite-btn:disabled {
-    opacity: 0.5; cursor: not-allowed; transform: none;
-  }
-  .invite-btn.sending {
-    background: var(--gold); color: #2C2417;
-  }
-  .invite-status {
-    font-size: 12px; color: var(--muted);
-  }
-  .invite-status.success { color: var(--success); font-weight: 500; }
-  .invite-status.error { color: var(--danger); font-weight: 500; }
-
   /* ══ DIRECTORY ADMIN ══════════════════════════════════════════════════════ */
   .dir-subtabs {
     display: flex; gap: 0; margin-bottom: 24px;
@@ -869,44 +795,44 @@
             <span class="qn-arrow">&#9660;</span>
           </button>
           <div class="quicknav-menu">
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/login" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/login" target="_blank">
               <span class="ql-icon">&#9733;</span>
               <span class="ql-label">Login Page</span>
               <span class="ql-sub">Entry point</span>
             </a>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn" target="_blank">
               <span class="ql-icon">&#9654;</span>
               <span class="ql-label">Dashboard</span>
               <span class="ql-sub">Week overview</span>
             </a>
             <div class="quicknav-sep"></div>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-1" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn/week-1" target="_blank">
               <span class="ql-icon">01</span>
               <span class="ql-label">Week 1</span>
-              <span class="ql-sub">Mindset</span>
+              <span class="ql-sub">Marketing &amp; Branding</span>
             </a>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-2" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn/week-2" target="_blank">
               <span class="ql-icon">02</span>
               <span class="ql-label">Week 2</span>
-              <span class="ql-sub">Discovery</span>
+              <span class="ql-sub">Financial Modelling</span>
             </a>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-3" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn/week-3" target="_blank">
               <span class="ql-icon">03</span>
               <span class="ql-label">Week 3</span>
-              <span class="ql-sub">GTM</span>
+              <span class="ql-sub">Strategy &amp; Team</span>
             </a>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-4" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn/week-4" target="_blank">
               <span class="ql-icon">04</span>
               <span class="ql-label">Week 4</span>
-              <span class="ql-sub">Branding</span>
+              <span class="ql-sub">Investment Readiness</span>
             </a>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/week-5" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn/week-5" target="_blank">
               <span class="ql-icon">05</span>
               <span class="ql-label">Week 5</span>
-              <span class="ql-sub">Pitch</span>
+              <span class="ql-sub">Product Dev &amp; Pricing</span>
             </a>
             <div class="quicknav-sep"></div>
-            <a class="quicknav-link" href="https://founders-sprint-curriculum.vercel.app/learn/resources" target="_blank">
+            <a class="quicknav-link" href="https://learn.founderssprint.co/learn/resources" target="_blank">
               <span class="ql-icon">&#9830;</span>
               <span class="ql-label">Founder's Toolkit</span>
               <span class="ql-sub">Resources</span>
@@ -931,27 +857,27 @@
             <a class="quicknav-link" href="https://founderssprint.co/materials/week-1.html" target="_blank">
               <span class="ql-icon">01</span>
               <span class="ql-label">Week 1</span>
-              <span class="ql-sub">Idea Clarity</span>
+              <span class="ql-sub">Marketing &amp; Branding</span>
             </a>
             <a class="quicknav-link" href="https://founderssprint.co/materials/week-2.html" target="_blank">
               <span class="ql-icon">02</span>
               <span class="ql-label">Week 2</span>
-              <span class="ql-sub">Discovery</span>
+              <span class="ql-sub">Financial Modelling</span>
             </a>
             <a class="quicknav-link" href="https://founderssprint.co/materials/week-3.html" target="_blank">
               <span class="ql-icon">03</span>
               <span class="ql-label">Week 3</span>
-              <span class="ql-sub">GTM & Economics</span>
+              <span class="ql-sub">Strategy &amp; Team</span>
             </a>
             <a class="quicknav-link" href="https://founderssprint.co/materials/week-4.html" target="_blank">
               <span class="ql-icon">04</span>
               <span class="ql-label">Week 4</span>
-              <span class="ql-sub">Brand & Pricing</span>
+              <span class="ql-sub">Investment Readiness</span>
             </a>
             <a class="quicknav-link" href="https://founderssprint.co/materials/week-5.html" target="_blank">
               <span class="ql-icon">05</span>
               <span class="ql-label">Week 5</span>
-              <span class="ql-sub">Pitch & Launch</span>
+              <span class="ql-sub">Product Dev &amp; Pricing</span>
             </a>
           </div>
         </div>
@@ -1005,26 +931,6 @@
         <div class="stat-card">
           <div class="stat-label">Deposit Only</div>
           <div class="stat-value orange" id="stat-depositonly">—</div>
-        </div>
-      </div>
-
-      <!-- ── MEETING INVITE ────────────────────────────────────────── -->
-      <div class="invite-card" id="invite-card">
-        <div class="invite-header">
-          <div class="invite-title">
-            <span class="invite-icon">&#9993;</span>
-            Founding Team Meeting Invite
-          </div>
-          <div class="invite-meta">THU 8 MAY 2026 &middot; 6:00 PM EAT &middot; ZOOM</div>
-        </div>
-        <div class="invite-recipients" id="invite-recipients">
-          <!-- Populated dynamically from coaches table -->
-        </div>
-        <div class="invite-actions">
-          <button class="invite-btn" id="invite-send-btn" onclick="sendFoundingInvite()" disabled>
-            Loading…
-          </button>
-          <span class="invite-status" id="invite-status"></span>
         </div>
       </div>
 
@@ -2331,10 +2237,8 @@ function switchTab(name) {
 let inviteCoaches = [];
 
 async function loadCoachesForInvite() {
-  const container = document.getElementById('invite-recipients');
-  const btn       = document.getElementById('invite-send-btn');
   try {
-    // Pull coaches directly from Supabase (role=coach, active)
+    // Load active coaches — used by Sessions, Presentations, and other panels
     const { data, error } = await sb
       .from('coaches')
       .select('id, first_name, last_name, email, sector_l1, founderssprint_email, user_id')
@@ -2344,87 +2248,8 @@ async function loadCoachesForInvite() {
 
     if (error) throw new Error(error.message);
     inviteCoaches = data || [];
-
-    container.innerHTML = inviteCoaches.map(c => `
-      <div class="invite-recipient" data-email="${c.founderssprint_email || c.email}">
-        <span class="ir-dot"></span>
-        <span class="ir-name">${c.first_name}</span>
-        <span class="ir-email">${c.founderssprint_email || c.email}</span>
-      </div>`).join('');
-
-    if (inviteCoaches.length) {
-      btn.textContent = `Send Invite to All ${inviteCoaches.length}`;
-      btn.disabled = false;
-    } else {
-      btn.textContent = 'No Coaches Found';
-    }
   } catch (err) {
-    container.innerHTML = '<div style="color:var(--danger);font-size:12px">Failed to load coaches</div>';
     console.error('loadCoachesForInvite:', err);
-  }
-}
-
-async function sendFoundingInvite() {
-  const btn    = document.getElementById('invite-send-btn');
-  const status = document.getElementById('invite-status');
-  const count  = inviteCoaches.length;
-
-  if (!count) return;
-  if (!confirm(`Send the founding team meeting invite to all ${count} coaches?`)) return;
-
-  btn.disabled = true;
-  btn.classList.add('sending');
-  btn.textContent = 'Sending…';
-  status.className = 'invite-status';
-  status.textContent = '';
-
-  // Reset recipient dots
-  document.querySelectorAll('.invite-recipient').forEach(r => {
-    r.classList.remove('sent', 'failed');
-  });
-
-  try {
-    const session = await sb.auth.getSession();
-    const token = session?.data?.session?.access_token || '';
-
-    const res = await fetch(`${API_BASE}/api/admin/send-founding-invite`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Server error');
-
-    // Update each recipient card
-    if (data.results) {
-      data.results.forEach(r => {
-        const el = document.querySelector(`.invite-recipient[data-email="${r.email}"]`);
-        if (el) el.classList.add(r.ok ? 'sent' : 'failed');
-      });
-    }
-
-    if (data.ok) {
-      status.className = 'invite-status success';
-      status.textContent = `All ${data.sent} invites sent successfully`;
-      btn.textContent = 'Sent ✓';
-      showToast('Meeting invites sent to all coaches!', 'success');
-    } else {
-      status.className = 'invite-status error';
-      status.textContent = `${data.sent}/${data.total} sent — check results`;
-      btn.textContent = 'Retry Send';
-      btn.disabled = false;
-      btn.classList.remove('sending');
-    }
-  } catch (err) {
-    status.className = 'invite-status error';
-    status.textContent = 'Error: ' + err.message;
-    btn.textContent = 'Retry Send';
-    btn.disabled = false;
-    btn.classList.remove('sending');
-    showToast('Failed to send invites: ' + err.message, 'error');
   }
 }
 
