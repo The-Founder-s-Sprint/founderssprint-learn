@@ -1611,7 +1611,7 @@
 </div><!-- /app -->
 
 <!-- ── CHANGE PASSWORD MODAL ─────────────────────────────────────────────── -->
-<div class="modal-backdrop" id="password-modal" style="display:none">
+<div class="modal-backdrop" id="password-modal">
   <div class="modal" style="max-width:380px">
     <div class="modal-title">Change Password</div>
     <div class="modal-field">
@@ -1726,14 +1726,17 @@ async function signOut() {
 }
 
 function showChangePassword() {
-  document.getElementById('password-modal').style.display = 'flex';
+  const modal = document.getElementById('password-modal');
+  modal.style.display = '';
+  modal.classList.add('open');
   document.getElementById('new-password').value = '';
   document.getElementById('confirm-password').value = '';
   document.getElementById('password-error').textContent = '';
 }
 
 function closePasswordModal() {
-  document.getElementById('password-modal').style.display = 'none';
+  const modal = document.getElementById('password-modal');
+  modal.classList.remove('open');
 }
 
 async function changePassword() {
