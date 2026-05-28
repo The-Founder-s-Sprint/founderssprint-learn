@@ -752,6 +752,7 @@
     <button class="tab" onclick="switchTab('cohorts')">Cohorts</button>
     <button class="tab" onclick="switchTab('pricing')">Pricing</button>
     <button class="tab" onclick="switchTab('profiles')">Profiles</button>
+    <button class="tab" onclick="switchTab('materials')">Materials</button>
   </div>
 
   <div class="main">
@@ -1566,6 +1567,170 @@
       </div>
     </div>
 
+    <!-- ── MATERIALS ─────────────────────────────────────────────────────── -->
+    <div class="tab-panel" id="panel-materials">
+      <div class="section-head" style="margin-bottom:16px">
+        <span class="section-title">Course Materials</span>
+        <div style="display:flex;gap:8px;align-items:center">
+          <select class="filter-select" id="mat-discipline-filter" onchange="loadMaterials()">
+            <option value="">All Disciplines</option>
+            <option value="Marketing & Branding">Marketing & Branding</option>
+            <option value="Financial Modelling">Financial Modelling</option>
+            <option value="Strategy & Team Building">Strategy & Team Building</option>
+            <option value="Investment Readiness">Investment Readiness</option>
+            <option value="Product Development & Pricing">Product Dev & Pricing</option>
+          </select>
+          <select class="filter-select" id="mat-status-filter" onchange="loadMaterials()">
+            <option value="">All Statuses</option>
+            <option value="draft">Draft</option>
+            <option value="in_review">In Review</option>
+            <option value="published">Published</option>
+          </select>
+          <button class="btn-confirm" onclick="toggleMatForm()" style="font-size:13px;padding:6px 14px">+ Add Module</button>
+        </div>
+      </div>
+
+      <!-- Subtabs: Curriculum Map / Module Library -->
+      <div class="dir-subtabs" style="margin-bottom:20px">
+        <button class="dir-subtab active" onclick="switchMatView('map')">Curriculum Map</button>
+        <button class="dir-subtab" onclick="switchMatView('library')">Module Library</button>
+      </div>
+
+      <!-- ─── Curriculum Map view ─────────────────────────────────────── -->
+      <div id="mat-view-map">
+        <div id="curriculum-grid" style="display:grid;grid-template-columns:repeat(5,1fr);gap:16px">
+          <div class="loading" style="grid-column:1/-1">Loading curriculum map…</div>
+        </div>
+      </div>
+
+      <!-- ─── Module Library view (table) ─────────────────────────────── -->
+      <div id="mat-view-library" style="display:none">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Discipline</th>
+                <th>Week</th>
+                <th>Type</th>
+                <th>Format</th>
+                <th>Status</th>
+                <th>Access</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="mat-table-body">
+              <tr><td colspan="8" class="loading">Loading…</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ─── Add / Edit Module form (hidden by default) ──────────────── -->
+      <div id="mat-form-wrap" style="display:none;background:var(--surface);border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid var(--border)">
+        <div style="font-family:var(--sans);font-weight:600;font-size:15px;margin-bottom:14px;color:var(--ink)" id="mat-form-title">Add Course Module</div>
+        <input type="hidden" id="mat-edit-id">
+        <div class="dir-form-row two-col">
+          <div>
+            <label>Title *</label>
+            <input type="text" id="mat-title" placeholder="e.g. Understanding Your Market">
+          </div>
+          <div>
+            <label>Coach *</label>
+            <select id="mat-coach">
+              <option value="">Select coach…</option>
+            </select>
+          </div>
+        </div>
+        <div class="dir-form-row two-col">
+          <div>
+            <label>Discipline *</label>
+            <select id="mat-discipline">
+              <option value="">Select discipline…</option>
+              <option value="Marketing & Branding">Marketing & Branding</option>
+              <option value="Financial Modelling">Financial Modelling</option>
+              <option value="Strategy & Team Building">Strategy & Team Building</option>
+              <option value="Investment Readiness">Investment Readiness</option>
+              <option value="Product Development & Pricing">Product Dev & Pricing</option>
+            </select>
+          </div>
+          <div>
+            <label>Module Type</label>
+            <select id="mat-type">
+              <option value="lesson">Lesson</option>
+              <option value="exercise">Exercise</option>
+              <option value="framework">Framework</option>
+              <option value="worksheet">Worksheet</option>
+              <option value="case_study">Case Study</option>
+            </select>
+          </div>
+        </div>
+        <div class="dir-form-row two-col">
+          <div>
+            <label>Week Number</label>
+            <select id="mat-week">
+              <option value="">Not assigned</option>
+              <option value="1">Week 1</option>
+              <option value="2">Week 2</option>
+              <option value="3">Week 3</option>
+              <option value="4">Week 4</option>
+              <option value="5">Week 5</option>
+            </select>
+          </div>
+          <div>
+            <label>Session Code</label>
+            <input type="text" id="mat-session-code" placeholder="e.g. W1-S1">
+          </div>
+        </div>
+        <div class="dir-form-row two-col">
+          <div>
+            <label>HTML File Path</label>
+            <input type="text" id="mat-filepath" placeholder="/modules/week-1.html">
+          </div>
+          <div>
+            <label>Source URL (Google Slides)</label>
+            <input type="url" id="mat-source-url" placeholder="https://docs.google.com/presentation/d/…">
+          </div>
+        </div>
+        <div class="dir-form-row two-col">
+          <div>
+            <label>Format</label>
+            <select id="mat-format">
+              <option value="html_native">HTML Native (interactive)</option>
+              <option value="google_slides">Google Slides (source)</option>
+              <option value="converted">Converted from Slides</option>
+            </select>
+          </div>
+          <div>
+            <label>Access Type</label>
+            <select id="mat-access">
+              <option value="both">Both (Cohort + Session)</option>
+              <option value="cohort">Cohort only</option>
+              <option value="session">Session only</option>
+            </select>
+          </div>
+        </div>
+        <div class="dir-form-row two-col">
+          <div>
+            <label>Duration (minutes)</label>
+            <input type="number" id="mat-duration" value="120" min="15" max="480" step="15">
+          </div>
+          <div>
+            <label>Sort Order</label>
+            <input type="number" id="mat-sort" value="0" min="0">
+          </div>
+        </div>
+        <div>
+          <label>Description</label>
+          <textarea id="mat-desc" rows="2" placeholder="Brief description of this module…" style="width:100%;padding:8px;border-radius:8px;border:1px solid var(--border);font-family:var(--font);font-size:14px;background:var(--card);color:var(--text)"></textarea>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:12px">
+          <button class="btn-confirm" onclick="saveMaterial()" id="btn-save-mat">Add Module</button>
+          <button class="btn-cancel" onclick="toggleMatForm()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
   </div><!-- /main -->
 </div><!-- /app -->
 
@@ -1732,10 +1897,27 @@ async function signIn() {
   const email    = document.getElementById('login-email').value.trim();
   const password = document.getElementById('login-password').value;
   const errEl    = document.getElementById('login-error');
+  const btn      = document.querySelector('.btn-login');
   errEl.textContent = '';
-  const { error } = await sb.auth.signInWithPassword({ email, password });
-  if (error) { errEl.textContent = error.message; return; }
-  bootApp();
+
+  if (!email || !password) {
+    errEl.textContent = 'Please enter email and password';
+    return;
+  }
+
+  try {
+    btn.disabled = true;
+    btn.textContent = 'Signing in…';
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+    if (error) { errEl.textContent = error.message; return; }
+    // bootApp() is called by onAuthStateChange — no need to call it here
+  } catch (err) {
+    console.error('[Auth] Caught error:', err);
+    errEl.textContent = err.message || 'Sign-in failed — check console';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Enter';
+  }
 }
 
 function showResetForm() {
@@ -1762,7 +1944,7 @@ async function sendPasswordReset() {
   if (!email) { errEl.textContent = 'Please enter your email address'; return; }
 
   const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '/dashboard.html',
+    redirectTo: 'https://founderssprint.co/dashboard.html',
   });
 
   if (error) { errEl.textContent = error.message; return; }
@@ -1805,25 +1987,36 @@ async function changePassword() {
   showToast('Password updated successfully', 'success');
 }
 
+let booted = false;
+let currentSession = null;
+
 sb.auth.onAuthStateChange((event, session) => {
-  if (event === 'PASSWORD_RECOVERY') {
-    // User arrived via password reset link — boot the app then open the change-password modal
-    bootApp().then(() => {
+  currentSession = session;
+  if (event === 'PASSWORD_RECOVERY' && session) {
+    bootApp(session.user).then(() => {
       showChangePassword();
       showToast('Set your new password below', 'info');
     });
     return;
   }
-  if (session) bootApp();
+  if ((event === 'SIGNED_IN' || event === 'INITIAL_SESSION') && session) {
+    bootApp(session.user);
+  }
 });
 
-async function bootApp() {
-  const { data: { user } } = await sb.auth.getUser();
+async function bootApp(user) {
+  if (booted) return;
   if (!user) return;
-  document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-  document.getElementById('user-email').textContent = user.email;
-  await loadAllData();
+  booted = true;
+  try {
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    document.getElementById('user-email').textContent = user.email;
+    await loadAllData();
+  } catch (err) {
+    console.error('[Boot] CRASH:', err);
+    booted = false;
+  }
 }
 
 // ── DATA LOADING ──────────────────────────────────────────────────────────────
@@ -2380,7 +2573,7 @@ document.addEventListener('click', function(e) {
 
 function switchTab(name) {
   document.querySelectorAll('.tab').forEach((t, i) => {
-    const panels = ['overview','registrations','revenue','documents','directory','coaches','sessions','presentations','cohorts','pricing','profiles'];
+    const panels = ['overview','registrations','revenue','documents','directory','coaches','sessions','presentations','cohorts','pricing','profiles','materials'];
     t.classList.toggle('active', panels[i] === name);
   });
   document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
@@ -2392,6 +2585,7 @@ function switchTab(name) {
   if (name === 'cohorts') renderCohorts();
   if (name === 'pricing' && !pricingLoaded) loadPricing();
   if (name === 'profiles' && !profilesLoaded) loadProfiles();
+  if (name === 'materials' && !materialsLoaded) loadMaterials();
 }
 
 // ── MEETING INVITE ──────────────────────────────────────────────────────────
@@ -3057,8 +3251,7 @@ const L1_LABELS = {
 };
 
 async function getAuthHeaders() {
-  const session = await sb.auth.getSession();
-  const token = session?.data?.session?.access_token || '';
+  const token = currentSession?.access_token || '';
   return {
     'Content-Type': 'application/json',
     'Authorization': `Bearer ${token}`,
@@ -3954,6 +4147,300 @@ async function reopenCohort(id) {
   } catch (err) {
     showToast(err.message, 'error');
   }
+}
+
+// ── COURSE MATERIALS MANAGEMENT ─────────────────────────────────────────────
+let materialsLoaded = false;
+let allMaterials = [];
+let matCurrentView = 'map';
+
+// Discipline → colour + week mapping
+const DISCIPLINE_META = {
+  'Marketing & Branding':           { color: 'var(--terra)', week: 1, label: 'Marketing & Branding' },
+  'Financial Modelling':            { color: 'var(--ochre)', week: 2, label: 'Financial Modelling' },
+  'Strategy & Team Building':       { color: 'var(--moss)',  week: 3, label: 'Strategy & Team Building' },
+  'Investment Readiness':           { color: 'var(--sage)',  week: 4, label: 'Investment Readiness' },
+  'Product Development & Pricing':  { color: 'var(--stone)', week: 5, label: 'Product Dev & Pricing' },
+};
+
+function switchMatView(view) {
+  matCurrentView = view;
+  document.querySelectorAll('#panel-materials .dir-subtab').forEach(t => t.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('mat-view-map').style.display    = view === 'map' ? 'block' : 'none';
+  document.getElementById('mat-view-library').style.display = view === 'library' ? 'block' : 'none';
+}
+
+function toggleMatForm(editId) {
+  const wrap = document.getElementById('mat-form-wrap');
+  if (editId) {
+    // Edit mode — pre-fill form
+    const mat = allMaterials.find(m => m.id === editId);
+    if (!mat) return;
+    wrap.style.display = 'block';
+    document.getElementById('mat-form-title').textContent = 'Edit Module';
+    document.getElementById('mat-edit-id').value = editId;
+    document.getElementById('mat-title').value = mat.title || '';
+    document.getElementById('mat-discipline').value = mat.discipline || '';
+    document.getElementById('mat-type').value = mat.module_type || 'lesson';
+    document.getElementById('mat-week').value = mat.week_number || '';
+    document.getElementById('mat-session-code').value = mat.session_code || '';
+    document.getElementById('mat-filepath').value = mat.file_path || '';
+    document.getElementById('mat-source-url').value = mat.source_url || '';
+    document.getElementById('mat-format').value = mat.format || 'html_native';
+    document.getElementById('mat-access').value = mat.access_type || 'both';
+    document.getElementById('mat-duration').value = mat.duration_minutes || 120;
+    document.getElementById('mat-sort').value = mat.sort_order || 0;
+    document.getElementById('mat-desc').value = mat.description || '';
+    document.getElementById('btn-save-mat').textContent = 'Save Changes';
+
+    // Set coach dropdown
+    populateMatCoachDropdown();
+    document.getElementById('mat-coach').value = mat.coach_id || '';
+  } else if (wrap.style.display === 'none') {
+    // New mode
+    wrap.style.display = 'block';
+    document.getElementById('mat-form-title').textContent = 'Add Course Module';
+    document.getElementById('mat-edit-id').value = '';
+    document.getElementById('mat-title').value = '';
+    document.getElementById('mat-discipline').value = '';
+    document.getElementById('mat-type').value = 'lesson';
+    document.getElementById('mat-week').value = '';
+    document.getElementById('mat-session-code').value = '';
+    document.getElementById('mat-filepath').value = '';
+    document.getElementById('mat-source-url').value = '';
+    document.getElementById('mat-format').value = 'html_native';
+    document.getElementById('mat-access').value = 'both';
+    document.getElementById('mat-duration').value = 120;
+    document.getElementById('mat-sort').value = 0;
+    document.getElementById('mat-desc').value = '';
+    document.getElementById('btn-save-mat').textContent = 'Add Module';
+    populateMatCoachDropdown();
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+
+function populateMatCoachDropdown() {
+  const sel = document.getElementById('mat-coach');
+  if (sel.options.length <= 1) {
+    (inviteCoaches || []).forEach(c => {
+      const opt = document.createElement('option');
+      opt.value = c.user_id;
+      opt.textContent = `${c.first_name} ${c.last_name}`;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+async function loadMaterials() {
+  try {
+    const headers = await getAuthHeaders();
+    const discFilter = document.getElementById('mat-discipline-filter').value;
+    const statusFilter = document.getElementById('mat-status-filter').value;
+
+    let url = `${API_BASE}/api/course-materials?`;
+    if (discFilter)   url += `discipline=${encodeURIComponent(discFilter)}&`;
+    if (statusFilter) url += `status=${statusFilter}&`;
+
+    const res = await fetch(url, { headers });
+    if (!res.ok) throw new Error('Failed to load materials');
+    allMaterials = await res.json();
+    materialsLoaded = true;
+
+    renderCurriculumMap();
+    renderMaterialsTable();
+  } catch (err) {
+    document.getElementById('mat-table-body').innerHTML =
+      `<tr><td colspan="8" style="color:var(--danger)">${err.message}</td></tr>`;
+    document.getElementById('curriculum-grid').innerHTML =
+      `<div style="grid-column:1/-1;color:var(--danger)">${err.message}</div>`;
+  }
+}
+
+function renderCurriculumMap() {
+  const grid = document.getElementById('curriculum-grid');
+  const disciplines = Object.entries(DISCIPLINE_META);
+
+  let html = '';
+  disciplines.forEach(([disc, meta]) => {
+    const weekMaterials = allMaterials.filter(m => m.discipline === disc && m.week_number === meta.week);
+    const otherMaterials = allMaterials.filter(m => m.discipline === disc && m.week_number !== meta.week);
+    const allDiscMaterials = allMaterials.filter(m => m.discipline === disc);
+    const published = allDiscMaterials.filter(m => m.status === 'published').length;
+    const total = allDiscMaterials.length;
+
+    // Status indicator
+    let statusBadge = '';
+    if (total === 0) {
+      statusBadge = '<span style="background:var(--paper-mid);color:#fff;padding:2px 8px;border-radius:6px;font-size:10px">Empty</span>';
+    } else if (published === total) {
+      statusBadge = '<span style="background:var(--success);color:#fff;padding:2px 8px;border-radius:6px;font-size:10px">Published</span>';
+    } else {
+      statusBadge = `<span style="background:var(--warning);color:#fff;padding:2px 8px;border-radius:6px;font-size:10px">${published}/${total} published</span>`;
+    }
+
+    // Find coach for this discipline
+    const coach = (inviteCoaches || []).find(c => c.sector_l1 === disc);
+    const coachName = coach ? `${coach.first_name} ${coach.last_name}` : '—';
+
+    html += `
+      <div style="background:var(--card);border:1px solid var(--border);border-radius:12px;padding:16px;position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:${meta.color}"></div>
+        <div style="font-family:var(--sans);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:${meta.color};margin-bottom:4px;margin-top:4px">Week ${meta.week}</div>
+        <div style="font-family:var(--sans);font-weight:600;font-size:14px;margin-bottom:6px;color:var(--ink)">${meta.label}</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px">${coachName}</div>
+        <div style="margin-bottom:10px">${statusBadge}</div>
+        <div style="font-size:11px;color:var(--muted);margin-bottom:8px">
+          ${weekMaterials.length} module${weekMaterials.length !== 1 ? 's' : ''} assigned
+          ${otherMaterials.length ? ` · ${otherMaterials.length} unassigned` : ''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          ${weekMaterials.map(m => `
+            <div style="display:flex;align-items:center;gap:6px;font-size:11px">
+              <span style="width:6px;height:6px;border-radius:50%;background:${m.status === 'published' ? 'var(--success)' : m.status === 'in_review' ? 'var(--warning)' : 'var(--paper-mid)'};flex-shrink:0"></span>
+              <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1" title="${m.title}">${m.title}</span>
+              <span style="font-size:10px;color:var(--muted)">${m.module_type}</span>
+            </div>
+          `).join('')}
+          ${weekMaterials.length === 0 ? '<div style="font-size:11px;color:var(--paper-mid);font-style:italic">No modules yet</div>' : ''}
+        </div>
+      </div>
+    `;
+  });
+
+  grid.innerHTML = html;
+}
+
+function renderMaterialsTable() {
+  const tbody = document.getElementById('mat-table-body');
+  if (!allMaterials.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="loading">No materials found</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = allMaterials.map(m => {
+    const coach = (inviteCoaches || []).find(c => c.user_id === m.coach_id);
+    const coachName = coach ? `${coach.first_name} ${coach.last_name}` : (m.coach_id ? m.coach_id.slice(0,8) + '…' : '—');
+    const discMeta = DISCIPLINE_META[m.discipline] || {};
+
+    // Status badge
+    const statusColors = { draft: 'var(--paper-mid)', in_review: 'var(--warning)', published: 'var(--success)' };
+    const statusBadge = `<span style="background:${statusColors[m.status] || 'var(--paper-mid)'};color:#fff;padding:2px 8px;border-radius:6px;font-size:12px">${m.status}</span>`;
+
+    // Format badge
+    const formatLabels = { html_native: 'HTML', google_slides: 'Slides', converted: 'Converted' };
+    const formatBadge = `<span style="font-size:11px;color:var(--muted)">${formatLabels[m.format] || m.format}</span>`;
+
+    // Access badge
+    const accessLabels = { both: 'Both', cohort: 'Cohort', session: 'Session' };
+
+    // Actions
+    const previewBtn = m.file_path
+      ? `<button onclick="previewMaterial(${m.id})" style="background:var(--terra);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;margin-right:4px" title="Preview">Preview</button>`
+      : '';
+    const editBtn = `<button onclick="toggleMatForm(${m.id})" style="background:var(--ink-mute);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer;margin-right:4px">Edit</button>`;
+    const statusBtn = m.status === 'published'
+      ? `<button onclick="updateMatStatus(${m.id},'draft')" style="background:var(--warning);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">Unpublish</button>`
+      : `<button onclick="updateMatStatus(${m.id},'published')" style="background:var(--success);color:#fff;border:none;padding:4px 10px;border-radius:6px;font-size:12px;cursor:pointer">Publish</button>`;
+
+    return `<tr>
+      <td><strong>${m.title}</strong><br><span style="font-size:11px;color:var(--muted)">${coachName}</span></td>
+      <td><span style="color:${discMeta.color || 'inherit'};font-weight:500">${m.discipline}</span></td>
+      <td>${m.week_number ? 'Week ' + m.week_number : '—'}</td>
+      <td style="font-size:12px">${m.module_type}</td>
+      <td>${formatBadge}</td>
+      <td>${statusBadge}</td>
+      <td style="font-size:12px">${accessLabels[m.access_type] || m.access_type}</td>
+      <td style="white-space:nowrap">${previewBtn}${editBtn}${statusBtn}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function saveMaterial() {
+  const btn = document.getElementById('btn-save-mat');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  try {
+    const coachId = document.getElementById('mat-coach').value;
+    if (!coachId) throw new Error('Please select a coach');
+
+    const title = document.getElementById('mat-title').value.trim();
+    if (!title) throw new Error('Title is required');
+
+    const discipline = document.getElementById('mat-discipline').value;
+    if (!discipline) throw new Error('Discipline is required');
+
+    const headers = await getAuthHeaders();
+    const body = {
+      coach_id:         coachId,
+      title,
+      discipline,
+      module_type:      document.getElementById('mat-type').value,
+      week_number:      document.getElementById('mat-week').value || null,
+      session_code:     document.getElementById('mat-session-code').value.trim() || null,
+      file_path:        document.getElementById('mat-filepath').value.trim() || null,
+      source_url:       document.getElementById('mat-source-url').value.trim() || null,
+      format:           document.getElementById('mat-format').value,
+      access_type:      document.getElementById('mat-access').value,
+      duration_minutes: parseInt(document.getElementById('mat-duration').value) || 120,
+      sort_order:       parseInt(document.getElementById('mat-sort').value) || 0,
+      description:      document.getElementById('mat-desc').value.trim() || null,
+    };
+
+    const editId = document.getElementById('mat-edit-id').value;
+    let res;
+    if (editId) {
+      res = await fetch(`${API_BASE}/api/course-materials/${editId}`, {
+        method: 'PATCH', headers, body: JSON.stringify(body),
+      });
+    } else {
+      body.status = 'draft';
+      res = await fetch(`${API_BASE}/api/course-materials`, {
+        method: 'POST', headers, body: JSON.stringify(body),
+      });
+    }
+
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || 'Save failed');
+    }
+
+    showToast(editId ? 'Module updated' : 'Module created', 'success');
+    toggleMatForm();
+    await loadMaterials();
+  } catch (err) {
+    showToast(err.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = document.getElementById('mat-edit-id').value ? 'Save Changes' : 'Add Module';
+  }
+}
+
+async function updateMatStatus(id, newStatus) {
+  try {
+    const headers = await getAuthHeaders();
+    const res = await fetch(`${API_BASE}/api/course-materials/${id}`, {
+      method: 'PATCH', headers, body: JSON.stringify({ status: newStatus }),
+    });
+    if (!res.ok) throw new Error('Status update failed');
+
+    showToast(`Module ${newStatus === 'published' ? 'published' : 'unpublished'}`, 'success');
+    const mat = allMaterials.find(m => m.id === id);
+    if (mat) mat.status = newStatus;
+    renderCurriculumMap();
+    renderMaterialsTable();
+  } catch (err) {
+    showToast(err.message, 'error');
+  }
+}
+
+function previewMaterial(id) {
+  const mat = allMaterials.find(m => m.id === id);
+  if (!mat || !mat.file_path) return showToast('No file path set for this module', 'error');
+
+  // Open in new tab — the file_path is relative to the site root
+  window.open(mat.file_path, '_blank');
 }
 </script>
 </body>

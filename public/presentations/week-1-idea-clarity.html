@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1: Idea Clarity & Founder Mindset — The Founder's Sprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@300;400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        #1A1A1A;
+    --ink-soft:   #2A2826;
+    --ink-mid:    #444444;
+    --ink-mute:   #5A564F;
+    --paper:      #EFE7D8;
+    --paper-mid:  #C0B8A8;
+    --paper-dim:  #A09888;
+    --paper-deep: #E6DCC7;
+    --terra:      #C8531F;
+    --terra-deep: #9A3E16;
+    --ochre:      #C9923A;
+    --sage:       #8AAB5C;
+    --moss:       #3D4A2E;
+    --stone:      #777770;
+    --rule:       rgba(26,26,26,0.18);
+
+    --sans:    'Josefin Sans', Inter, system-ui, sans-serif;
+    --display: 'Cormorant Garamond', 'Times New Roman', serif;
+    --body:    'Inter', system-ui, sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--ink);
+    font-family: var(--body);
+  }
+
+  /* ── Slide container ─────────────────────────────────── */
+  .deck {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(40px, 6vw, 100px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease;
+  }
+
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ── Slide themes ────────────────────────────────────── */
+  .slide--dark {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .slide--light {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .slide--terra {
+    background: var(--terra);
+    color: var(--paper);
+  }
+
+  /* ── Typography ──────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--sans);
+    font-size: clamp(10px, 1.2vw, 14px);
+    font-weight: 700;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: clamp(16px, 2vw, 32px);
+  }
+
+  .slide--dark .eyebrow { color: var(--ochre); }
+  .slide--light .eyebrow { color: var(--terra); }
+  .slide--terra .eyebrow { color: rgba(239,231,216,0.6); }
+
+  .slide-title {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(36px, 5.5vw, 72px);
+    line-height: 1.1;
+    margin-bottom: clamp(16px, 2vw, 32px);
+  }
+
+  .slide-title em {
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .slide--dark .slide-title em { color: var(--ochre); }
+  .slide--light .slide-title em { color: var(--terra); }
+
+  .slide-body {
+    font-family: var(--body);
+    font-size: clamp(15px, 1.8vw, 22px);
+    line-height: 1.7;
+    max-width: 800px;
+    opacity: 0.8;
+  }
+
+  .slide-body strong { font-weight: 600; opacity: 1; }
+
+  /* ── Layout helpers ──────────────────────────────────── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(32px, 4vw, 64px);
+    align-items: start;
+    margin-top: clamp(24px, 3vw, 48px);
+  }
+
+  @media (max-width: 768px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    padding: clamp(20px, 2.5vw, 36px);
+    border-left: 3px solid var(--ochre);
+    background: rgba(239,231,216,0.05);
+  }
+
+  .slide--light .card {
+    background: var(--paper-deep);
+    border-left-color: var(--terra);
+  }
+
+  .card-label {
+    font-family: var(--sans);
+    font-size: clamp(9px, 1vw, 12px);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ochre);
+    margin-bottom: 8px;
+  }
+
+  .slide--light .card-label { color: var(--terra); }
+
+  .card-text {
+    font-family: var(--body);
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.7;
+    opacity: 0.85;
+  }
+
+  /* ── Big number callout ──────────────────────────────── */
+  .big-num {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 1;
+    color: var(--ochre);
+    margin-bottom: clamp(8px, 1vw, 16px);
+  }
+
+  /* ── List items ──────────────────────────────────────── */
+  .item-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: clamp(16px, 2vw, 28px);
+    margin-top: clamp(24px, 3vw, 48px);
+  }
+
+  .item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .item-icon {
+    flex-shrink: 0;
+    font-size: clamp(20px, 2.5vw, 32px);
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .item-text {
+    font-family: var(--body);
+    font-size: clamp(14px, 1.5vw, 18px);
+    line-height: 1.65;
+  }
+
+  .item-text strong {
+    display: block;
+    font-family: var(--sans);
+    font-size: clamp(12px, 1.2vw, 15px);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  /* ── Progress bar ────────────────────────────────────── */
+  .progress {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background: var(--ochre);
+    transition: width 0.4s ease;
+    z-index: 100;
+  }
+
+  /* ── Slide counter ───────────────────────────────────── */
+  .counter {
+    position: fixed;
+    bottom: 16px;
+    right: 24px;
+    font-family: var(--sans);
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    color: var(--paper-dim);
+    z-index: 100;
+  }
+
+  /* ── Navigation hint ─────────────────────────────────── */
+  .nav-hint {
+    position: fixed;
+    bottom: 16px;
+    left: 24px;
+    font-family: var(--sans);
+    font-size: 10px;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    color: var(--paper-dim);
+    opacity: 0.5;
+    z-index: 100;
+  }
+
+  /* ── Logo mark ───────────────────────────────────────── */
+  .logo-mark {
+    position: fixed;
+    top: 20px;
+    right: 24px;
+    width: 32px;
+    height: 32px;
+    z-index: 100;
+    opacity: 0.4;
+  }
+
+  /* ── Statement slide ─────────────────────────────────── */
+  .statement {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(32px, 4.5vw, 56px);
+    line-height: 1.35;
+    max-width: 900px;
+  }
+
+  .statement em {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ochre);
+  }
+
+  /* ── Framework flow ──────────────────────────────────── */
+  .flow {
+    display: flex;
+    align-items: center;
+    gap: clamp(16px, 2vw, 32px);
+    margin-top: clamp(32px, 4vw, 56px);
+    flex-wrap: wrap;
+  }
+
+  .flow-step {
+    flex: 1;
+    min-width: 180px;
+    padding: clamp(20px, 2.5vw, 32px);
+    text-align: center;
+  }
+
+  .flow-step-num {
+    font-family: var(--display);
+    font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px);
+    color: var(--ochre);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .flow-step-label {
+    font-family: var(--sans);
+    font-size: clamp(12px, 1.3vw, 16px);
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .flow-step-desc {
+    font-family: var(--body);
+    font-size: clamp(13px, 1.3vw, 16px);
+    opacity: 0.7;
+    line-height: 1.5;
+  }
+
+  .flow-arrow {
+    font-size: clamp(20px, 2.5vw, 32px);
+    color: var(--ochre);
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 768px) {
+    .flow { flex-direction: column; }
+    .flow-arrow { transform: rotate(90deg); }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+  <!-- Logo mark -->
+  <svg class="logo-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="50,8 92,50 50,92 8,50" fill="none" stroke="#C9923A" stroke-width="2.5"/>
+    <circle cx="50" cy="24" r="4" fill="#C8531F"/>
+    <circle cx="76" cy="50" r="4" fill="#C9923A"/>
+    <circle cx="50" cy="76" r="4" fill="#8AAB5C"/>
+    <circle cx="24" cy="50" r="4" fill="#3D4A2E"/>
+    <circle cx="50" cy="50" r="5" fill="#EFE7D8"/>
+  </svg>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 1 — Title -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--dark active" data-slide="0">
+    <div class="eyebrow">The Founder's Sprint · Week 1</div>
+    <h1 class="slide-title">Idea <em>Clarity</em><br>& Founder Mindset</h1>
+    <p class="slide-body">Move from vague idea to a clearly articulated problem worth solving.</p>
+    <p style="margin-top: 32px; font-family: var(--sans); font-size: clamp(10px, 1.1vw, 13px); font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper-dim);">
+      2 hours · Max 10 founders · Deliverable: Problem Statement
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 2 — The Clarity Problem (statement) -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--dark" data-slide="1">
+    <div class="eyebrow">Foundation</div>
+    <p class="statement">
+      Most founders fail not because their idea is bad, but because they haven't clearly defined <em>what problem they're solving.</em>
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 3 — Problem → Idea → Solution -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--dark" data-slide="2">
+    <div class="eyebrow">Framework</div>
+    <h2 class="slide-title">Problem → Idea → <em>Solution</em></h2>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-step-num">01</div>
+        <div class="flow-step-label">Problem</div>
+        <div class="flow-step-desc">A concrete pain point that a specific group of people experiences.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">02</div>
+        <div class="flow-step-label">Idea</div>
+        <div class="flow-step-desc">Your initial hypothesis for how to solve that problem. A guess.</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="flow-step-num">03</div>
+        <div class="flow-step-label">Solution</div>
+        <div class="flow-step-desc">The product or service you build after testing your idea against reality.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 4 — Case Study -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--light" data-slide="3">
+    <div class="eyebrow">Case Study · Uganda</div>
+    <h2 class="slide-title">Safe Transport <em>at Night</em></h2>
+
+    <div class="two-col">
+      <div>
+        <div class="card">
+          <div class="card-label">Problem</div>
+          <div class="card-text">Riders can't safely hail transport at night in Kampala.</div>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-label">Initial Idea</div>
+          <div class="card-text">Build a ride-hailing app.</div>
+        </div>
+        <div class="card" style="margin-top: 16px;">
+          <div class="card-label">Real Solution</div>
+          <div class="card-text">Radio dispatch system with trusted driver vetting.</div>
+        </div>
+      </div>
+      <div>
+        <p class="slide-body" style="font-size: clamp(16px, 1.8vw, 20px); margin-top: 8px;">
+          <strong>Key insight:</strong> The problem wasn't "no app exists" — it was "people don't trust unknown drivers at night."
+        </p>
+        <p class="slide-body" style="font-size: clamp(14px, 1.5vw, 17px); margin-top: 24px;">
+          The solution addressed trust, not technology. The real problem was never about software.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 5 — The Founder Mindset (3 pillars) -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--dark" data-slide="4">
+    <div class="eyebrow">Mindset</div>
+    <h2 class="slide-title">Three <em>Mindset</em> Pillars</h2>
+
+    <div class="item-grid">
+      <div class="item">
+        <div class="item-icon">⚡</div>
+        <div class="item-text">
+          <strong>Bias Toward Action</strong>
+          Move forward without perfect information. Ship 80% instead of planning 100%. Perfect analysis is the enemy of progress.
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">🔄</div>
+        <div class="item-text">
+          <strong>Learning Loops</strong>
+          Rapid cycles of Hypothesis → Test → Learn → Iterate. Each loop should take days, not months.
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon">🌊</div>
+        <div class="item-text">
+          <strong>Embrace Uncertainty</strong>
+          Accept that you don't and can't know everything. Ambiguity is your operating environment, not a bug.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 6 — False vs Real Signals -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--light" data-slide="5">
+    <div class="eyebrow">Validation</div>
+    <h2 class="slide-title">False Signals vs <em>Real</em> Signals</h2>
+
+    <div class="two-col">
+      <div>
+        <div class="card" style="border-left-color: #cc5555;">
+          <div class="card-label" style="color: #cc5555;">False Signals</div>
+          <div class="card-text">
+            "I had this problem once."<br>
+            "People on Twitter talk about it."<br>
+            "Everyone I ask says it's a good idea."<br>
+            "My friends would use this."
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card" style="border-left-color: var(--sage);">
+          <div class="card-label" style="color: var(--sage);">Real Signals</div>
+          <div class="card-text">
+            People spend money trying to solve it.<br>
+            They ask "How much?" not "That's cool."<br>
+            The problem is urgent or frequent.<br>
+            Customers have already built workarounds.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 7 — Problem Statement Template -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--dark" data-slide="6">
+    <div class="eyebrow">Deliverable</div>
+    <h2 class="slide-title">Your Problem <em>Statement</em></h2>
+
+    <div style="margin-top: clamp(24px, 3vw, 40px); padding: clamp(24px, 3vw, 40px); border: 1px solid rgba(201,146,58,0.3); background: rgba(239,231,216,0.03);">
+      <p style="font-family: var(--display); font-size: clamp(20px, 2.5vw, 30px); font-weight: 300; line-height: 1.8; color: var(--paper);">
+        For <span style="color: var(--ochre); border-bottom: 2px dotted var(--ochre);">[target customer]</span>,
+        the problem of <span style="color: var(--ochre); border-bottom: 2px dotted var(--ochre);">[problem description]</span>
+        results in <span style="color: var(--ochre); border-bottom: 2px dotted var(--ochre);">[negative outcome]</span>.
+        Currently, they <span style="color: var(--ochre); border-bottom: 2px dotted var(--ochre);">[current workaround]</span>,
+        which costs them <span style="color: var(--ochre); border-bottom: 2px dotted var(--ochre);">[time / money / effort]</span>.
+      </p>
+    </div>
+
+    <p class="slide-body" style="margin-top: 24px; font-size: clamp(14px, 1.4vw, 17px);">
+      Be specific. Avoid vague language like "easier" or "better." Focus on the concrete outcome your customer wants.
+    </p>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 8 — Homework -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--dark" data-slide="7">
+    <div class="eyebrow">Action</div>
+    <h2 class="slide-title">This Week's <em>Homework</em></h2>
+
+    <div class="item-grid" style="margin-top: clamp(16px, 2vw, 32px);">
+      <div class="item">
+        <div class="item-icon" style="font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3vw, 40px); color: var(--ochre);">1</div>
+        <div class="item-text">
+          <strong>Identify 10 People</strong>
+          Find people who fit your target customer profile.
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon" style="font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3vw, 40px); color: var(--ochre);">2</div>
+        <div class="item-text">
+          <strong>Conduct 5–10 Interviews</strong>
+          Ask about the problem, not your idea. Listen. Don't pitch.
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon" style="font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3vw, 40px); color: var(--ochre);">3</div>
+        <div class="item-text">
+          <strong>Dig Into Workarounds</strong>
+          How do they solve it now? What does it cost them?
+        </div>
+      </div>
+      <div class="item">
+        <div class="item-icon" style="font-family: var(--display); font-weight: 300; font-size: clamp(28px, 3vw, 40px); color: var(--ochre);">4</div>
+        <div class="item-text">
+          <strong>Refine Your Statement</strong>
+          Update your problem statement after each conversation.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <!-- SLIDE 9 — Closing -->
+  <!-- ═══════════════════════════════════════════════════════ -->
+  <div class="slide slide--terra" data-slide="8">
+    <div class="eyebrow">Next Week</div>
+    <h2 class="slide-title" style="color: var(--paper);">Customer Discovery<br>& Market <em style="color: var(--paper);">Sizing</em></h2>
+    <p class="slide-body" style="color: rgba(239,231,216,0.8); margin-top: 16px;">
+      Bring your interview notes. We'll extract patterns, spot red flags vs green flags, and estimate whether your market is big enough to build a business around.
+    </p>
+    <p style="margin-top: 48px; font-family: var(--sans); font-size: clamp(10px, 1.1vw, 13px); font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(239,231,216,0.5);">
+      Build with direction.
+    </p>
+  </div>
+
+</div>
+
+<!-- Progress bar -->
+<div class="progress" id="progress"></div>
+
+<!-- Slide counter -->
+<div class="counter" id="counter">1 / 9</div>
+
+<!-- Navigation hint -->
+<div class="nav-hint">← → or click to navigate</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  function goTo(n) {
+    if (n < 0 || n >= total) return;
+    slides[current].classList.remove('active');
+    current = n;
+    slides[current].classList.add('active');
+    document.getElementById('progress').style.width = ((current + 1) / total * 100) + '%';
+    document.getElementById('counter').textContent = (current + 1) + ' / ' + total;
+  }
+
+  // Keyboard nav
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+      e.preventDefault();
+      goTo(current + 1);
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      goTo(current - 1);
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      goTo(0);
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      goTo(total - 1);
+    }
+  });
+
+  // Click nav — left third goes back, rest goes forward
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('input, button, a, textarea')) return;
+    const x = e.clientX / window.innerWidth;
+    if (x < 0.33) {
+      goTo(current - 1);
+    } else {
+      goTo(current + 1);
+    }
+  });
+
+  // Touch swipe
+  let touchStartX = 0;
+  document.addEventListener('touchstart', function(e) {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+
+  document.addEventListener('touchend', function(e) {
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) {
+      if (dx < 0) goTo(current + 1);
+      else goTo(current - 1);
+    }
+  }, { passive: true });
+
+  // Init
+  goTo(0);
+})();
+</script>
+</body>
+</html>
