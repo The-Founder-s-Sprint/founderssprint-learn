@@ -4439,8 +4439,13 @@ function previewMaterial(id) {
   const mat = allMaterials.find(m => m.id === id);
   if (!mat || !mat.file_path) return showToast('No file path set for this module', 'error');
 
-  // Open in new tab — the file_path is relative to the site root
-  window.open(mat.file_path, '_blank');
+  // Presentation files live on the curriculum app (Vercel), not the marketing site (Bluehost).
+  // Use the branded presentation viewer on the curriculum domain.
+  const curriculumBase = 'https://founders-sprint-curriculum.vercel.app';
+  const viewerUrl = curriculumBase + '/presentation-viewer.html?src='
+    + encodeURIComponent(mat.file_path)
+    + '&title=' + encodeURIComponent(mat.title);
+  window.open(viewerUrl, '_blank');
 }
 </script>
 </body>
