@@ -350,6 +350,8 @@
     <p style="margin-top: 32px; font-family: var(--sans); font-size: clamp(10px, 1.1vw, 13px); font-weight: 400; letter-spacing: 0.15em; text-transform: uppercase; color: var(--paper-dim);">
       2 hours · Max 10 founders · Deliverable: Problem Statement
     </p>
+    <!-- Programme sponsor bar — auto-populated from database -->
+    <div id="pres-sponsors" style="position:absolute;bottom:28px;left:0;right:0;display:flex;justify-content:center;align-items:center;gap:36px;opacity:0.6"></div>
   </div>
 
   <!-- ═══════════════════════════════════════════════════════ -->
@@ -633,6 +635,29 @@
 
   // Init
   goTo(0);
+})();
+</script>
+
+<!-- Programme sponsors on title slide -->
+<script>
+(function() {
+  var SB_URL  = 'https://ivedeivyotwevjxvcuoe.supabase.co';
+  var SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml2ZWRlaXZ5b3R3ZXZqeHZjdW9lIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUxOTk1OTIsImV4cCI6MjA5MDc3NTU5Mn0.qMqjTMDRcvuuSy0yXLPH-yZpWFZdUv63enAsEWxzsss';
+  fetch(SB_URL + '/rest/v1/directory_providers?select=company_name,logo_url,banner_tagline&tier=eq.corporate&status=eq.active&order=company_name', {
+    headers: { 'apikey': SB_ANON, 'Authorization': 'Bearer ' + SB_ANON, 'Accept': 'application/json' }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(sponsors) {
+    var el = document.getElementById('pres-sponsors');
+    if (!el || !sponsors.length) return;
+    var label = '<span style="font-family:var(--sans);font-size:8px;letter-spacing:0.18em;text-transform:uppercase;color:var(--paper-dim)">Supported by</span>';
+    var logos = sponsors.map(function(s) {
+      if (s.logo_url) return '<img src="' + s.logo_url + '" alt="' + s.company_name + '" style="height:22px;width:auto;filter:grayscale(100%) brightness(1.8)">';
+      return '<span style="font-family:var(--sans);font-size:11px;font-weight:600;color:var(--paper-mid)">' + s.company_name + '</span>';
+    }).join('');
+    el.innerHTML = label + logos;
+  })
+  .catch(function() {});
 })();
 </script>
 </body>
